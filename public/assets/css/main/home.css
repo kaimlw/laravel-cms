@@ -1,0 +1,280 @@
+*{
+    font-family: 'Inter',sans-serif;
+}
+/* ICON WRAPPER */
+.icon-wrapper{
+    background-color: lightgray;
+    padding: 0.25em 0.5em;
+    border-radius: 50%;
+}
+.icon-wrapper-red{
+    background-color: #FF2B38;
+    padding: 0.25em 0.5em;
+    border-radius: 50%;
+}
+.icon-wrapper-white{
+    background-color: white;
+    padding: 0.25em 0.5em;
+    border-radius: 50%;
+    color: #16A75C;
+    box-shadow: 0 0 0.5em 0 rgb(0,0,0,0.3);
+}
+
+/* SECTION */
+.section{
+    padding-top: 5em;
+}
+
+/* CONTENT */
+section{
+    padding-bottom: 60px;
+}
+#banner{
+    
+    background-size: cover;
+    height: 100vh;
+}
+
+
+/* POST GRID */
+.post-grid-container{
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}
+.post-grid-item{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 1em;
+}
+.post-image{
+    border-radius: 15px;
+}
+.post-title{
+    font-weight: 700;
+}
+.post-date{
+    color: #3B4148 !important;
+    font-weight: 600;
+}
+.post-excerpt{
+    color: #5A6169;
+}
+
+/* ANGGARAN */
+#anggaranTab button{
+    color: #767A7F;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 10px 40px;
+    border-radius: 40px;
+}
+#anggaranTab button.active{
+    color: #16A75C;
+    background-color: #DAF1E5;
+}
+
+.tab-pane{
+    position: relative;
+}
+.anggaran-card-container{
+    display: flex;
+    gap: 2em;
+    overflow: hidden;
+    position: relative;
+}
+.overlay-btn{
+    position: absolute;
+    height: 100%;
+    right: 10px;
+    top: 30%;
+    background: linear-gradient(to right, transparent, white);
+    z-index: 999;
+}
+
+.anggaran-card-container .card{
+    min-width: 440px;
+}
+.anggaran-card-container .card-header{
+    padding: 20px;
+}
+.anggaran-card-container .card-body{
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+.anggaran-card-container .card-footer{
+    display: flex;
+    justify-content: space-between;
+}
+
+/* PENGUMUMAN */
+.pengumuman-item{
+    margin-bottom: 1.5em;
+}
+.pengumuman-item:last-child{
+    margin-bottom: 0;
+}
+.pengumuman-title{
+    font-weight: 600;
+}
+.pengumuman-content{
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+/* KALENDER ACARA */
+#kalenderTab button{
+    color: #767A7F;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 30px;
+    border-radius: 40px;
+}
+#kalenderTab button.active{
+    color: #16A75C;
+    background-color: #DAF1E5;
+}
+.event-day{
+    width: max-content;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    background-color: #FF2B38;
+}
+.event-month-year{
+    color: #5A6169;
+}
+.event-item{
+    margin-bottom: 1.5em;
+}
+.event-item:last-child{
+    margin-bottom: 0;
+}
+.event-item .event-title{
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 0.25em;
+}
+.event-item .event-map{
+    font-size: 14px;
+    margin-bottom: 0;
+    color: #3B4148;
+}
+.event-item .event-time{
+    font-size: 14px;
+    margin-bottom: 0;
+    color: #3B4148;
+}
+
+/* PROGRAM */
+#program{
+    background-color: #FAFAFA;
+}
+.program-grid-container{
+    display: flex;
+    gap: 1em;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.program-item{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    min-width: 250px;
+    gap: 1em;
+    background-color: white;
+    border: #EEEEEE 1px solid;
+    border-radius: 15px;
+    padding: 20px 0;
+    color: black;
+}
+.program-item img{
+    max-width: 60px;
+}
+.program-item h5{
+    font-weight: 600;
+    margin: 0;
+}
+
+/* TENTANG DESA */
+#tentang-desa .img-wrapper{
+    width: fit-content;
+    position: relative;
+}
+#tentang-desa img{
+    border-radius: 15px;
+}
+#tentang-desa .img-description{
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    border-radius: 15px;
+    position: absolute;
+    padding: 20px 30px;
+    bottom: 0;
+    top:25%;
+    left: 0;
+    right: 0;
+    color: white;
+    background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+}
+#tentang-desa .img-description p{
+    margin: 0;
+    font-weight: 500;
+}
+#tentang-desa .img-description small{
+    margin: 0;
+    font-weight: 300;
+}
+.description-container{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.description-container h1{
+    margin-bottom: 24px;
+    font-weight: 600;
+}
+.description-container p{
+    margin-bottom: 24px;
+    color: #5A6169;
+}
+.description-container a{
+    width: fit-content;
+}
+
+/* GALERI DESA */
+.slider{
+    position: relative;
+}
+.slider-image-container{
+    width: 100%;
+    display: flex;
+    gap: 1em;
+    overflow-x: scroll;
+}
+
+.slider-item{
+    min-width: 326px;
+}
+.slider-item img{
+    min-height: 326px;
+    border-radius: 20px;
+}
+
+.prev-button, .next-button{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+}
+.prev-button{
+    left: 0;
+}
+.next-button{
+    right: 0;
+}

@@ -1,0 +1,46 @@
+/* SECTION */
+section, .section{
+    padding-top: 5em;
+    padding-bottom: 60px;
+}
+
+/* CONTENT */
+#banner{
+    background: linear-gradient(to bottom, rgb(0,0,0,0.5) 25% , transparent),
+                linear-gradient(to right, rgb(0,0,0,0.5) , transparent),
+                url("/assets/img/ponpes-cropped.jpg") no-repeat;
+    background-size: cover;
+    height: 70vh;
+}
+
+/* SECTION 2: CAROUSEL */
+.carousel-item{
+    border-radius: 15px;
+    max-height: 400px;
+}
+.carousel-item img{
+    border-radius: 15px;
+}
+
+/* SECTION BERITA GRID */
+/* POST GRID */
+.post-grid-container{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5em;
+}
+.post-grid-item{
+    width: 260px;
+}
+.post-image{
+    border-radius: 15px;
+}
+.post-title{
+    font-weight: 700;
+    text-decoration: none;
+    color: black;
+}
+.post-date{
+    color: #3B4148 !important;
+    font-weight: 600;
+}

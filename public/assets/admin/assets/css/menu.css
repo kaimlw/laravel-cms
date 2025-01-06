@@ -1,0 +1,26 @@
+.tab-pane .list-group{
+    height: 200px;
+    overflow-y: scroll;
+}
+.card{
+    min-height: 400px;
+}
+
+.menu-list-item{
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 0.5em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.child-group-label{
+    font-weight: bold;
+}
+.menu-list-item .btn-sm{
+    padding: 0.3em 0.75em;
+}
+.menu-list-item i{
+    font-size: 16px;
+}

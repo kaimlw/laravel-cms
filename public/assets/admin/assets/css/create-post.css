@@ -1,0 +1,33 @@
+.sidebar-wrapper .sidebar-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 2em;
+    /* background-color: red; */
+    padding: 0 1rem 0 0 !important;
+}
+
+.sidebar-menu{
+    position: relative;
+    height: max-content;
+}
+.sidebar-footer{
+    padding: 1em;
+    text-align: right;
+}
+.menu-container{
+    padding: 1em;
+}
+
+.btn-back{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 1.5em;
+    border-right: #3775EA 3px solid ;
+}
+.btn-back i{
+    font-size: 20px;
+    height: max-content;
+}
