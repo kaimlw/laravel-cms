@@ -115,7 +115,7 @@
                                 <fieldset class="form-group">
                                     <label for="roleSelect">Role Pengguna</label>
                                     <select class="form-select @error('role','tambah') is-invalid @enderror" id="roleSelect" name="role">
-                                        @if (auth()->user()->desa_id == 0)
+                                        @if (auth()->user()->web_id == 0)
                                         <option value="super_admin" selected>Super Admin</option>
                                         @else
                                         <option value="web_admin" selected>Web Admin</option>
