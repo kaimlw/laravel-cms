@@ -11,19 +11,20 @@ let roleEditSelect = document.querySelector('#formEdit #roleSelect');
 
 // FUNCTION
 function openEditModal(id){
-    fetch(`/desa-admin/user/get-user/${id}`,{
+    fetch(`/cms-admin/user/${id}`,{
         method: 'GET',
         credentials: 'same-origin'
     })
     .then((res)=>res.json())
     .then((data)=>{
         $('#editUserModal').modal('show')
-        $('#formEdit').attr('action',`/desa-admin/user/${id}`)
+        $('#formEdit').attr('action',`/cms-admin/user/${id}`)
 
+        document.querySelector('#formEdit #userEdit').value = data.encrypted_id
         usernameEditInput.value = data.username;
         displayNameEditInput.value = data.display_name;
         emailEditInput.value = data.email;
-        roleEditSelect.value = data.role
+        roleEditSelect.value = data.roles;
 
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid')
@@ -39,11 +40,9 @@ function openEditModal(id){
         `
         $('.main-content').prepend(alert)
     })
-
-    
 }
 
 function openHapusModal(id){
     $('#hapusUserModal').modal('show')
-    $('#formHapus').attr('action',`/desa-admin/user/${id}`)
+    $('#formHapus').attr('action',`/cms-admin/user/${id}`)
 }

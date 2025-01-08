@@ -3,7 +3,7 @@
 @section('title', 'Users')
 
 @section('css-addOn')
-<link rel="stylesheet" href="{{ asset('vendor/simple-datatables/style.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/vendor/simple-datatables/style.css') }}">
 @endsection
 
 @section('content')
@@ -16,7 +16,7 @@
     </button>
 </div>
 @endif
-{{-- @dd($errors->edit) --}}
+
 <div class="page-title">
     <div class="row">
         <div class="col-12 col-md-6 order-md-1 order-last">
@@ -26,7 +26,7 @@
         <div class="col-12 col-md-6 order-md-2 order-first">
             <nav aria-label="breadcrumb" class='breadcrumb-header'>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('dashboard.main') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Users</li>
                 </ol>
             </nav>
@@ -55,13 +55,13 @@
                         <td>{{ $user->username }}</td>
                         <td>{{ $user->display_name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>{{ $user->role }}</td>
+                        <td>{{ $user->roles }}</td>
                         <td>
-                            <button class="btn btn-sm btn-warning" onclick="openEditModal({{ $user->id }})">
+                            <button class="btn btn-sm btn-warning" onclick="openEditModal('{{ base64_encode(encrypt($user->id)) }}')">
                                 <i class="bi bi-pencil-square"></i>
                             </button>
                             @if (auth()->user()->id != $user->id)
-                            <button class="btn btn-sm btn-danger" onclick="openHapusModal({{ $user->id }})">
+                            <button class="btn btn-sm btn-danger" onclick="openHapusModal('{{ base64_encode(encrypt($user->id)) }}')">
                                 <i class="bi bi-trash-fill"></i>
                             </button>
                             @endif
@@ -74,6 +74,7 @@
     </div>
 </section>
 
+{{-- Insert Modal --}}
 <div class="modal fade" id="tambahUserModal" tabindex="-1" aria-labelledby="tambahUserModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -84,7 +85,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form form-vertical" method="POST" action="{{ route('dashboard.user.store') }}">
+                <form class="form form-vertical" method="POST" action="">
                     @csrf
                     <div class="form-body">
                         <div class="row">
@@ -115,9 +116,9 @@
                                     <label for="roleSelect">Role Pengguna</label>
                                     <select class="form-select @error('role','tambah') is-invalid @enderror" id="roleSelect" name="role">
                                         @if (auth()->user()->desa_id == 0)
-                                        <option value="Super Admin" selected>Super Admin</option>
+                                        <option value="super_admin" selected>Super Admin</option>
                                         @else
-                                        <option value="Admin Desa" selected>Admin Desa</option>
+                                        <option value="web_admin" selected>Web Admin</option>
                                         @endif                                    
                                     </select>
                                     @error('role','tambah')
@@ -167,6 +168,8 @@
         </div>
     </div>
 </div>
+
+{{-- Edit Modal --}}
 <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -177,9 +180,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form form-vertical" id="formEdit" method="POST">
+                <form class="form form-vertical" id="formEdit" method="POST" action="{{ route('admin.user.update', ['id' => old('user') != null ? old('user') : 0 ])  }}">
                     @method('PUT')
                     @csrf
+                    <input type="hidden" name="user" id="userEdit" value="{{ old('user') }}">
                     <div class="form-body">
                         <div class="row">
                             <div class="col-12">
@@ -208,10 +212,10 @@
                                 <fieldset class="form-group">
                                     <label for="roleSelect">Role Pengguna</label>
                                     <select class="form-select @error('roleEdit','edit') is-invalid @enderror" id="roleSelect" name="roleEdit">
-                                        @if (auth()->user()->desa_id == 0)
-                                        <option value="Super Admin" selected>Super Admin</option>
+                                        @if (auth()->user()->web_id == 0)
+                                        <option value="super_admin" selected>Super Admin</option>
                                         @else
-                                        <option value="Admin Desa" selected>Admin Desa</option>
+                                        <option value="web_admin" selected>Web Admin</option>
                                         @endif
                                     </select>
                                     @error('roleEdit','edit')
@@ -288,8 +292,8 @@
 @endsection
 
 @section('js-addOn')
-<script src="{{ asset('vendor/simple-datatables/simple-datatables.js') }}"></script>
-<script src="{{ asset('admin/assets/js/pages/users.js') }}"></script>
+<script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
+<script src="{{ asset('assets/admin/assets/js/pages/users.js') }}"></script>
 
 
 <script>

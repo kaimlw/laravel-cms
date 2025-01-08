@@ -14,7 +14,12 @@ class AuthController extends Controller
      * (GET)
      * Menampilkan halaman login
      */
-    function index() : View{
+    function index() : View|RedirectResponse{
+        // Jika pengguna sudah login diarahkan ke halaman dashboard
+        if (Auth::check()) {
+            return redirect()->route('admin.dashboard');
+        }
+
         return view('login');
     }
 
@@ -23,20 +28,23 @@ class AuthController extends Controller
      * Memproses login pengguna 
      */
     function authenticate(Request $request) : RedirectResponse {
+        // Validasi input
         $credentials = $request->validate([
             'username' => ['required'],
             'password' => ['required'],
         ],[
             'username.required' =>  'Masukkan nama pengguna!',
             'password.required' =>  'Masukkan password!'
-        ]);
- 
+        ]); 
+        
+        // Pengecekan login ke database, redirect ke dashboard jika berhasil
         if (Auth::attempt($credentials, $request->rememberCheck)) {
             $request->session()->regenerate();
  
             return redirect()->intended(route('admin.dashboard'));
         }
         
+        // Jika gagal kembali ke halaman login dengan error message
         return back()->withErrors([
             'username' => 'Username atau password anda salah',
         ])->onlyInput('username');

@@ -23,8 +23,20 @@ class User extends Authenticatable
         'web_id',
         'display_name',
         'username',
+        'email',
         'password',
         'roles',
+    ];
+
+    /**
+     * Set Validation Message
+     */
+    public const VALIDATION_MESSAGE = [
+        'username.required' => 'Username harus diisi',
+        'username.unique' => 'Username sudah digunakan oleh pengguna lain',
+        'email.email' => 'Format email tidak valid',
+        'password.min' => 'Password minimal terdiri atas 8 karakter',
+        'password.confirmed' => 'Konfirmasi password tidak sesuai'
     ];
 
     /**

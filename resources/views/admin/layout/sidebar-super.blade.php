@@ -15,7 +15,7 @@
                 </a>
             </li>        
             <li class="sidebar-item">
-                <a href="" class='sidebar-link'>
+                <a href="{{ route('admin.user') }}" class='sidebar-link'>
                     <i class="bi bi-person-fill"></i>
                     <span>Users</span>
                 </a>
