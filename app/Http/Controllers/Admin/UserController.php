@@ -8,11 +8,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Response;
 
 class UserController extends Controller
 {
@@ -35,15 +32,15 @@ class UserController extends Controller
     function store(Request $request) : RedirectResponse {
         $request->validateWithBag('tambah',[
             'username' => 'required|unique:users,username',
-            'displayName' => 'required',
+            'display_name' => 'required',
             'email' => 'required|email',
             'password' => 'required|min:8|confirmed'
-        ], User::VALIDATION_MESSAGE);
+        ]);
 
         $newUser = User::create([
             'web_id' => Auth::user()->web_id,
             'username' => $request->username,
-            'display_name' => $request->displayName,
+            'display_name' => $request->display_name,
             'email' => $request->email,
             'password' =>   Hash::make($request->password),
             'roles' => $request->role
@@ -59,31 +56,31 @@ class UserController extends Controller
     function update(Request $request, $id) : RedirectResponse {
         // Validasi input user
         $request->validateWithBag('edit',[
-            'displayNameEdit' => 'required',
-            'emailEdit' => 'required|email',
-        ], User::VALIDATION_MESSAGE);
+            'display_name' => 'required',
+            'email' => 'required|email',
+        ]);
 
         $user = User::find(decrypt(base64_decode($id)));
         $updateArray = [
-            'email' => $request->emailEdit,
-            'display_name' => $request->displayNameEdit,
-            'roles' => $request->roleEdit
+            'email' => $request->email,
+            'display_name' => $request->display_name,
+            'roles' => $request->role
         ];
 
         // Jika user mengubah username, lakukan validasi input username dan masukkan ke array update
-        if ($user->username != $request->usernameEdit) {
+        if ($user->username != $request->username) {
             $request->validateWithBag('edit',[
-                'usernameEdit' => 'required|unique:users,username',
-            ],User::VALIDATION_MESSAGE);
-            $updateArray['username'] = $request->usernameEdit;
+                'username' => 'required|unique:users,username',
+            ]);
+            $updateArray['username'] = $request->username;
         }
 
         // Jika user mengubah password, lakukan validasi input password dan masukkan ke array update
-        if ($request->passwordEdit) {
+        if ($request->password) {
             $request->validateWithBag('edit',[
-                'passwordEdit' => 'min:8|confirmed'
-            ],User::VALIDATION_MESSAGE);
-            $updateArray['password'] = Hash::make($request->passwordEdit);
+                'password' => 'min:8|confirmed'
+            ]);
+            $updateArray['password'] = Hash::make($request->password);
         }
         
         // Redirect ke halaman user, tampilkan pesan sesuai keberhasilan update

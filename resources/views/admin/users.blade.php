@@ -36,7 +36,7 @@
 <section class="section">
     <div class="card">
         <div class="card-header text-right">
-            <button class="btn btn-primary" data-toggle="modal" data-target="#tambahUserModal">Tambah Pengguna</button>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#tambahUserModal" >Tambah Pengguna</button>
         </div>
         <div class="card-body">
             <table class='table table-striped' id="table1">
@@ -85,7 +85,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form form-vertical" method="POST" action="">
+                <form class="form form-vertical" method="POST" action="" id="formTambah">
                     @csrf
                     <div class="form-body">
                         <div class="row">
@@ -103,7 +103,7 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="displayNameInput">Display Name</label>
-                                    <input type="text" id="displayNameInput" class="form-control @error('displayName','tambah') is-invalid @enderror" name="displayName" placeholder="Masukkan nama yang akan ditampilkan" value="{{ old('displayName') }}">
+                                    <input type="text" id="displayNameInput" class="form-control @error('displayName','tambah') is-invalid @enderror" name="display_name" placeholder="Masukkan nama yang akan ditampilkan" value="{{ old('displayName') }}">
                                     @error('displayName','tambah')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -189,8 +189,8 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="usernameInput">Username</label>
-                                    <input type="text" id="usernameInput" class="form-control @error('usernameEdit','edit') is-invalid @enderror" name="usernameEdit" placeholder="Masukkan nama pengguna" value="{{ old('usernameEdit') }}">
-                                    @error('usernameEdit','edit')
+                                    <input type="text" id="usernameInput" class="form-control @error('username','edit') is-invalid @enderror" name="username" placeholder="Masukkan nama pengguna" value="{{ old('username') }}">
+                                    @error('username','edit')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -200,8 +200,8 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="displayNameInput">Display Name</label>
-                                    <input type="text" id="displayNameInput" class="form-control @error('displayNameEdit','edit') is-invalid @enderror" name="displayNameEdit" placeholder="Masukkan nama yang akan ditampilkan" value="{{ old('displayNameEdit') }}">
-                                    @error('displayNameEdit','edit')
+                                    <input type="text" id="displayNameInput" class="form-control @error('display_name','edit') is-invalid @enderror" name="display_name" placeholder="Masukkan nama yang akan ditampilkan" value="{{ old('display_name') }}">
+                                    @error('display_name','edit')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -211,14 +211,14 @@
                             <div class="col-12">
                                 <fieldset class="form-group">
                                     <label for="roleSelect">Role Pengguna</label>
-                                    <select class="form-select @error('roleEdit','edit') is-invalid @enderror" id="roleSelect" name="roleEdit">
+                                    <select class="form-select @error('role','edit') is-invalid @enderror" id="roleSelect" name="role">
                                         @if (auth()->user()->web_id == 0)
                                         <option value="super_admin" selected>Super Admin</option>
                                         @else
                                         <option value="web_admin" selected>Web Admin</option>
                                         @endif
                                     </select>
-                                    @error('roleEdit','edit')
+                                    @error('role','edit')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -228,8 +228,8 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="emailInput">Email</label>
-                                    <input type="email" id="emailInput" class="form-control @error('emailEdit','edit') is-invalid @enderror" name="emailEdit" placeholder="Masukkan email" value="{{ old('emailEdit') }}">
-                                    @error('emailEdit','edit')
+                                    <input type="email" id="emailInput" class="form-control @error('email','edit') is-invalid @enderror" name="email" placeholder="Masukkan email" value="{{ old('email') }}">
+                                    @error('email','edit')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -239,8 +239,8 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="passwordInput">Password</label>
-                                    <input type="password" id="passwordInput" class="form-control @error('passwordEdit','edit') is-invalid @enderror" name="passwordEdit" placeholder="Masukkan password">
-                                    @error('passwordEdit','edit')
+                                    <input type="password" id="passwordInput" class="form-control @error('password','edit') is-invalid @enderror" name="password" placeholder="Masukkan password">
+                                    @error('password','edit')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
