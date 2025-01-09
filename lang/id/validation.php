@@ -26,6 +26,7 @@ return [
     */
 
     'custom' => [
+        // User Input
         'username' => [
             'required' => 'Username harus diisi',
             'unique' => 'Username sudah digunakan oleh pengguna lain'
@@ -42,6 +43,15 @@ return [
             'min' => 'Password minimal terdiri atas 8 karakter',
             'confirmed' => 'Konfirmasi password tidak sesuai'
         ],
+
+        // Web Input
+        'nama_web' => [
+            'required' => 'Nama web tidak boleh kosong'
+        ],
+        'sub_domain' => [
+            'required' => 'Subdomain tidak boleh kosong',
+            'unique' => 'Subdomain sudah digunakan web lain'
+        ]
     ],
 
     /*

@@ -3,25 +3,24 @@ let table1 = document.querySelector('#table1');
 let dataTable = new simpleDatatables.DataTable(table1);
 
 // FORM EDIT
-let namaDesaEditInput = document.querySelector('#formEdit #namaDesaInput');
+let namaWebEditInput = document.querySelector('#formEdit #namaWebInput');
 let subdomainEditInput = document.querySelector('#formEdit #subDomainInput');
-let kodeDesaEditInput = document.querySelector('#formEdit #kodeDesaInput');
 
 
 // FUNCTION
 function openEditModal(id){
-    fetch(`/desa-admin/desa/get-desa/${id}`,{
+    fetch(`/cms-admin/web/${id}`,{
         method: 'GET',
         credentials: 'same-origin'
     })
     .then((res)=>res.json())
     .then((data)=>{
-        $('#editDesaModal').modal('show')
-        $('#formEdit').attr('action',`/desa-admin/desa/${id}`)
+        $('#editWebModal').modal('show')
+        $('#formEdit').attr('action',`/cms-admin/web/${id}`)
 
-        namaDesaEditInput.value = data.nama;
+        document.querySelector('#webEdit').value = data.encrypted_id
+        namaWebEditInput.value = data.nama;
         subdomainEditInput.value = data.subdomain;
-        kodeDesaEditInput.value = data.kode_desa;
 
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid')
@@ -42,6 +41,6 @@ function openEditModal(id){
 }
 
 function openHapusModal(id){
-    $('#hapusDesaModal').modal('show')
-    $('#formHapus').attr('action',`/desa-admin/desa/${id}`)
+    $('#hapusWebModal').modal('show')
+    $('#formHapus').attr('action',`/cms-admin/web/${id}`)
 }

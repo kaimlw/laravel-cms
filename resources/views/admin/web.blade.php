@@ -1,9 +1,9 @@
 @extends('admin.template.template')
 
-@section('title', 'Desa')
+@section('title', 'Web')
 
 @section('css-addOn')
-<link rel="stylesheet" href="{{ asset('vendor/simple-datatables/style.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/vendor/simple-datatables/style.css') }}">
 @endsection
 
 @section('content')
@@ -16,18 +16,18 @@
     </button>
 </div>
 @endif
-{{-- @dd($errors->edit) --}}
+
 <div class="page-title">
     <div class="row">
         <div class="col-12 col-md-6 order-md-1 order-last">
-            <h3>Desa</h3>
-            <p class="text-subtitle text-muted">Halaman untuk menambah, mengedit, dan menghapus desa</a>.</p>
+            <h3>Web</h3>
+            <p class="text-subtitle text-muted">Halaman untuk menambah, mengedit, dan menghapus Web</a>.</p>
         </div>
         <div class="col-12 col-md-6 order-md-2 order-first">
             <nav aria-label="breadcrumb" class='breadcrumb-header'>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('dashboard.main') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Desa</li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Web</li>
                 </ol>
             </nav>
         </div>
@@ -36,29 +36,27 @@
 <section class="section">
     <div class="card">
         <div class="card-header text-right">
-            <button class="btn btn-primary" data-toggle="modal" data-target="#tambahDesaModal">Tambah Desa</button>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#tambahWebModal">Tambah Web</button>
         </div>
         <div class="card-body">
             <table class='table table-striped' id="table1">
                 <thead>
                     <tr>
-                        <th>Nama Desa</th>
+                        <th>Nama Web</th>
                         <th>Subdomain</th>
-                        <th>Kode Desa</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($desa as $item)
+                    @foreach ($webs as $item)
                         <tr>
                             <td>{{ $item->nama }}</td>
                             <td>{{ $item->subdomain }}</td>
-                            <td>{{ $item->kode_desa }}</td>
                             <td>
-                                <button class="btn btn-sm btn-warning" onclick="openEditModal({{ $item->id }})">
+                                <button class="btn btn-sm btn-warning" onclick="openEditModal('{{ base64_encode(encrypt($item->id)) }}')">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
-                                <button class="btn btn-sm btn-danger" onclick="openHapusModal({{ $item->id }})">
+                                <button class="btn btn-sm btn-danger" onclick="openHapusModal('{{ base64_encode(encrypt($item->id)) }}')">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
                             </td>
@@ -70,25 +68,26 @@
     </div>
 </section>
 
-<div class="modal fade" id="tambahDesaModal" tabindex="-1" aria-labelledby="tambahDesaModalLabel" aria-hidden="true">
+{{-- MODAL TAMBAH --}}
+<div class="modal fade" id="tambahWebModal" tabindex="-1" aria-labelledby="tambahWebModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="tambahDesaModalLabel">Tambah Desa Baru</h5>
+                <h5 class="modal-title" id="tambahWebModalLabel">Tambah Web Baru</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form form-vertical" method="POST" action="{{ route('dashboard.desa.store') }}">
+                <form class="form form-vertical" method="POST" action="">
                     @csrf
                     <div class="form-body">
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label for="namaDesaInput">Nama Desa/Instansi</label>
-                                    <input type="text" id="namaDesaInput" class="form-control @error('namaDesa','tambah') is-invalid @enderror" name="namaDesa" placeholder="Masukkan nama desa" value="{{ old('namaDesa') }}">
-                                    @error('namaDesa','tambah')
+                                    <label for="namaWebInput">Nama Web/Instansi</label>
+                                    <input type="text" id="namaWebInput" class="form-control @error('nama_web','tambah') is-invalid @enderror" name="nama_web" placeholder="Masukkan nama Web" value="{{ old('nama_web') }}">
+                                    @error('nama_web','tambah')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -98,19 +97,8 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="subDomainInput">Sub Domain</label>
-                                    <input type="text" id="subDomainInput" class="form-control @error('subDomain','tambah') is-invalid @enderror" name="subDomain" placeholder="Masukkan sub domain" value="{{ old('subDomain') }}">
-                                    @error('subDomain','tambah')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label for="kodeDesaInput">Kode Desa</label>
-                                    <input type="text" id="kodeDesaInput" class="form-control @error('kodeDesa','tambah') is-invalid @enderror" name="kodeDesa" placeholder="Masukkan kode desa" value="{{ old('kodeDesa') }}">
-                                    @error('kodeDesa','tambah')
+                                    <input type="text" id="subDomainInput" class="form-control @error('sub_domain','tambah') is-invalid @enderror" name="sub_domain" placeholder="Masukkan sub domain" value="{{ old('sub_domain') }}">
+                                    @error('sub_domain','tambah')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -129,26 +117,29 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="editDesaModal" tabindex="-1" aria-labelledby="editDesaModalLabel" aria-hidden="true">
+
+{{-- MODAL EDIT --}}
+<div class="modal fade" id="editWebModal" tabindex="-1" aria-labelledby="editWebModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editDesaModalLabel">Edit Pengguna</h5>
+                <h5 class="modal-title" id="editWebModalLabel">Edit Pengguna</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form form-vertical" id="formEdit" method="POST">
+                <form class="form form-vertical" id="formEdit" method="POST" action="{{ route('admin.web.update', ['id' => old('web') ? old('web') : 0]) }}">
                     @method('PUT')
                     @csrf
+                    <input type="hidden" id="webEdit" name="web" value="{{ old('web') }}">
                     <div class="form-body">
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label for="namaDesaInput">Nama Desa/Instansi</label>
-                                    <input type="text" id="namaDesaInput" class="form-control @error('namaDesa','edit') is-invalid @enderror" name="namaDesa" placeholder="Masukkan nama desa" value="{{ old('namaDesa') }}">
-                                    @error('namaDesa','edit')
+                                    <label for="namaWebInput">Nama Web/Instansi</label>
+                                    <input type="text" id="namaWebInput" class="form-control @error('nama_web','edit') is-invalid @enderror" name="nama_web" placeholder="Masukkan nama Web" value="{{ old('nama_web') }}">
+                                    @error('nama_web','edit')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -158,19 +149,8 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="subDomainInput">Sub Domain</label>
-                                    <input type="text" id="subDomainInput" class="form-control @error('subDomain','edit') is-invalid @enderror" name="subDomain" placeholder="Masukkan sub domain" value="{{ old('subDomain') }}">
-                                    @error('subDomain','edit')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label for="kodeDesaInput">Kode Desa</label>
-                                    <input type="text" id="kodeDesaInput" class="form-control @error('kodeDesa','edit') is-invalid @enderror" name="kodeDesa" placeholder="Masukkan kodeDesa" value="{{ old('kodeDesa') }}">
-                                    @error('kodeDesa','edit')
+                                    <input type="text" id="subDomainInput" class="form-control @error('sub_domain','edit') is-invalid @enderror" name="sub_domain" placeholder="Masukkan sub domain" value="{{ old('sub_domain') }}">
+                                    @error('sub_domain','edit')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -189,7 +169,9 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="hapusDesaModal" tabindex="-1" aria-labelledby="hapusDesaModalLabel" aria-hidden="true">
+
+{{-- MODAL HAPUS --}}
+<div class="modal fade" id="hapusWebModal" tabindex="-1" aria-labelledby="hapusWebModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <form id="formHapus" method="POST">
@@ -199,7 +181,7 @@
                 <div class="text-center">
                     <i class="bi bi-exclamation-circle-fill fs-1 text-danger display-4"></i>
                     <h3>
-                        Apakah anda yakin ingin menghapus user berikut?
+                        Apakah anda yakin ingin menghapus web berikut?
                     </h3>
                 </div>
             </div>
@@ -216,17 +198,17 @@
 @endsection
 
 @section('js-addOn')
-<script src="{{ asset('vendor/simple-datatables/simple-datatables.js') }}"></script>
-<script src="{{ asset('admin/assets/js/pages/desa.js') }}"></script>
+<script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
+<script src="{{ asset('assets/admin/assets/js/pages/web.js') }}"></script>
 
 
 <script>
     @if ($errors->edit->any())
-    $('#editDesaModal').modal('show')
+    $('#editWebModal').modal('show')
     @endif
 
     @if ($errors->tambah->any())
-    $('#tambahDesaModal').modal('show')
+    $('#tambahWebModal').modal('show')
     @endif
 </script>
 @endsection
