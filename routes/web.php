@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WebController;
@@ -45,5 +46,21 @@ Route::middleware('auth')->group(function(){
         Route::delete('/cms-admin/web/{id}', 'destroy')->name('admin.web.destroy');
         Route::get('/cms-admin/web/{id}', 'web_get')->name('admin.web.get');
     });
+
+    /**
+     * Admin: Kategori Route
+     */
+    Route::controller(CategoryController::class)->group(function(){
+        Route::get('/cms-admin/category', 'index')->name('admin.category');
+        Route::post('/cms-admin/category', 'store')->name('admin.category.store');
+        Route::put('/cms-admin/category/{id}', 'update')->name('admin.category.update');
+        Route::delete('/cms-admin/category/{id}', 'destroy')->name('admin.category.destroy');
+        Route::get('/cms-admin/category/{id}', 'category_get')->name('admin.category.get');
+    });
+
+    /**
+     * Admin: Post Route
+     */
+    
 });
 

@@ -51,6 +51,11 @@ return [
         'sub_domain' => [
             'required' => 'Subdomain tidak boleh kosong',
             'unique' => 'Subdomain sudah digunakan web lain'
+        ],
+
+        // Category Input
+        'kategori' => [
+            'required' => 'Kategori tidak boleh kosong',
         ]
     ],
 

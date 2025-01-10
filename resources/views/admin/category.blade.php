@@ -3,7 +3,7 @@
 @section('title', 'Kategori')
 
 @section('css-addOn')
-<link rel="stylesheet" href="{{ asset('vendor/simple-datatables/style.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/vendor/simple-datatables/style.css') }}">
 @endsection
 
 @section('content')
@@ -26,7 +26,7 @@
         <div class="col-12 col-md-6 order-md-2 order-first">
             <nav aria-label="breadcrumb" class='breadcrumb-header'>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('dashboard.main') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Kategori</li>
                 </ol>
             </nav>
@@ -70,6 +70,7 @@
     </div>
 </section>
 
+{{-- Insert Modal --}}
 <div class="modal fade" id="tambahKategoriModal" tabindex="-1" aria-labelledby="tambahKategoriModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -80,7 +81,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form form-vertical" method="POST" action="{{ route('dashboard.category.store') }}">
+                <form class="form form-vertical" method="POST">
                     @csrf
                     <div class="form-body">
                         <div class="row">
@@ -98,8 +99,8 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="deskripsiInput" class="form-label">Deskripsi (Opsional)</label>
-                                    <textarea class="form-control @error('displayName','tambah') is-invalid @enderror" id="deskripsiInput" name="deskripsi" rows="3">{{ old('deskripsi') }}</textarea>
-                                    @error('displayName','tambah')
+                                    <textarea class="form-control @error('deskripsi','tambah') is-invalid @enderror" id="deskripsiInput" name="deskripsi" rows="3" maxlength="400">{{ old('deskripsi') }}</textarea>
+                                    @error('deskripsi','tambah')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -109,15 +110,15 @@
                             <div class="col-12">
                                 <fieldset class="form-group">
                                     <label for="parentCategorySelect">Kategori Induk</label>
-                                    <select class="form-select @error('parentCategory','tambah') is-invalid @enderror" id="parentCategorySelect" name="parentCategory">
-                                        <option value="0">Tidak Ada</option>
+                                    <select class="form-select @error('parent_category','tambah') is-invalid @enderror" id="parentCategorySelect" name="parent_category">
+                                        <option value="">Tidak Ada</option>
                                         @foreach ($categories as $category)
-                                            @if ($category->slug == 'uncategorized')
+                                            @if ($category->slug != 'uncategorized')
                                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endif
                                         @endforeach
                                     </select>
-                                    @error('parentCategory','tambah')
+                                    @error('parent_category','tambah')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -136,19 +137,22 @@
         </div>
     </div>
 </div>
+
+{{-- Edit Modal --}}
 <div class="modal fade" id="editKategoriModal" tabindex="-1" aria-labelledby="editKategoriModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editKategoriModalLabel">Edit Pengguna</h5>
+                <h5 class="modal-title" id="editKategoriModalLabel">Edit Kategori</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form form-vertical" id="formEdit" method="POST">
+                <form class="form form-vertical" id="formEdit" method="POST" action="{{ route('admin.category.update', ['id' => old('category') ? old('category') : ' ']) }}">
                     @method('PUT')
                     @csrf
+                    <input type="hidden" id="categoryEdit" name="category" value="{{ old('category') }}">
                     <div class="form-body">
                         <div class="row">
                             <div class="col-12">
@@ -165,8 +169,8 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="deskripsiInput" class="form-label">Deskripsi (Opsional)</label>
-                                    <textarea class="form-control @error('displayName','edit') is-invalid @enderror" id="deskripsiInput" name="deskripsi" rows="3">{{ old('deskripsi') }}</textarea>
-                                    @error('displayName','edit')
+                                    <textarea class="form-control @error('deskripsi','edit') is-invalid @enderror" id="deskripsiInput" name="deskripsi" rows="3">{{ old('deskripsi') }}</textarea>
+                                    @error('deskripsi','edit')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -203,6 +207,8 @@
         </div>
     </div>
 </div>
+
+{{-- Hapus Modal --}}
 <div class="modal fade" id="hapusKategoriModal" tabindex="-1" aria-labelledby="hapusKategoriModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -225,13 +231,11 @@
       </div>
     </div>
 </div>
-  
-  
 @endsection
 
 @section('js-addOn')
-<script src="{{ asset('vendor/simple-datatables/simple-datatables.js') }}"></script>
-<script src="{{ asset('admin/assets/js/pages/category.js') }}"></script>
+<script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
+<script src="{{ asset('assets/admin/assets/js/pages/category.js') }}"></script>
 
 
 <script>

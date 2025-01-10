@@ -8,18 +8,19 @@ let deskripsiEditInput = document.querySelector('#formEdit #deskripsiInput');
 let parentCategoryEditSelect = document.querySelector('#formEdit #parentCategorySelect');
 let parentCategoryEditSelectOptions = parentCategoryEditSelect.children
 
-console.log();
 // FUNCTION
 function openEditModal(id){
-    fetch(`/desa-admin/category/get-category/${id}`,{
+    fetch(`/cms-admin/category/${id}`,{
         method: 'GET',
         credentials: 'same-origin'
     })
     .then((res)=>res.json())
     .then((data)=>{
+        console.log(data);
+        
         $('#editKategoriModal').modal('show')
-        $('#formEdit').attr('action',`/desa-admin/category/${id}`)
-
+        $('#formEdit').attr('action',`/cms-admin/category/${id}`)
+        document.querySelector('#formEdit #categoryEdit').value = data.id
         kategoriEditInput.value = data.name;
         deskripsiEditInput.value = data.description;
         for (let i = 0; i < parentCategoryEditSelectOptions.length; i++) {
@@ -32,7 +33,6 @@ function openEditModal(id){
             }else{
                 parentCategoryEditSelectOptions[i].classList.remove('d-none');
             }
-            
         }
         
 
@@ -56,5 +56,5 @@ function openEditModal(id){
 
 function openHapusModal(id){
     $('#hapusKategoriModal').modal('show')
-    $('#formHapus').attr('action',`/desa-admin/category/${id}`)
+    $('#formHapus').attr('action',`/cms-admin/category/${id}`)
 }

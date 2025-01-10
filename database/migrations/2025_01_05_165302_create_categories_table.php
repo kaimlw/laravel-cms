@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('web_id')->constrained('webs');
             $table->string('name');
-            $table->string('slug')->unique();
-            $table->text('description');
-            $table->integer('parent');
+            $table->string('slug');
+            $table->text('description')->nullable();
+            $table->integer('parent')->nullable();
             $table->timestamps();
         });
     }

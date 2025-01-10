@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\User;
+use App\Models\Web;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -21,6 +23,25 @@ class DatabaseSeeder extends Seeder
             'username' => 'admin',
             'password' => password_hash("admin", PASSWORD_DEFAULT),
             'email' => 'fkip@ulm.ac.id'
+        ]);
+        Web::create([
+            'id' => 1,
+            'nama' => 'Bahasa Inggris',
+            'subdomain' => 'english'
+        ]);
+        User::create([
+            'web_id' => '1',
+            'display_name' => 'Admin Bahasa Inggris',
+            'username' => 'english_admin',
+            'password' => password_hash("admin", PASSWORD_DEFAULT),
+            'email' => 'english.fkip@ulm.ac.id',
+            'roles' => 'web_admin'
+        ]);
+        Category::create([
+            'web_id' => '1',
+            'name' => 'Tak berkategori',
+            'slug' => 'uncategorized',
+            'description' => '',
         ]);
     }
 }
