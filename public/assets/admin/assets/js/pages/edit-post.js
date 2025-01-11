@@ -161,6 +161,7 @@ function UploadAdapterPlugin( editor ) {
 
 // Save Content Function
 function saveContentChanges(){
+    btnSave.setAttribute('disabled', true)
     fetch(`/cms-admin/post/${postId}`,{
         method: 'PUT',
         headers: {
@@ -220,6 +221,7 @@ function saveContentChanges(){
         btnSave.setAttribute('disabled',true)
     })
     .catch((err)=>{
+        btnSave.removeAttribute('disabled')
         let alert = `
             <div class="alert alert-danger alert-dismissible show fade">
                 Terjadi kesalahan! Coba beberapa saat lagi.
@@ -236,6 +238,7 @@ function saveContentChanges(){
 
 // Publish Post Function
 function publishPost(){
+    btnPublish.setAttribute('disabled', true);
     fetch(`/cms-admin/post/${postId}/publish`,{
         method: 'PUT',
         credentials: 'same-origin',
@@ -261,6 +264,7 @@ function publishPost(){
         btnPublish.style.display="none"
     })
     .catch((err)=>{
+        btnPublish.removeAttribute('disabled');
         let alert = `
             <div class="alert alert-danger alert-dismissible show fade">
                 Terjadi kesalahan! Coba beberapa saat lagi.

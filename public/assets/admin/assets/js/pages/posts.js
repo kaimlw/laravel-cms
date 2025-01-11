@@ -10,7 +10,6 @@ if (urlParam.get('type') == 'page') {
 
 // Button New Page
 let btnNewPage = document.getElementById('btnNewPage');
-
 btnNewPage.addEventListener('click', createNewPage)
 
 // -----------FUNCTION------------

@@ -30,7 +30,7 @@
                 </ul>
             </li>
             <li class="sidebar-item">
-                <a href="?type=page" class='sidebar-link'>
+                <a href="{{ route('admin.post') }}?type=page" class='sidebar-link'>
                     <i class="bi bi-file-fill"></i>
                     <span>Pages</span>
                 </a>

@@ -7,7 +7,7 @@
 @endsection
 
 @section('css-addOn')
-<link rel="stylesheet" href="{{ asset('vendor/simple-datatables/style.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/vendor/simple-datatables/style.css') }}">
 @endsection
 
 @section('content')
@@ -30,7 +30,7 @@
         <div class="col-12 col-md-6 order-md-2 order-first">
             <nav aria-label="breadcrumb" class='breadcrumb-header'>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('dashboard.main') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Pages</li>
                 </ol>
             </nav>
@@ -40,7 +40,6 @@
 <section class="section">
     <div class="card">
         <div class="card-header text-right">
-            {{-- <a href="{{ route('dashboard.post.create') }}?type=page" class="btn btn-primary">Buat Halaman Baru</a> --}}
             <button class="btn btn-primary" id="btnNewPage">Buat Halaman Baru</button>
         </div>
         <div class="card-body">
@@ -63,7 +62,7 @@
                         <td>{{ ucfirst($page->status) }}</td>
                         <td>
                             <button class="btn btn-sm btn-primary"><i class="bi bi-eye-fill"></i></button>
-                            <a href="{{ route('dashboard.post.edit',['id' => $page->id]) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
+                            <a href="{{ route('admin.post.edit',['id' => $page->id]) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
                             <button class="btn btn-sm btn-danger" onclick="openHapusModal({{ $page->id }})"><i class="bi bi-trash-fill"></i></button>
                         </td>
                     </tr>
@@ -101,7 +100,7 @@
 @endsection
 
 @section('js-addOn')
-<script src="{{ asset('vendor/simple-datatables/simple-datatables.js') }}"></script>
-<script src="{{ asset('admin/assets/js/pages/pages.js') }}"></script>
+<script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
+<script src="{{ asset('assets/admin/assets/js/pages/posts.js') }}"></script>
 
 @endsection

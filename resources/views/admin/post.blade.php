@@ -31,7 +31,7 @@
             <nav aria-label="breadcrumb" class='breadcrumb-header'>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ $post_type == 'page' ? "Pages" : "Posts" }}</li>
+                    <li class="breadcrumb-item active" aria-current="page">Post</li>
                 </ol>
             </nav>
         </div>
