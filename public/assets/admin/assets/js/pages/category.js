@@ -16,18 +16,20 @@ function openEditModal(id){
     })
     .then((res)=>res.json())
     .then((data)=>{
-        console.log(data);
-        
         $('#editKategoriModal').modal('show')
         $('#formEdit').attr('action',`/cms-admin/category/${id}`)
         document.querySelector('#formEdit #categoryEdit').value = data.id
         kategoriEditInput.value = data.name;
         deskripsiEditInput.value = data.description;
         for (let i = 0; i < parentCategoryEditSelectOptions.length; i++) {
+            // Jika induk kategori = value options, tambahkan attribute selected
             if (parentCategoryEditSelectOptions[i].value == data.parent) {
                 parentCategoryEditSelectOptions[i].setAttribute('selected',true);
+            }else{
+                parentCategoryEditSelectOptions[i].removeAttribute('selected');
             }
 
+            // Jika options = kategori, maka tidak perlu ditampilkan
             if (parentCategoryEditSelectOptions[i].value == data.id) {
                 parentCategoryEditSelectOptions[i].classList.add('d-none');
             }else{
@@ -35,7 +37,6 @@ function openEditModal(id){
             }
         }
         
-
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid')
     })
@@ -50,8 +51,6 @@ function openEditModal(id){
         `
         $('.main-content').prepend(alert)
     })
-
-    
 }
 
 function openHapusModal(id){
