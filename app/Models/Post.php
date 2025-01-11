@@ -27,7 +27,7 @@ class Post extends Model
      * Define relation with Category Table
      * Relation: Many-to-Many
      */
-    public function category(): BelongsToMany
+    public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
     }

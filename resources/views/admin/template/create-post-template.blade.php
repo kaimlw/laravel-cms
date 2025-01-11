@@ -8,23 +8,23 @@
     <title> @yield('title') - Web Desa</title>
 
     {{-- Bootstrap --}}
-    <link rel="stylesheet" href="{{ asset('admin/assets/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/admin/assets/css/bootstrap.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
     {{-- MAIN CSS --}}
-    <link rel="stylesheet" href="{{ asset('vendor/chartjs/Chart.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/perfect-scrollbar/perfect-scrollbar.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/assets/css/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('admin/assets/css/create-post.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/chartjs/Chart.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/perfect-scrollbar/perfect-scrollbar.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/admin/assets/css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/admin/assets/css/create-post.css') }}">
 
     {{-- FAVICON --}}
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
-    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ asset('assets/site.webmanifest') }}">
 
     {{-- CKEditor 5 --}}
-    <script src="{{ asset('vendor/ckeditor5/ckeditor.js') }}"></script>    
+    <script src="{{ asset('assets/vendor/ckeditor5/ckeditor.js') }}"></script>    
 
     {{-- CSS AddOn --}}
     @yield('css-addOn')
@@ -53,10 +53,10 @@
 
     {{-- MAIN JS --}}
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="{{ asset('admin/assets/js/feather-icons/feather.min.js') }}"></script>
-    <script src="{{ asset('vendor/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/js/app.js') }}"></script>
-    <script src="{{ asset('admin/assets/js/main.js') }}"></script>
+    <script src="{{ asset('assets/admin/assets/js/feather-icons/feather.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/assets/js/app.js') }}"></script>
+    <script src="{{ asset('assets/admin/assets/js/main.js') }}"></script>
 
     {{-- JS AddOn --}}
     @yield('js-addOn')

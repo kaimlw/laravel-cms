@@ -15,22 +15,24 @@ btnNewPage.addEventListener('click', createNewPage)
 
 // -----------FUNCTION------------
 function createNewPage(){
-    fetch('/desa-admin/post',{
+    document.querySelector('#btnNewPage').setAttribute('disable',true)
+    fetch('/cms-admin/post',{
         method: 'POST',
-        credentials: 'same-origin',
-        body: JSON.stringify({
-            type: postType
-        }),
         headers: {
             "Content-type": "application/json",
             'x-csrf-token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        }
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify({
+            type: postType
+        })
     })
     .then((res)=>res.json())
     .then((data)=>{
-        window.location.href = `/desa-admin/post/edit/${data.id}`
+        window.location.href = `/cms-admin/post/${data.id}`
     })
     .catch((err)=>{
+        document.querySelector('#btnNewPage').removeAttribute('disabled');
         let alert = `
             <div class="alert alert-danger alert-dismissible show fade">
                 Terjadi kesalahan! Coba beberapa saat lagi.
@@ -45,5 +47,5 @@ function createNewPage(){
 
 function openHapusModal(id){
     $('#hapusPageModal').modal('show')
-    $('#formHapus').attr('action',`/desa-admin/post/${id}`)
+    $('#formHapus').attr('action',`/cms-admin/post/${id}`)
 }

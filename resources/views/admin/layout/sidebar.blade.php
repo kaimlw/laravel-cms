@@ -22,7 +22,7 @@
                 </a>
                 <ul class="submenu">
                     <li>
-                        <a href="">Semua Post</a>
+                        <a href="{{ route('admin.post') }}">Semua Post</a>
                     </li>
                     <li>
                         <a href="{{ route('admin.category') }}">Kategori</a>

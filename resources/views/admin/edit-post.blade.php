@@ -3,7 +3,7 @@
 @section('title', $post->title)
 
 @section('css-addOn')
-<link rel="stylesheet" href="{{ asset('vendor/simple-datatables/style.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/vendor/simple-datatables/style.css') }}">
 <style>
     .ck-editor__editable_inline{
         height: 70vh;
@@ -41,6 +41,6 @@
     let post_id = {{ $post->id }}
     let post_type = '{{ $post->type }}'
 </script>
-<script src="{{ asset('vendor/simple-datatables/simple-datatables.js') }}"></script>
-<script src="{{ asset('admin/assets/js/pages/edit-post.js') }}"></script>
+<script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
+<script src="{{ asset('assets/admin/assets/js/pages/edit-post.js') }}"></script>
 @endsection

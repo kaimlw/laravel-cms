@@ -1,6 +1,6 @@
 <div class="sidebar-wrapper active">
     <div class="sidebar-header border-bottom">
-        <a href="{{ route('dashboard.post') }}?type={{ $type }}" class="btn-back"> <i class="bi bi-chevron-left"></i></a>
+        <a href="{{ route('admin.post') }}?type={{ $type }}" class="btn-back"> <i class="bi bi-chevron-left"></i></a>
     </div>
     <div class="sidebar-menu">
         <div class="menu-container">
@@ -27,7 +27,7 @@
                             <li>
                                 <div class="form-check">
                                     <div class="checkbox">
-                                        <input type="checkbox" id="{{ 'kategori'.$category->id }}" class="form-check-input kategori-check"  value="{{ $category->id }}" data-parent="{{ $category->parent }}" {{ in_array($category->id, $postCategoryId) ? 'checked' : '' }}>
+                                        <input type="checkbox" id="{{ 'kategori'.$category->id }}" class="form-check-input kategori-check"  value="{{ $category->id }}" data-parent="{{ $category->parent }}" {{ $post_categories->contains($category->id) ? 'checked' : '' }}>
                                         <label for="{{ 'kategori'.$category->id }}">{{ $category->name }}</label>
                                     </div>
                                 </div>
@@ -41,7 +41,7 @@
             <div class="form-group">
                 <label for="bannerPost">Banner Page/Post</label>
                 <div class="form-file w-75">
-                    <form action="{{ route('dashboard.post.updatePostBanner',['id'=>$post->id]) }}" id="formBannerPost" method="POST" enctype="multipart/form-data">
+                    <form action="" id="formBannerPost" method="POST" enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
                         <div class="custom-file">

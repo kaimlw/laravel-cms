@@ -6,8 +6,9 @@ let btnSave = document.getElementById('btnSave');
 let btnPublish = document.getElementById('btnPublish');
 let formBannerPost = document.getElementById('formBannerPost');
 
-let kategoriChecks = document.querySelectorAll('.kategori-check');
 let checkedCategory
+let kategoriChecks = document.querySelectorAll('.kategori-check');
+// Menambahkan change event listener jika ada perubahan ceklis kategori
 kategoriChecks.forEach(item =>{
     item.addEventListener('change',()=>{
         if (item.getAttribute('data-parent') != 0) {
@@ -17,13 +18,12 @@ kategoriChecks.forEach(item =>{
                 parentElement.checked = true;
             }
         }
-        
         checkSubKategoriCondition(item)
-
         checkedCategory = checkAndPushKategoriId()
     })
 })
 
+// Inisialisasi CKEditor
 let editor;
 ClassicEditor
     .create( document.querySelector( '#editor' ), {
@@ -39,11 +39,15 @@ ClassicEditor
         console.log( error );
     } );
 
+// Menambahkan click event ke tombol Save untuk menyimpan perubahan
 btnSave.addEventListener('click',saveContentChanges);
+
+// Jika ada tombol Publish, menambahkan event click untuk mempublish post
 if (btnPublish) {
     btnPublish.addEventListener('click',publishPost);
 }
 
+// Menambahkan change event ke semua input untuk mengaktifkan tombol save
 addChangeListenerToActivateSave(judulInput)
 addChangeListenerToActivateSave(authorSelect)
 addChangeListenerToActivateSave(bannerInput)
@@ -155,41 +159,55 @@ function UploadAdapterPlugin( editor ) {
     };
 }
 
+// Save Content Function
 function saveContentChanges(){
-    fetch(`/desa-admin/post/content/${postId}`,{
+    fetch(`/cms-admin/post/${postId}`,{
         method: 'PUT',
-        credentials: 'same-origin',
-        body:
-        JSON.stringify({
-            title: judulInput.value,
-            author: authorSelect.value,
-            content: editor.getData(),
-            categories : checkedCategory,
-        })
-        ,
         headers: {
             'Accept':'application/json',
             "Content-type": "application/json",
             'x-csrf-token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-        }
+        },
+        credentials: 'same-origin',
+        body:
+            JSON.stringify({
+                title: judulInput.value,
+                author: authorSelect.value,
+                content: editor.getData(),
+                categories : checkedCategory,
+            })
     })
     .then((res)=>res.json())
     .then((data)=>{
+        // Jika return data alert = danger, munculkan alert di halaman post
         if (data.alert == 'danger') {
-            data.msg.forEach(item => {
+            if (data.msg instanceof Array) {
+                data.msg.forEach(item => {
+                    let alert = `
+                    <div class="alert alert-danger alert-dismissible show fade">
+                        ${item.msg[0]} 
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    `
+                    $('.main-content').prepend(alert)
+                });
+            } else{
                 let alert = `
                 <div class="alert alert-danger alert-dismissible show fade">
-                    ${item.msg[0]} 
+                    ${data.msg} 
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 `
                 $('.main-content').prepend(alert)
-            });
-
+            }
             return 
         }
+
+        // Munculkan alert berhasil
         let alert = `
             <div class="alert alert-${data.alert} alert-dismissible show fade">
                 ${data.msg}
@@ -216,9 +234,10 @@ function saveContentChanges(){
     
 }
 
+// Publish Post Function
 function publishPost(){
-    fetch(`/desa-admin/post/${postId}/publish`,{
-        method: 'POST',
+    fetch(`/cms-admin/post/${postId}/publish`,{
+        method: 'PUT',
         credentials: 'same-origin',
         body: JSON.stringify({
             postStatus: 'publish' 
@@ -279,8 +298,6 @@ function checkSubKategoriCondition(parent) {
 }
 
 function addChangeListenerToActivateSave(element){   
-    console.log(element);
-     
     if (element.length > 1) {
         element.forEach(item => {
             item.addEventListener('change', ()=>{

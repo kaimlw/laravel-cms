@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WebController;
 use Illuminate\Support\Facades\Route;
@@ -61,6 +62,13 @@ Route::middleware('auth')->group(function(){
     /**
      * Admin: Post Route
      */
-    
+    Route::controller(PostController::class)->group(function(){
+        Route::get('/cms-admin/post', 'index')->name('admin.post');
+        Route::post('/cms-admin/post', 'store')->name('admin.post.store');
+        Route::get('/cms-admin/post/{id}', 'edit')->name('admin.post.edit');
+        Route::put('/cms-admin/post/{id}', 'update')->name('admin.post.update');
+        Route::put('/cms-admin/post/{id}/publish', 'publish')->name('admin.post.publish');
+        Route::delete('/cms-admin/post/{id}', 'destroy')->name('admin.post.destroy');
+    });
 });
 

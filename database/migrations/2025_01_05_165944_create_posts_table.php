@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('web_id')->constrained('webs');
             $table->integer('author');
-            $table->string('title');
-            $table->string('slug')->unique();
-            $table->longText('content');
-            $table->string('excerpt');
+            $table->string('title')->nullable();
+            $table->string('slug')->unique()->nullable();
+            $table->longText('content')->nullable();
+            $table->string('excerpt')->nullable();
             $table->enum('type', ['post','page']);
             $table->enum('status', ['draft', 'publish']);
             $table->softDeletes();
