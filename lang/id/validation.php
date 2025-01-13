@@ -56,6 +56,24 @@ return [
         // Category Input
         'kategori' => [
             'required' => 'Kategori tidak boleh kosong',
+        ],
+
+        // Menu Input
+        'menu_item_type' => [
+            'in' => 'Tipe menu tidak valid',
+        ],
+        'menu_item_title' => [
+            'required' => 'Judul menu tidak boleh kosong'
+        ],
+        'menu_item_link' => [
+            'required' => 'Link menu tidak boleh kosong'
+        ],
+        'menu_order' => [
+            'required' => 'Urutan menu tidak boleh kosong',
+            'integer' => 'Urutan menu harus berupa angka'
+        ],
+        'parent' => [
+            'exist' => 'Menu induk tidak valid'
         ]
     ],
 

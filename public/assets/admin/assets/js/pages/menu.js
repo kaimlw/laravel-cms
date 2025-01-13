@@ -34,31 +34,13 @@ let menuOrderEditInput = document.getElementById('menuOrderEditInput');
 // ADD CHANGE EVENT LISTENER
 // ---TO FORM PAGE
 addChangeListenerToRadiosSelect(pageRadios,pageTitleSelected,pageSlugSelected)
-addChangeListenerToParentSelect(pageParentSelect,pageChildrenGroupInput)
 // ---TO FORM POST
 addChangeListenerToRadiosSelect(postRadio,postTitleSelected,postSlugSelected)
-addChangeListenerToParentSelect(postParentSelect,postChildrenGroupInput)
 // ---TO FORM CATEGORY
 addChangeListenerToRadiosSelect(categoryRadio, categoryTitleSelected, categorySlugSelected)
-addChangeListenerToParentSelect(categoryParentSelect,categoryChildrenGroupInput)
-// ---TO FORM CUSTOM LINK
-addChangeListenerToParentSelect(customParentSelect,customChildrenGroupInput)
-// ---TO FORM EDIT
-addChangeListenerToParentSelect(parentEditSelect,editChildrenGroupInput)
 
 // FUNCTION
-function addChangeListenerToParentSelect(parentSelect,childrenGroupInput){
-    parentSelect.addEventListener('change', ()=>{
-        if (parentSelect.value != '') {
-            childrenGroupInput.classList.remove('d-none')
-            childrenGroupInput.value = ''
-        }else{
-            childrenGroupInput.classList.add('d-none')
-            childrenGroupInput.value = ''
-        }
-    })
-    
-}
+
 
 function addChangeListenerToRadiosSelect(radioSelect,titleInput,slugInput){
     radioSelect.forEach(item => {
@@ -71,28 +53,33 @@ function addChangeListenerToRadiosSelect(radioSelect,titleInput,slugInput){
 }
 
 function openEditModal(id){
-    fetch(`/desa-admin/menu/get-item/${id}`,{
+    fetch(`/cms-admin/menu/${id}`,{
         method: 'GET',
         credentials: 'same-origin'
     })
     .then((res)=>res.json())
     .then((data)=>{
         $('#editMenuItemModal').modal('show')
-        $('#formEdit').attr('action',`/desa-admin/menu/${id}`)
+        $('#formEdit').attr('action',`/cms-admin/menu/${id}`)
         
         let parentEditSelectChildren = parentEditSelect.children
 
         labelEditInput.value = data.name;
-        linkEditInput.value = data.link;
+        linkEditInput.value = data.target;
         for (let i = 0; i < parentEditSelectChildren.length; i++) {
             if (parentEditSelectChildren[i].value == data.parent_id) {
                 parentEditSelectChildren[i].selected = true;
             }else{
                 parentEditSelectChildren[i].selected = false;
             }
+
+            if (parentEditSelectChildren[i].value == data.id) {
+                parentEditSelectChildren[i].classList.add('d-none')
+            } else {
+                parentEditSelectChildren[i].classList.remove('d-none')
+            }
         }
-        childGroupEditInput.value = data.children_group;
-        menuOrderEditInput.value = data.order_index;
+        menuOrderEditInput.value = data.menu_order;
 
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid')
@@ -111,8 +98,8 @@ function openEditModal(id){
 }
 
 function openHapusModal(id){
-    $('#hapusDesaModal').modal('show')
-    $('#formHapus').attr('action',`/desa-admin/menu/${id}`)
+    $('#hapusMenuModal').modal('show')
+    $('#formHapus').attr('action',`/cms-admin/menu/${id}`)
 }
 
 function checksSelected(selectElements){

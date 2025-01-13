@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 class CustomHelpers
 {
   /**
-   * Category Helper
+   * Admin: Category Helper
    * Check if category with same web_id is exist in database
    */
   public static function check_category_exist($name) : Bool {
@@ -18,6 +18,51 @@ class CustomHelpers
               ->count();
               
     return $isExist;
+  }
+
+  /**
+   * Admin: Menu Helper
+   * Build menu hierarchy to display in menu page.
+   */
+  public static function build_menu_admin($menus, $parent_id = null) : string {
+    $result = "";
+
+    // Menghentikan rekursif
+    $children = $menus->filter(function ($menu) use ($parent_id){
+      return $menu->parent_id == $parent_id;
+    });
+
+    if ($children->isNotEmpty()) {
+      // Menentukan class <ul> berdasarkan parent_id 
+      if ($parent_id == null) {
+        $result .= '<ul class="list-unstyled">';
+      } else {
+        $result .= '<ul class="child-item-ul">';
+      }
+      
+      foreach ($children as $child){
+        // Menentukan class <li> berdasarkan parent_id
+        if ($parent_id == null) {
+          $result .= "<li class='parent-item menu-list-item'>";
+        } else{
+          $result .= "<li class='child-item menu-list-item'>";
+        }
+
+        // Isi <li>
+        $result .= $child->name
+                . "
+                  <div class=''>
+                      <button class='btn btn-sm btn-warning' onclick='openEditModal($child->id)'><i class='bi bi-pencil-square'></i></button>
+                      <button class='btn btn-sm btn-danger' onclick='openHapusModal($child->id)'><i class='bi bi-x'></i></button>
+                  </div>
+              </li>  
+              ";
+        $result .= CustomHelpers::build_menu_admin($menus, $child->id);
+      }
+      $result .= '</ul>';
+    }
+
+    return $result;
   }
 }
 ?>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WebController;
@@ -69,6 +70,17 @@ Route::middleware('auth')->group(function(){
         Route::put('/cms-admin/post/{id}', 'update')->name('admin.post.update');
         Route::put('/cms-admin/post/{id}/publish', 'publish')->name('admin.post.publish');
         Route::delete('/cms-admin/post/{id}', 'destroy')->name('admin.post.destroy');
+    });
+
+    /**
+     * Admin: Menu Route
+     */
+    Route::controller(MenuController::class)->group(function(){
+        Route::get('/cms-admin/menu', 'index')->name('admin.menu');
+        Route::post('/cms-admin/menu', 'store')->name('admin.menu.store');
+        Route::put('/cms-admin/menu/{id}', 'update')->name('admin.menu.update');
+        Route::delete('/cms-admin/menu/{id}', 'destroy')->name('admin.menu.destroy');
+        Route::get('/cms-admin/menu/{id}', 'menu_get')->name('admin.menu.get');
     });
 });
 
