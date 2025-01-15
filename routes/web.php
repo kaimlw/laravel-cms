@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\UserController;
@@ -81,6 +82,16 @@ Route::middleware('auth')->group(function(){
         Route::put('/cms-admin/menu/{id}', 'update')->name('admin.menu.update');
         Route::delete('/cms-admin/menu/{id}', 'destroy')->name('admin.menu.destroy');
         Route::get('/cms-admin/menu/{id}', 'menu_get')->name('admin.menu.get');
+    });
+
+    /**
+     * Admin: Media Route
+     */
+    Route::controller(MediaController::class)->group(function(){
+        Route::get('/cms-admin/media', 'index')->name('admin.media');
+        Route::post('/cms-admin/media', 'store')->name('admin.media.store');
+        Route::delete('/cms-admin/media/{id}', 'destroy')->name('admin.media.delete');
+        Route::get('/cms-admin/media/{id}', 'media_get')->name('admin.media.get');
     });
 });
 

@@ -15,10 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('web_id')->constrained('webs');
             $table->string('filename');
-            $table->string('mime_type');
             $table->string('author');
-            $table->integer('size');
-            $table->json('generated_conversion');
+            $table->json('media_meta');
             $table->timestamps();
         });
     }
