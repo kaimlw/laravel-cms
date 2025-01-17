@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
     {{-- MAIN CSS --}}
+    <link rel="stylesheet" href="{{ asset('assets/vendor/ckeditor5/ckeditor5.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/chartjs/Chart.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/perfect-scrollbar/perfect-scrollbar.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/admin/assets/css/app.css') }}">
@@ -24,7 +25,7 @@
     <link rel="manifest" href="{{ asset('assets/site.webmanifest') }}">
 
     {{-- CKEditor 5 --}}
-    <script src="{{ asset('assets/vendor/ckeditor5/ckeditor.js') }}"></script>    
+    {{-- <script src="{{ asset('assets/vendor/ckeditor5/ckeditor.js') }}"></script>     --}}
 
     {{-- CSS AddOn --}}
     @yield('css-addOn')
@@ -52,12 +53,20 @@
     </div>
 
     {{-- MAIN JS --}}
+    {{-- <script src="{{ asset('assets/vendor/ckeditor5/ckeditor5.js') }}" type="module"></script> --}}
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/admin/assets/js/feather-icons/feather.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('assets/admin/assets/js/app.js') }}"></script>
     <script src="{{ asset('assets/admin/assets/js/main.js') }}"></script>
-
+    <script type="importmap">
+        {
+            "imports": {
+                "ckeditor5": "../../assets/vendor/ckeditor5/ckeditor5.js",
+                "ckeditor5/": "../../assets/vendor/ckeditor5/"
+            }
+        }
+    </script>
     {{-- JS AddOn --}}
     @yield('js-addOn')
    
