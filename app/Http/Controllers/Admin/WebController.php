@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Web;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
+use App\Models\User;
+use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\View\View;
+use App\Http\Controllers\Controller;
+use App\Models\Post;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
 
 class WebController extends Controller
 {
@@ -30,32 +36,62 @@ class WebController extends Controller
             'nama_web' => 'required',
             'sub_domain' => 'required|unique:webs,subdomain',
         ]);
+        
+        try {
+            DB::transaction(function() use($request) {
+                $newWeb = Web::create([
+                    'nama' => $request->nama_web,
+                    'subdomain' => $request->sub_domain,
+                ]);
+                
+                // Menambahkan User pada web baru
+                $newUser = User::create([
+                    'web_id' => $newWeb->id,
+                    'display_name'=> $request->nama_web . ' - Admin',
+                    'username'=> Str::slug($request->sub_domain). '-admin',
+                    'password'=> Hash::make('admin'),
+                    'email' => Str::slug($request->sub_domain,'.').'@gmail.com',
+                    'roles' => 'web_admin'
+                ]);
+                
+                // Menambahkan kategori default
+                $newCategory = Category::create([
+                    'web_id' => $newWeb->id,
+                    'name' => 'Tidak Berkategori',
+                    'slug' => 'uncategorized' 
+                ]);
 
-        $newWeb = Web::create([
-            'nama' => $request->nama_web,
-            'subdomain' => $request->sub_domain,
-        ]);
+                // Menambahkan post default
+                $newPost = Post::create([
+                    'web_id' => $newWeb->id,
+                    'author' => $newUser->id,
+                    'title' => 'Sample Post',
+                    'slug' => 'sample-post-' . $newWeb->id,
+                    'content' => '<p>Ini halaman contoh</p>',
+                    'excerpt' => '<p>Ini halaman contoh</p>',
+                    'type' => 'post',
+                    'status' => 'draft'
+                ]);
+                // Mengaitkan post dengan category default
+                $newPost->categories()->attach([$newCategory->id]);
 
-        // User::create([
-        //     'desa_id' => $newWeb->id,
-        //     'display_name'=> $request->namaDesa . ' - Admin',
-        //     'username'=> Str::slug($request->namaDesa). '-admin',
-        //     'password'=> Hash::make('admin'),
-        //     'email' => Str::slug($request->namaDesa).'@gmail.com',
-        //     'role' => 'Admin Desa'
-        // ]);  
-
-        // Category::create([
-        //     'desa_id' => $newWeb->id,
-        //     'name' => 'Tidak Berkategori',
-        //     'slug' => 'uncategorized' 
-        // ]);
-
-        if ($newWeb) {
-            return redirect()->route('admin.web')->with('showAlert', ['type' => 'success', 'msg' => 'Web baru berhasil ditambahkan!']);
-        }else {
-            return redirect()->route('admin.web')->with('showAlert', ['type' => 'danger', 'msg' => 'Terjadi kesalahan! Coba lagi beberapa saat.']);
+                // Menambahkan page tambahan
+                Post::create([
+                    'web_id' => $newWeb->id,
+                    'author' => $newUser->id,
+                    'title' => 'Sample Page',
+                    'slug' => 'sample-page-' . $newWeb->id,
+                    'content' => '<p>Ini halaman contoh</p>',
+                    'excerpt' => '<p>Ini halaman contoh</p>',
+                    'type' => 'page',
+                    'status' => 'draft'
+                ]);
+            });
+        } catch (\Exception $e) {
+            return redirect()->route('admin.web')->with('showAlert', ['type' => 'danger', 'msg' => $e->getMessage()]);
         }
+
+        return redirect()->route('admin.web')->with('showAlert', ['type' => 'success', 'msg' => 'Web baru berhasil ditambahkan!']);
     }
 
     /**
@@ -63,27 +99,30 @@ class WebController extends Controller
      * Update data web
      */
     function update(Request $request, $id) : RedirectResponse {
-        $request->validateWithBag('edit',[
+        $web = Web::findOrFail(decrypt(base64_decode($id)));
+
+        // Default Rules
+        $validationRules = [
             'nama_web' => 'required',
             'sub_domain' => 'required',
-        ]);
-
-        $web = Web::findOrFail(decrypt(base64_decode($id)));
+        ];
+        // Default array update
         $arrayUpdate = [
             'nama' => $request->nama_web,
         ];
 
+        // Jika subdomain beda dengan request input
         if ($web->subdomain != $request->sub_domain) {
-            $request->validateWithBag('edit',[
-                'sub_domain' => 'unique:webs,subdomain',
-            ]);
+            // Tambahkan rules dan array update
+            $validationRules['sub_domain'] = 'required|unique:webs,subdomain';
             $arrayUpdate['subdomain'] = $request->sub_domain;
         }
-
+        // Validasi $request
+        $request->validateWithBag('edit', $validationRules);
+        
         if ($web->update($arrayUpdate)) {
             return redirect()->route('admin.web')->with('showAlert', ['type' => 'success', 'msg' => 'Web berhasil diedit!']);            
         }
-
         return redirect()->route('admin.web')->with('showAlert', ['type' => 'danger', 'msg' => 'Terjadi kesalahan! Silakan coba beberapa saat lagi.']);            
     }
 
