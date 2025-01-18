@@ -27,7 +27,7 @@ Route::middleware('auth')->group(function(){
     Route::controller(DashboardController::class)->group(function(){
         Route::get('/cms-admin', 'index')->name('admin.dashboard');
     });
-    
+
     /**
      * Admin: User Route 
      */
@@ -40,59 +40,69 @@ Route::middleware('auth')->group(function(){
     });
 
     /**
-     * Admin: Web Route
+     * Route untuk role super_admin
      */
-    Route::controller(WebController::class)->group(function(){
-        Route::get('/cms-admin/web', 'index')->name('admin.web');
-        Route::post('/cms-admin/web', 'store')->name('admin.web.store');
-        Route::put('/cms-admin/web/{id}', 'update')->name('admin.web.update');
-        Route::delete('/cms-admin/web/{id}', 'destroy')->name('admin.web.destroy');
-        Route::get('/cms-admin/web/{id}', 'web_get')->name('admin.web.get');
+    Route::middleware('role:super_admin')->group(function(){
+        /**
+         * Admin: Web Route
+         */
+        Route::controller(WebController::class)->group(function(){
+            Route::get('/cms-admin/web', 'index')->name('admin.web');
+            Route::post('/cms-admin/web', 'store')->name('admin.web.store');
+            Route::put('/cms-admin/web/{id}', 'update')->name('admin.web.update');
+            Route::delete('/cms-admin/web/{id}', 'destroy')->name('admin.web.destroy');
+            Route::get('/cms-admin/web/{id}', 'web_get')->name('admin.web.get');
+        });
     });
 
     /**
-     * Admin: Kategori Route
+     * Route untuk role web_admin
      */
-    Route::controller(CategoryController::class)->group(function(){
-        Route::get('/cms-admin/category', 'index')->name('admin.category');
-        Route::post('/cms-admin/category', 'store')->name('admin.category.store');
-        Route::put('/cms-admin/category/{id}', 'update')->name('admin.category.update');
-        Route::delete('/cms-admin/category/{id}', 'destroy')->name('admin.category.destroy');
-        Route::get('/cms-admin/category/{id}', 'category_get')->name('admin.category.get');
-    });
-
-    /**
-     * Admin: Post Route
-     */
-    Route::controller(PostController::class)->group(function(){
-        Route::get('/cms-admin/post', 'index')->name('admin.post');
-        Route::post('/cms-admin/post', 'store')->name('admin.post.store');
-        Route::get('/cms-admin/post/{id}', 'edit')->name('admin.post.edit');
-        Route::put('/cms-admin/post/{id}', 'update')->name('admin.post.update');
-        Route::put('/cms-admin/post/{id}/publish', 'publish')->name('admin.post.publish');
-        Route::delete('/cms-admin/post/{id}', 'destroy')->name('admin.post.destroy');
-    });
-
-    /**
-     * Admin: Menu Route
-     */
-    Route::controller(MenuController::class)->group(function(){
-        Route::get('/cms-admin/menu', 'index')->name('admin.menu');
-        Route::post('/cms-admin/menu', 'store')->name('admin.menu.store');
-        Route::put('/cms-admin/menu/{id}', 'update')->name('admin.menu.update');
-        Route::delete('/cms-admin/menu/{id}', 'destroy')->name('admin.menu.destroy');
-        Route::get('/cms-admin/menu/{id}', 'menu_get')->name('admin.menu.get');
-    });
-
-    /**
-     * Admin: Media Route
-     */
-    Route::controller(MediaController::class)->group(function(){
-        Route::get('/cms-admin/media', 'index')->name('admin.media');
-        Route::post('/cms-admin/media', 'store')->name('admin.media.store');
-        Route::delete('/cms-admin/media/{id}', 'destroy')->name('admin.media.delete');
-        Route::get('/cms-admin/media/{id}', 'media_get')->name('admin.media.get');
-        Route::post('/cms-admin/media/upload', 'upload_image')->name('admin.media.upload');
+    Route::middleware('role:web_admin')->group(function(){            
+        /**
+         * Admin: Kategori Route
+         */
+        Route::controller(CategoryController::class)->group(function(){
+            Route::get('/cms-admin/category', 'index')->name('admin.category');
+            Route::post('/cms-admin/category', 'store')->name('admin.category.store');
+            Route::put('/cms-admin/category/{id}', 'update')->name('admin.category.update');
+            Route::delete('/cms-admin/category/{id}', 'destroy')->name('admin.category.destroy');
+            Route::get('/cms-admin/category/{id}', 'category_get')->name('admin.category.get');
+        });
+    
+        /**
+         * Admin: Post Route
+         */
+        Route::controller(PostController::class)->group(function(){
+            Route::get('/cms-admin/post', 'index')->name('admin.post');
+            Route::post('/cms-admin/post', 'store')->name('admin.post.store');
+            Route::get('/cms-admin/post/{id}', 'edit')->name('admin.post.edit');
+            Route::put('/cms-admin/post/{id}', 'update')->name('admin.post.update');
+            Route::put('/cms-admin/post/{id}/publish', 'publish')->name('admin.post.publish');
+            Route::delete('/cms-admin/post/{id}', 'destroy')->name('admin.post.destroy');
+        });
+    
+        /**
+         * Admin: Menu Route
+         */
+        Route::controller(MenuController::class)->group(function(){
+            Route::get('/cms-admin/menu', 'index')->name('admin.menu');
+            Route::post('/cms-admin/menu', 'store')->name('admin.menu.store');
+            Route::put('/cms-admin/menu/{id}', 'update')->name('admin.menu.update');
+            Route::delete('/cms-admin/menu/{id}', 'destroy')->name('admin.menu.destroy');
+            Route::get('/cms-admin/menu/{id}', 'menu_get')->name('admin.menu.get');
+        });
+    
+        /**
+         * Admin: Media Route
+         */
+        Route::controller(MediaController::class)->group(function(){
+            Route::get('/cms-admin/media', 'index')->name('admin.media');
+            Route::post('/cms-admin/media', 'store')->name('admin.media.store');
+            Route::delete('/cms-admin/media/{id}', 'destroy')->name('admin.media.delete');
+            Route::get('/cms-admin/media/{id}', 'media_get')->name('admin.media.get');
+            Route::post('/cms-admin/media/upload', 'upload_image')->name('admin.media.upload');
+        });
     });
 });
 
