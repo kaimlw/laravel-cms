@@ -28,6 +28,7 @@ class PostController extends Controller
         if ($data['post_type'] == 'page') {
             $data['pages'] = Post::where('web_id', Auth::user()->web_id)
                             ->where('type', 'page')
+                            ->orderBy('created_at', 'desc')
                             ->get();
             return view('admin.page', $data);
         }
@@ -35,6 +36,7 @@ class PostController extends Controller
         $data['posts'] = Post::with('categories')
                 ->where('web_id', Auth::user()->web_id)
                 ->where('type', 'post')
+                ->orderBy('created_at', 'desc')
                 ->get();
 
         return view('admin.post', $data);
