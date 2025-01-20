@@ -64,5 +64,49 @@ class CustomHelpers
 
     return $result;
   }
+
+  /**
+   * Main: Menu Helper
+   * Build menu hierarchy to display in Main Nav.
+   */
+  public static function build_menu_main($menu, $parent_id = null) : string {
+    $result = "";
+
+    // Menghentikan rekursif
+    $children = $menu->filter(function ($menu) use ($parent_id){
+      return $menu->parent_id == $parent_id;
+    });
+
+    if ($children->isNotEmpty()) {
+      // Menentukan class <ul> berdasarkan parent_id 
+      if ($parent_id != null) {
+        $result .= '<ul class="nav-sub-menu">';
+      }
+      
+      foreach ($children as $child){
+        // Menentukan class <li> berdasarkan parent_id
+        if ($parent_id == null) {
+          $result .= $child->children->isEmpty() ? "<li class='nav-item'>" : "<li class='nav-item has-sub'>";
+        } else{
+          $result .= $child->children->isEmpty() ? "<li class='menu-item'>" : "<li class='menu-item has-sub'>";
+        }
+
+        // Isi <li>
+        if ($parent_id == null) {
+          $result .= "<a class='nav-link' href='$child->target'>$child->name</a>";
+        } else {
+          $result .= "<a href='$child->target'>$child->name</a>";
+        }
+        $result .= CustomHelpers::build_menu_main($menu, $child->id);
+        $result .= "</li>";
+      }
+
+      if ($parent_id != null) {
+        $result .= '</ul>';
+      }
+    }
+
+    return $result;
+  }
 }
 ?>

@@ -8,7 +8,17 @@ use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WebController;
+use App\Http\Controllers\Main\MainController;
 use Illuminate\Support\Facades\Route;
+
+/**
+ * Main Web Route
+ */
+Route::middleware('subdomain')->group(function(){
+    Route::controller(MainController::class)->group(function(){
+        Route::get('/', 'index')->name('main.index');
+    });
+});
 
 /**
  * Authentication Route
