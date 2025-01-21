@@ -26,13 +26,13 @@ class DatabaseSeeder extends Seeder
         ]);
         Web::create([
             'id' => 1,
-            'nama' => 'Bahasa Inggris',
-            'subdomain' => 'english'
+            'name' => 'Pendidikan Komputer',
+            'subdomain' => 'pilkom'
         ]);
         User::create([
             'web_id' => '1',
-            'display_name' => 'Admin Bahasa Inggris',
-            'username' => 'english_admin',
+            'display_name' => 'Admin Pendidikan Komputer',
+            'username' => 'pilkom-admin',
             'password' => password_hash("admin", PASSWORD_DEFAULT),
             'email' => 'english.fkip@ulm.ac.id',
             'roles' => 'web_admin'

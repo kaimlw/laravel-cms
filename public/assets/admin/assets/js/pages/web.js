@@ -19,7 +19,7 @@ function openEditModal(id){
         $('#formEdit').attr('action',`/cms-admin/web/${id}`)
 
         document.querySelector('#webEdit').value = data.encrypted_id
-        namaWebEditInput.value = data.nama;
+        namaWebEditInput.value = data.name;
         subdomainEditInput.value = data.subdomain;
 
         $('.invalid-feedback').remove();

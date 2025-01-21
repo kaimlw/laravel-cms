@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('webs', function (Blueprint $table) {
             $table->id();
-            $table->string("nama");
+            $table->string("name");
             $table->string("subdomain")->unique();
             $table->string('email')->nullable();
             $table->string("phone_number")->nullable();
+            $table->string("default_banner_path")->nullable();
             $table->timestamps();
         });
     }

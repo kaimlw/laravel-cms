@@ -50,7 +50,7 @@
                 <tbody>
                     @foreach ($webs as $item)
                         <tr>
-                            <td>{{ $item->nama }}</td>
+                            <td>{{ $item->name }}</td>
                             <td>{{ $item->subdomain }}</td>
                             <td>
                                 <button class="btn btn-sm btn-warning" onclick="openEditModal('{{ base64_encode(encrypt($item->id)) }}')">

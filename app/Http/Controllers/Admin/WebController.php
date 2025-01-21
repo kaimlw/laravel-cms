@@ -22,7 +22,7 @@ class WebController extends Controller
      * Menampilkan halaman Web Data Master
      */
     function index() : View {
-        $data['webs'] = Web::select('id','nama','subdomain')->get();
+        $data['webs'] = Web::select('id','name','subdomain')->get();
 
         return view('admin.web', $data);
     }
@@ -40,7 +40,7 @@ class WebController extends Controller
         try {
             DB::transaction(function() use($request) {
                 $newWeb = Web::create([
-                    'nama' => $request->nama_web,
+                    'name' => $request->nama_web,
                     'subdomain' => $request->sub_domain,
                 ]);
                 
@@ -108,7 +108,7 @@ class WebController extends Controller
         ];
         // Default array update
         $arrayUpdate = [
-            'nama' => $request->nama_web,
+            'name' => $request->nama_web,
         ];
 
         // Jika subdomain beda dengan request input
@@ -148,7 +148,7 @@ class WebController extends Controller
         $web = Web::findOrFail(decrypt(base64_decode($id)));
         return response()->json([
             'encrypted_id' => base64_encode(encrypt($web->id)),
-            'nama' => $web->nama,
+            'name' => $web->name,
             'subdomain' => $web->subdomain
         ]);
     }
