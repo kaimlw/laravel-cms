@@ -1,9 +1,15 @@
 <?php
 namespace App\Helpers;
 
+use App\Models\Media;
 use App\Models\Category;
 use Illuminate\Support\Str;
+use function Laravel\Prompts\error;
+
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\ImageManager;
+use Illuminate\Database\QueryException;
 
 class CustomHelpers
 {
@@ -107,6 +113,74 @@ class CustomHelpers
     }
 
     return $result;
+  }
+
+  /**
+   * Admin: Upload Media Helper
+   * Upload Image
+   * 
+   * Return: Image Path (array)
+   */
+  public static function upload_image($file_request) : array {
+    $original_name = $file_request->getClientOriginalName();
+    $mime_type = $file_request->getClientMimeType();
+    $size = $file_request->getSize();
+    
+    // Generate unique name
+    $filename = uniqid() . '-' . Str::slug(explode('.', $original_name)[0]);
+
+    try {
+      // Cek apakah folder upload tersedia
+      if (!is_dir(public_path('uploads/' . Auth::user()->web_id . '/' . date('Y') . '/' . date('m')))) {
+          // Buat folder
+          mkdir(public_path('uploads/' . Auth::user()->web_id . '/' . date('Y') . '/' . date('m')), 0755, true);
+      }
+
+      $original_path = 'uploads/' . Auth::user()->web_id . '/' . date('Y') . '/' . date('m') . '/' . $filename . '.' . $file_request->getClientOriginalExtension();
+      $medium_path = 'uploads/' . Auth::user()->web_id . '/' . date('Y') . '/' . date('m') . '/' . $filename . '-800x800.' . $file_request->getClientOriginalExtension();        
+      $thumbnail_path = 'uploads/' . Auth::user()->web_id . '/' . date('Y') . '/' . date('m') . '/' . $filename . '-150x150.' . $file_request->getClientOriginalExtension();
+      ImageManager::gd()->read($file_request)->resizeDown(800,800)->save(public_path($medium_path));
+      ImageManager::gd()->read($file_request)->resizeDown(150,150)->save(public_path($thumbnail_path));
+
+      $insertArray = [
+          'web_id' => Auth::user()->web_id,
+          'filename' => $filename . '.' . $file_request->getClientOriginalExtension(),
+          'author' => Auth::user()->display_name,
+          'media_meta' => [
+              'width' => ImageManager::gd()->read($file_request)->width(),
+              'height' => ImageManager::gd()->read($file_request)->height(),
+              'size' => $size,
+              'mime_type' => $mime_type,
+              'filepath' => [
+                  'original' => $original_path,
+                  'medium' => $medium_path,
+                  'thumbnail' => $thumbnail_path
+              ]
+          ]
+      ];
+      
+      // Simpan file
+      $file_request->storePubliclyAs('uploads/' . Auth::user()->web_id . '/' . date('Y') . '/' . date('m') . '/', $filename . '.' . $file_request->getClientOriginalExtension());
+    } catch (\Exception $e) {
+        throw $e;
+    }
+
+    try {
+        Media::create($insertArray);
+    } catch (QueryException $e) {
+        // Untuk tiap filepath
+        foreach ($insertArray['media_meta']['filepath'] as $res => $path) {
+            // Jika file ada
+            if (File::exists(public_path($path))) {
+                // Hapus file
+                File::delete($path);
+            }
+        }
+
+        throw $e;
+    }
+
+    return $insertArray['media_meta']['filepath'];
   }
 }
 ?>

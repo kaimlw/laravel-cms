@@ -72,6 +72,7 @@
     </div>
 </section> 
 
+{{-- Media Browser Modal --}}
 <div class="modal fade" id="mediaBrowserModal" tabindex="-1" aria-labelledby="mediaBrowserModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">

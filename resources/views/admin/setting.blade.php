@@ -1,9 +1,47 @@
 @extends('admin.template.template')
 
-@section('title', 'Media')
+@section('title', 'Setting')
 
 @section('css-addOn')
-<link rel="stylesheet" href="{{ asset('vendor/simple-datatables/style.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-5.3.3/css/bootstrap.min.css') }}">
+<style>
+    a{
+        text-decoration: none;
+    }
+
+    #mediaBrowserModal .media-wrapper{
+        list-style: none;
+        display: flex;
+        align-items: flex-start;
+        height: 60vh;
+        flex-wrap: wrap;
+        gap: 0.5em;
+        overflow: scroll;
+    }
+
+    #mediaBrowserModal .media-wrapper .media-item{
+        position: relative;
+        width: 125px;
+        height: 125px;
+        cursor: pointer;
+        padding: 0.15em
+    }
+    
+    #mediaBrowserModal .media-wrapper .media-item.selected{
+        border: 3px solid blue;
+    }
+    
+    #mediaBrowserModal .media-wrapper .media-item .thumbnail{
+        border: 1px solid gray;
+        position: absolute;
+        right: 0.15em;
+        left: 0.15em;
+        top: 0.15em;
+        bottom: 0.15em;
+        background: url("{{ asset('assets/img/png_bg.jpg') }}");
+        background-size: cover;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -16,17 +54,17 @@
     </button>
 </div>
 @endif
-{{-- @dd($errors->edit) --}}
+
 <div class="page-title">
     <div class="row">
         <div class="col-12 col-md-6 order-md-1 order-last">
-            <h3>Pengaturan Website Desa</h3>
-            <p class="text-subtitle text-muted">Konfigurasi dasar website desa</p>
+            <h3>Pengaturan Website</h3>
+            <p class="text-subtitle text-muted">Konfigurasi dasar website</p>
         </div>
         <div class="col-12 col-md-6 order-md-2 order-first">
             <nav aria-label="breadcrumb" class='breadcrumb-header'>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('dashboard.main') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Setting</li>
                 </ol>
             </nav>
@@ -39,16 +77,17 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12">
-                    <form class="form form-vertical" action="{{ route('dashboard.setting.update') }}" method="POST" enctype="multipart/form-data">
+                    <form class="form form-vertical" action="{{ route('admin.setting.update', ['id' => base64_encode(encrypt($web->id))]) }}" method="POST" enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
+                        <input type="hidden" id="web" value="{{ base64_encode(encrypt($web->id)) }}">
                         <div class="form-body">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label for="namaDesa">Nama Desa</label>
-                                        <input type="text" id="namaDesa" class="form-control @error('namaDesa') is-invalid @enderror" name="namaDesa" placeholder="Masukkan nama desa" value="{{ $desa->nama }}">
-                                        @error('namaDesa')
+                                        <label for="namaWeb">Nama Web</label>
+                                        <input type="text" id="namaWeb" class="form-control @error('nama_web') is-invalid @enderror" name="nama_web" placeholder="Masukkan nama Web" value="{{ $web->name }}">
+                                        @error('nama_web')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
                                             </div>
@@ -57,9 +96,9 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label for="kodeDesa">Kode Desa</label>
-                                        <input type="text" id="kodeDesa" class="form-control @error('kodeDesa') is-invalid @enderror" name="kodeDesa" placeholder="Masukkan kode desa" value="{{ $desa->kode_desa }}">
-                                        @error('kodeDesa')
+                                        <label for="teleponWeb">No. Telepon</label>
+                                        <input type="text" id="teleponWeb" class="form-control @error('telepon_web') is-invalid @enderror" name="telepon_web" placeholder="Masukkan nomor telepon" value="{{ $web->phone_number }}">
+                                        @error('telepon_web')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
                                             </div>
@@ -68,72 +107,32 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label for="alamatDesa">Alamat Desa</label>
-                                        <textarea class="form-control @error('alamatDesa') is-invalid @enderror" name="alamatDesa" id="alamatDesa" cols="30" rows="3">{{ $desa->alamat }}</textarea>
-                                        @error('alamatDesa')
+                                        <label for="emailWeb">Email</label>
+                                        <input type="email" id="emailWeb" class="form-control @error('email_web') is-invalid @enderror" name="email_web" placeholder="Masukkan email Web" value="{{ $web->email }}">
+                                        @error('email_web')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
                                             </div>
                                         @enderror
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="teleponDesa">No. Telepon Kantor</label>
-                                        <input type="text" id="teleponDesa" class="form-control @error('teleponDesa') is-invalid @enderror" name="teleponDesa" placeholder="Masukkan No telepon kantor" value="{{ $desa->telepon }}">
-                                        @error('teleponDesa')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="emailDesa">Email</label>
-                                        <input type="email" id="emailDesa" class="form-control @error('emailDesa') is-invalid @enderror" name="emailDesa" placeholder="Masukkan email desa" value="{{ $desa->email }}">
-                                        @error('emailDesa')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label for="">Banner Homepage</label>
-                                        <div class="form-file w-75">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input @error('bannerHomeDesa') is-invalid @enderror" id="customFile" name="bannerHomeDesa">
-                                                @error('bannerHomeDesa')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        @if ($desa->url_banner_home)
-                                        <h6>Preview Banner Home:</h6>
-                                        <img src="{{ $desa->url_banner_home }}" style="height:100px" loading="lazy">
-                                        @endif
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="">Banner Default Page dan Post</label>
-                                        <div class="form-file w-75">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input @error('bannerPostDesa') is-invalid @enderror" id="customFile" name="bannerPostDesa">
-                                                @error('bannerPostDesa')
+                                        <div class="input-group mb-3">
+                                            <button class="btn btn-outline-primary" type="button" id="banner_default_btn">Buka Media Browser</button>
+                                            <input type="file" class="form-control" id="upload" name="banner_post_web" aria-describedby="banner_default_post_btn" aria-label="Upload">
+                                            @error('banner_post_web')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
                                                 </div>
-                                                @enderror
-                                            </div>
+                                            @enderror
                                         </div>
-                                        @if ($desa->url_banner_post)
+                                        <input type="hidden" name="banner_post_web_media" id="input_default_banner_post">
                                         <h6>Preview Banner Post dan Page:</h6>
-                                        <img src="{{ asset('img/ponpes-cropped.jpg') }}" style="height:100px" loading="lazy">
+                                        <img src="{{ $web->default_post_banner_path ? asset($web->default_post_banner_path) : "" }}" style="height:100px" loading="lazy" id="img_preview_banner_post">
+                                        @if ($web->default_post_banner_path)
+                                            <button class="btn btn-danger btn-sm" type="button" id="btn_hapus_banner_post"><i class="bi bi-trash-fill"></i> Hapus Banner</button>
                                         @endif
                                     </div>
                                 </div>
@@ -149,21 +148,27 @@
     </div>
 </section>
 
-  
-  
+{{-- Media Browser Modal --}}
+<div class="modal fade" id="mediaBrowserModal" tabindex="-1" aria-labelledby="mediaBrowserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="mediaBrowserModalLabel">Pilih Media</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="media-wrapper" id="media-wrapper">
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" disabled id="btnMediaPilih">Pilih</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('js-addOn')
-{{-- <script src="{{ asset('vendor/simple-datatables/simple-datatables.js') }}"></script> --}}
-{{-- <script src="{{ asset('admin/assets/js/pages/media.js') }}"></script> --}}
-
-<script>
-    @if ($errors->edit->any())
-    $('#editUserModal').modal('show')
-    @endif
-
-    @if ($errors->tambah->any())
-    $('#tambahUserModal').modal('show')
-    @endif
-</script>
+<script src="{{ asset('assets/vendor/bootstrap-5.3.3/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('assets/admin/assets/js/pages/setting.js') }}"></script>
 @endsection

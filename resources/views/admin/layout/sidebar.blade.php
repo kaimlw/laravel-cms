@@ -54,7 +54,7 @@
                 </a>
             </li>
             <li class="sidebar-item">
-                <a href="" class='sidebar-link'>
+                <a href="{{ route('admin.setting') }}" class='sidebar-link'>
                     <i class="bi bi-gear-fill"></i>
                     <span>Settings</span>
                 </a>

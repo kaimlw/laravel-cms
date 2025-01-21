@@ -27,7 +27,9 @@ class DatabaseSeeder extends Seeder
         Web::create([
             'id' => 1,
             'name' => 'Pendidikan Komputer',
-            'subdomain' => 'pilkom'
+            'subdomain' => 'pilkom',
+            'email' => 'fkip@ulm.ac.id',
+            'phone_number' => '(0511) - 3304914'
         ]);
         User::create([
             'web_id' => '1',

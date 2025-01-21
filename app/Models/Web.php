@@ -98,4 +98,13 @@ class Web extends Model
     {
         return $this->hasMany(Media::class);
     }
+
+    /**
+     * Define relation with Media Table
+     * Relation: (Web)One-to-Many(Media)
+     */
+    public function web_meta(): HasMany
+    {
+        return $this->hasMany(WebMeta::class);
+    }
 }

@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('webs', function (Blueprint $table) {
+        Schema::create('web_metas', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
-            $table->string("subdomain")->unique();
-            $table->string('email')->nullable();
-            $table->string("phone_number")->nullable();
-            $table->string("default_post_banner_path")->nullable();
+            $table->foreignId('web_id')->constrained('webs');
+            $table->string('meta_key');
+            $table->string('meta_value');
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('webs');
+        Schema::dropIfExists('web_metas');
     }
 };

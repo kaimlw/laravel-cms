@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WebController;
 use App\Http\Controllers\Main\MainController;
@@ -112,6 +113,15 @@ Route::middleware('auth')->group(function(){
             Route::delete('/cms-admin/media/{id}', 'destroy')->name('admin.media.delete');
             Route::get('/cms-admin/media/{id}', 'media_get')->name('admin.media.get');
             Route::post('/cms-admin/media/upload', 'upload_image')->name('admin.media.upload');
+        });
+
+        /**
+         * Admin: Setting Route
+         */
+        Route::controller(SettingController::class)->group(function(){
+            Route::get('/cms-admin/setting', 'index')->name('admin.setting');
+            Route::put('/cms-admin/setting/{id}', 'update')->name('admin.setting.update');
+            Route::put('/cms-admin/setting/{id}/banner-null', 'set_banner_post_null');
         });
     });
 });
