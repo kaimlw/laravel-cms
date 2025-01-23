@@ -7,9 +7,9 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav d-flex align-items-center navbar-light ml-auto">
             @if (auth()->user()->web_id != 0)
-            {{-- <li class="mr-2">
-                <a href="{{ route('home') }}" class="btn btn-primary"><i class="bi bi-house-door-fill"></i> Halaman Utama</a>
-            </li> --}}
+            <li class="mr-2">
+                <a href="{{ route('main') }}" class="btn btn-primary"><i class="bi bi-house-door-fill"></i> Halaman Utama</a>
+            </li>
             @endif
             
             <li class="dropdown">

@@ -19,7 +19,6 @@ class MainController extends Controller
 
     public function __construct(Request $request) {
         $this->web_id = $request->get('web_id');
-
     }
 
     /**
@@ -29,10 +28,6 @@ class MainController extends Controller
     function index() : View {
         $data['web'] = Web::findOrFail($this->web_id);
 
-        $data['main_slide'] = WebMeta::where('web_id', $this->web_id)
-                            ->where('meta_key', 'main_slide')
-                            ->get();
-
         $menu = Menu::with('children')
                 ->where('web_id', $this->web_id)
                 ->orderBy('parent_id')
@@ -40,6 +35,14 @@ class MainController extends Controller
                 ->get();
         $data['menu_html'] = CustomHelpers::build_menu_main($menu);
         
+        $data['main_slide'] = WebMeta::where('web_id', $this->web_id)
+                            ->where('meta_key', 'main_slide')
+                            ->get();
+
+        $data['agenda_slide'] = WebMeta::where('web_id', $this->web_id)
+                            ->where('meta_key', 'agenda_slide')
+                            ->get();
+                            
         $data['categories'] = Category::with('post')
                         ->where('web_id', $this->web_id)
                         ->where('slug', '!=', 'latest-news')

@@ -551,31 +551,13 @@
           <div class="splide" id="agenda_slide" role="group" aria-label="FKIP agenda slide">
             <div class="splide__track">
               <ul class="splide__list">
+                @foreach ($agenda_slide as $slide)
                 <li class="splide__slide">
                   <div class="splide__slide__container">
-                    <img src="{{ asset('assets/main/theme-1/img/brosur-1.png') }}" alt="">
+                    <img src="{{ asset($slide->meta_value) }}" alt="">
                   </div>
                 </li>
-                <li class="splide__slide">
-                  <div class="splide__slide__container">
-                    <img src="{{ asset('assets/main/theme-1/img/brosur-2.png') }}" alt="">
-                  </div>
-                </li>
-                <li class="splide__slide">
-                  <div class="splide__slide__container">
-                    <img src="{{ asset('assets/main/theme-1/img/brosur-3.png') }}" alt="">
-                  </div>
-                </li>
-                <li class="splide__slide">
-                  <div class="splide__slide__container">
-                    <img src="{{ asset('assets/main/theme-1/img/brosur-4.png') }}" alt="">
-                  </div>
-                </li>
-                <li class="splide__slide">
-                  <div class="splide__slide__container">
-                    <img src="{{ asset('assets/main/theme-1/img/brosur-5.png') }}" alt="">
-                  </div>
-                </li>
+                @endforeach
               </ul>
             </div>
           </div>
