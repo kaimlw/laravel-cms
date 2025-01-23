@@ -11,8 +11,10 @@ document.querySelector('#btnMediaPilih').addEventListener('click', function(){
         return
     }
 
-    if (target = 'main-slide') {
+    if (target == 'main-slide') {
         insertMainSlideFromMediaBrowser(selected_media)
+    } else if (target == 'agenda-slide') {
+        insertAgendaSlideFromMediaBrowser(selected_media)
     }
 
     target = null
@@ -34,8 +36,27 @@ main_slide_upload_btn.addEventListener('click', function(){
 main_slide_upload_input.addEventListener('change', function(){
     uploadImage('main-slide', main_slide_upload_input.files[0])
 })
-document.querySelectorAll('.slide-item .btn-hapus').forEach(el => {
-    el.addEventListener('click', function(){deleteMainSlide('main-slide', el.getAttribute('data-id'))})
+document.querySelectorAll('.main-slide .btn-hapus').forEach(el => {
+    el.addEventListener('click', function(){deleteSlide(el.getAttribute('data-id'))})
+})
+
+// Agenda Upload Button 
+const agenda_slide_media_btn = document.querySelector('#agenda_media_btn')
+const agenda_slide_upload_input = document.querySelector('#agenda_upload_input')
+const agenda_slide_upload_btn = document.querySelector('#agenda_upload_btn')
+
+agenda_slide_media_btn.addEventListener('click', function(){
+    target = 'agenda-slide'
+    openMediaBrowser('agenda-slide')
+})
+agenda_slide_upload_btn.addEventListener('click', function(){
+    agenda_slide_upload_input.click();
+})
+agenda_slide_upload_input.addEventListener('change', function(){
+    uploadImage('agenda-slide', agenda_slide_upload_input.files[0])
+})
+document.querySelectorAll('.agenda-slide .btn-hapus').forEach(el => {
+    el.addEventListener('click', function(){deleteSlide(el.getAttribute('data-id'))})
 })
 
 // FUNCTION
@@ -108,14 +129,14 @@ function insertMainSlideFromMediaBrowser(mediaId) {
     .then(res => res.json())
     .then(data => {
         let element = `
-            <li class="slide-item" data-id="${data.slide_id}">
+            <li class="slide-item main-slide" data-id="${data.slide_id}">
                 <button class="btn btn-hapus" data-id="${data.slide_id}" data-section="main-slide"><i class="bi bi-trash-fill"></i></button>
                 <img class="img-fluid rounded-2" src="/${data.img_path}">
             </li>
         `
-        document.querySelector('.slide-preview-wrapper').insertAdjacentHTML('beforeend', element)
-        document.querySelectorAll('.slide-preview-wrapper .btn-hapus').forEach(el => {
-            el.addEventListener('click', function(){deleteMainSlide(el.getAttribute('data-id'))})
+        document.querySelector(`#main-slide`).insertAdjacentHTML('beforeend', element)
+        document.querySelectorAll(`#main-slide .btn-hapus`).forEach(el => {
+            el.addEventListener('click', function(){deleteSlide(el.getAttribute('data-id'))})
         })
 
         let alert = `
@@ -131,7 +152,53 @@ function insertMainSlideFromMediaBrowser(mediaId) {
     .catch(err => {
         let alert = `
             <div class="alert alert-danger alert-dismissible show fade">
-                Terjadi kesalahan! Coba beberapa saat lagi.
+                ${err}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+        `
+        $('.main-content').prepend(alert)
+    })
+}
+
+function insertAgendaSlideFromMediaBrowser(mediaId) {
+    fetch(`/cms-admin/theme/agenda-slide/${mediaId}`,{
+        method: 'POST',
+        headers: {
+            'Accept':'application/json',
+            "Content-type": "application/json",
+            "X-CSRF-TOKEN" : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        credentials: 'same-origin',
+    })
+    .then(res => res.json())
+    .then(data => {
+        let element = `
+            <li class="slide-item agenda-slide" data-id="${data.slide_id}">
+                <button class="btn btn-hapus" data-id="${data.slide_id}" data-section="agenda-slide"><i class="bi bi-trash-fill"></i></button>
+                <img class="img-fluid rounded-2" src="/${data.img_path}">
+            </li>
+        `
+        document.querySelector(`#agenda-slide`).insertAdjacentHTML('beforeend', element)
+        document.querySelectorAll(`#agenda-slide .btn-hapus`).forEach(el => {
+            el.addEventListener('click', function(){deleteSlide(el.getAttribute('data-id'))})
+        })
+
+        let alert = `
+            <div class="alert alert-success alert-dismissible show fade">
+                Slider berhasil ditambahkan!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+        `
+        $('.main-content').prepend(alert)
+    })
+    .catch(err => {
+        let alert = `
+            <div class="alert alert-danger alert-dismissible show fade">
+                ${err}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -151,7 +218,7 @@ function uploadImage(section, file) {
     formData.append('upload', file);
 
     const xhr = new XMLHttpRequest()
-    xhr.open('POST', '/cms-admin/theme/main-slide', true)
+    xhr.open('POST', `/cms-admin/theme/${section}`, true)
     xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').getAttribute('content'))
     xhr.withCredentials = true
     xhr.upload.addEventListener('progress', (event) => {
@@ -166,14 +233,14 @@ function uploadImage(section, file) {
         if (xhr.status == 200) {
             const data = JSON.parse(xhr.response)
             let element = `
-                <li class="slide-item" data-id="${data.slide_id}">
-                    <button class="btn btn-hapus" data-id="${data.slide_id}" data-section="main-slide"><i class="bi bi-trash-fill"></i></button>
+                <li class="slide-item ${section}" data-id="${data.slide_id}">
+                    <button class="btn btn-hapus" data-id="${data.slide_id}" data-section="${section}"><i class="bi bi-trash-fill"></i></button>
                     <img class="img-fluid rounded-2" src="/${data.img_path}">
                 </li>
             `
-            document.querySelector('.slide-preview-wrapper').insertAdjacentHTML('beforeend', element)
-            document.querySelectorAll('.btn-hapus').forEach(el => {
-                el.addEventListener('click', function(){deleteMainSlide('main-slide', el.getAttribute('data-id'))})
+            document.querySelector(`.slide-preview-wrapper#${section}`).insertAdjacentHTML('beforeend', element)
+            document.querySelectorAll(`.${section} .btn-hapus`).forEach(el => {
+                el.addEventListener('click', function(){deleteSlide(el.getAttribute('data-id'))})
             })
         } else {
             let alert = `
@@ -203,8 +270,8 @@ function toggleProgress(section, progressValue) {
     document.querySelector("#" + className + '_upload_progress_wrapper .progress-bar').innerHTML = progressValue + '%'
 }
 
-function deleteMainSlide(id) {
-    document.querySelector('#formHapus').setAttribute('action', `/cms-admin/theme/main-slide/${id}`);
+function deleteSlide(id) {
+    document.querySelector('#formHapus').setAttribute('action', `/cms-admin/theme/slide/${id}`);
     modal_hapus.show()
 }
 
@@ -213,6 +280,10 @@ function getClassNameBySection(section) {
     switch (section) {
         case 'main-slide':
             className = 'main_slide'
+            break;
+            
+        case 'agenda-slide':
+            className = 'agenda'
             break;
     
         default:

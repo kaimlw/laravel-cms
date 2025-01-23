@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
  */
 Route::middleware('subdomain')->group(function(){
     Route::controller(MainController::class)->group(function(){
-        Route::get('/', 'index')->name('main.index');
+        Route::get('/', 'index')->name('main');
     });
 });
 
@@ -130,9 +130,14 @@ Route::middleware('auth')->group(function(){
          */
         Route::controller(ThemeController::class)->group(function(){
             Route::get('/cms-admin/theme', 'index')->name('admin.theme');
+            
             Route::post('/cms-admin/theme/main-slide/{media_id}', 'store_main_slide')->name('admin.theme.store_main_slide');
             Route::post('/cms-admin/theme/main-slide', 'upload_main_slide')->name('admin.theme.upload_main_slide');
-            Route::delete('/cms-admin/theme/main-slide/{id}', 'destroy_main_slide')->name('admin.theme.delete_main_slide');
+            
+            Route::post('/cms-admin/theme/agenda-slide/{media_id}', 'store_agenda_slide')->name('admin.theme.store_agenda_slide');
+            Route::post('/cms-admin/theme/agenda-slide', 'upload_agenda_slide')->name('admin.theme.upload_agenda_slide');
+            
+            Route::delete('/cms-admin/theme/slide/{id}', 'destroy_slide')->name('admin.theme.delete_slide');
         });
     });
 });

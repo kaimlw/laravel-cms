@@ -18,6 +18,7 @@
         padding: 0; 
         width: max-content;
         padding-bottom: 2rem;
+        margin-bottom: 0;
     }
     
     .slide-item{
@@ -25,10 +26,18 @@
         position: relative;
         display: flex;
         justify-content: center;
-        width: 200px;
-        height: 150px;
         background-color: lightgray;
         border-radius: 0.5rem;
+    }
+
+    .slide-item.main-slide{
+        width: 200px;
+        height: 150px;
+    }
+
+    .slide-item.agenda-slide{
+        width: 200px;
+        height: 300px;
     }
     
     .slide-item::before{
@@ -123,6 +132,7 @@
     </div>
 </div>
 
+{{-- Main Slide Section --}}
 <section class="section">
     <div class="card">
         <div class="card-body">
@@ -150,10 +160,55 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="overflow-x-scroll">
-                                <ol class="slide-preview-wrapper">
+                                <ol class="slide-preview-wrapper" id="main-slide">
                                     @foreach ($main_slide as $slide)
-                                    <li class="slide-item" data-id="{{ $slide->id }}">
-                                        <button class="btn btn-hapus" data-id="{{ $slide->id }}" ><i class="bi bi-trash-fill"></i></button>
+                                    <li class="slide-item main-slide" data-id="{{ $slide->id }}">
+                                        <button class="btn btn-hapus" data-id="{{ $slide->id }}" data-section="main-slide"><i class="bi bi-trash-fill"></i></button>
+                                        <img class="img-fluid rounded-2" src="{{ asset($slide->meta_value) }}">
+                                    </li>
+                                    @endforeach
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- Agenda Section --}}
+<section class="section">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Agenda</h5>
+                        <input type="file" id="agenda_upload_input" style="display: none">
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-plus-lg"></i> Tambah Poster Agenda
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><button class="dropdown-item" id="agenda_upload_btn"><i class="bi bi-upload"></i> Upload</button></li>
+                                <li><button class="dropdown-item" id="agenda_media_btn"><i class="bi bi-images"></i> Buka Media Browser</button></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="w-100 mb-3" id="agenda_upload_progress_wrapper" style="display: none">
+                        <h6>Upload Progress</h6>
+                        <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height: 10px">
+                            <div class="progress-bar" style="width: 25%"></div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="overflow-x-scroll">
+                                <ol class="slide-preview-wrapper" id="agenda-slide">
+                                    @foreach ($agenda_slide as $slide)
+                                    <li class="slide-item agenda-slide" data-id="{{ $slide->id }}">
+                                        <button class="btn btn-hapus" data-id="{{ $slide->id }}" data-section="agenda-slide"><i class="bi bi-trash-fill"></i></button>
                                         <img class="img-fluid rounded-2" src="{{ asset($slide->meta_value) }}">
                                     </li>
                                     @endforeach
@@ -197,7 +252,7 @@
                 <div class="text-center">
                     <i class="bi bi-exclamation-circle-fill fs-1 text-danger display-4"></i>
                     <h3>
-                        Apakah anda yakin ingin menghapus  berikut?
+                        Apakah anda yakin ingin menghapus?
                     </h3>
                 </div>
             </div>
