@@ -15,6 +15,8 @@ document.querySelector('#btnMediaPilih').addEventListener('click', function(){
         insertMainSlideFromMediaBrowser(selected_media)
     } else if (target == 'agenda-slide') {
         insertAgendaSlideFromMediaBrowser(selected_media)
+    } else if (target == 'gallery-slide') {
+        insertGallerySlideFromMediaBrowser(selected_media)
     }
 
     target = null
@@ -56,6 +58,25 @@ agenda_slide_upload_input.addEventListener('change', function(){
     uploadImage('agenda-slide', agenda_slide_upload_input.files[0])
 })
 document.querySelectorAll('.agenda-slide .btn-hapus').forEach(el => {
+    el.addEventListener('click', function(){deleteSlide(el.getAttribute('data-id'))})
+})
+
+// Gallery Upload Button 
+const gallery_slide_media_btn = document.querySelector('#gallery_media_btn')
+const gallery_slide_upload_input = document.querySelector('#gallery_upload_input')
+const gallery_slide_upload_btn = document.querySelector('#gallery_upload_btn')
+
+gallery_slide_media_btn.addEventListener('click', function(){
+    target = 'gallery-slide'
+    openMediaBrowser('gallery-slide')
+})
+gallery_slide_upload_btn.addEventListener('click', function(){
+    gallery_slide_upload_input.click();
+})
+gallery_slide_upload_input.addEventListener('change', function(){
+    uploadImage('gallery-slide', gallery_slide_upload_input.files[0])
+})
+document.querySelectorAll('.gallery-slide .btn-hapus').forEach(el => {
     el.addEventListener('click', function(){deleteSlide(el.getAttribute('data-id'))})
 })
 
@@ -208,6 +229,52 @@ function insertAgendaSlideFromMediaBrowser(mediaId) {
     })
 }
 
+function insertGallerySlideFromMediaBrowser(mediaId) {
+    fetch(`/cms-admin/theme/gallery-slide/${mediaId}`,{
+        method: 'POST',
+        headers: {
+            'Accept':'application/json',
+            "Content-type": "application/json",
+            "X-CSRF-TOKEN" : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        credentials: 'same-origin',
+    })
+    .then(res => res.json())
+    .then(data => {
+        let element = `
+            <li class="slide-item gallery-slide" data-id="${data.slide_id}">
+                <button class="btn btn-hapus" data-id="${data.slide_id}" data-section="gallery-slide"><i class="bi bi-trash-fill"></i></button>
+                <img class="img-fluid rounded-2" src="/${data.img_path}">
+            </li>
+        `
+        document.querySelector(`#gallery-slide`).insertAdjacentHTML('beforeend', element)
+        document.querySelectorAll(`#gallery-slide .btn-hapus`).forEach(el => {
+            el.addEventListener('click', function(){deleteSlide(el.getAttribute('data-id'))})
+        })
+
+        let alert = `
+            <div class="alert alert-success alert-dismissible show fade">
+                Slider berhasil ditambahkan!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+        `
+        $('.main-content').prepend(alert)
+    })
+    .catch(err => {
+        let alert = `
+            <div class="alert alert-danger alert-dismissible show fade">
+                ${err}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+        `
+        $('.main-content').prepend(alert)
+    })
+}
+
 function uploadImage(section, file) {
     if (file == null) {
         console.log('file null');
@@ -284,6 +351,10 @@ function getClassNameBySection(section) {
             
         case 'agenda-slide':
             className = 'agenda'
+            break;
+
+        case 'gallery-slide':
+            className = 'gallery'
             break;
     
         default:

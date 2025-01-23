@@ -137,6 +137,9 @@ Route::middleware('auth')->group(function(){
             Route::post('/cms-admin/theme/agenda-slide/{media_id}', 'store_agenda_slide')->name('admin.theme.store_agenda_slide');
             Route::post('/cms-admin/theme/agenda-slide', 'upload_agenda_slide')->name('admin.theme.upload_agenda_slide');
             
+            Route::post('/cms-admin/theme/gallery-slide/{media_id}', 'store_gallery_slide')->name('admin.theme.store_gallery_slide');
+            Route::post('/cms-admin/theme/gallery-slide', 'upload_gallery_slide')->name('admin.theme.upload_gallery_slide');
+            
             Route::delete('/cms-admin/theme/slide/{id}', 'destroy_slide')->name('admin.theme.delete_slide');
         });
     });

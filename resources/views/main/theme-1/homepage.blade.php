@@ -656,44 +656,57 @@
         <h5 class="display-6 fw-semibold">Gallery</h5>
       </div>
     </div>
-    <div class="row gallery-img-container">
-      <div class="col-3">
-        <div data-bs-toggle="modal" data-bs-target="#gallery-lightbox-modal" class="gallery-img-wrapper img-outer rounded-3">
-          <img src="{{ asset('assets/main/theme-1/img/gallery-1.png') }}" >
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="row mb-3">
-          <div class="col-7">
-            <div data-bs-toggle="modal" data-bs-target="#gallery-lightbox-modal" class="gallery-img-wrapper img-inner rounded-3">
-              <img src="{{ asset('assets/main/theme-1/img/gallery-2.png') }}" >
+    @php
+      $gallery_idx = 0;
+      $gallery_row = ceil(count($gallery_slide)/6);
+    @endphp
+
+    @for($i = 1; $i <= $gallery_row; $i++)
+    <div class="row gallery-img-container mb-3">
+      @for($j = 0; $j < 3; $j++)
+        @if($j == 0 || $j == 2)
+          <div class="col-3">
+            <div data-bs-toggle="modal" data-bs-target="#gallery-lightbox-modal" class="gallery-img-wrapper img-outer rounded-3">
+              <img src="{{ isset($gallery_slide[$gallery_idx]) ? asset($gallery_slide[$gallery_idx]->meta_value) : "" }}" >
             </div>
           </div>
-          <div class="col-5">
-            <div data-bs-toggle="modal" data-bs-target="#gallery-lightbox-modal" class="gallery-img-wrapper img-inner rounded-3">
-              <img src="{{ asset('assets/main/theme-1/img/gallery-2.png') }}" >
+          @php
+            $gallery_idx++;
+          @endphp
+        @else
+          <div class="col-6">
+            <div class="row mb-3">
+              <div class="col-7">
+                <div data-bs-toggle="modal" data-bs-target="#gallery-lightbox-modal" class="gallery-img-wrapper img-inner rounded-3">
+                  <img src="{{ isset($gallery_slide[$gallery_idx]) ? asset($gallery_slide[$gallery_idx]->meta_value) : "" }}" >
+                </div>
+              </div>
+              <div class="col-5">
+                <div data-bs-toggle="modal" data-bs-target="#gallery-lightbox-modal" class="gallery-img-wrapper img-inner rounded-3">
+                  <img src="{{ isset($gallery_slide[$gallery_idx+1]) ? asset($gallery_slide[$gallery_idx+1]->meta_value) : "" }}" >
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-5">
+                <div data-bs-toggle="modal" data-bs-target="#gallery-lightbox-modal" class="gallery-img-wrapper img-inner rounded-3">
+                  <img src="{{ isset($gallery_slide[$gallery_idx+2]) ? asset($gallery_slide[$gallery_idx+2]->meta_value) : "" }}" >
+                </div>
+              </div>
+              <div class="col-7">
+                <div data-bs-toggle="modal" data-bs-target="#gallery-lightbox-modal" class="gallery-img-wrapper img-inner rounded-3">
+                  <img src="{{ isset($gallery_slide[$gallery_idx+3]) ? asset($gallery_slide[$gallery_idx+3]->meta_value) : "" }}" >
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-5">
-            <div data-bs-toggle="modal" data-bs-target="#gallery-lightbox-modal" class="gallery-img-wrapper img-inner rounded-3">
-              <img src="{{ asset('assets/main/theme-1/img/gallery-3.png') }}" >
-            </div>
-          </div>
-          <div class="col-7">
-            <div data-bs-toggle="modal" data-bs-target="#gallery-lightbox-modal" class="gallery-img-wrapper img-inner rounded-3">
-              <img src="{{ asset('assets/main/theme-1/img/gallery-3.png') }}" >
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-3">
-        <div data-bs-toggle="modal" data-bs-target="#gallery-lightbox-modal" class="gallery-img-wrapper img-outer rounded-3">
-          <img src="{{ asset('assets/main/theme-1/img/gallery-1.png') }}" >
-        </div>
-      </div>
+          @php
+            $gallery_idx += 4;
+          @endphp
+        @endif
+      @endfor
     </div>
+    @endfor
   </div>
 </section>
 <section id="partners">
