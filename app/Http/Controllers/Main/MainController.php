@@ -10,6 +10,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Web;
+use App\Models\WebMeta;
+use Illuminate\Support\Facades\Auth;
 
 class MainController extends Controller
 {
@@ -17,6 +19,7 @@ class MainController extends Controller
 
     public function __construct(Request $request) {
         $this->web_id = $request->get('web_id');
+
     }
 
     /**
@@ -24,6 +27,12 @@ class MainController extends Controller
      * Menampilkan halaman utama website
      */
     function index() : View {
+        $data['web'] = Web::findOrFail($this->web_id);
+
+        $data['main_slide'] = WebMeta::where('web_id', $this->web_id)
+                            ->where('meta_key', 'main_slide')
+                            ->get();
+
         $menu = Menu::with('children')
                 ->where('web_id', $this->web_id)
                 ->orderBy('parent_id')
@@ -42,7 +51,6 @@ class MainController extends Controller
                             ->where('slug', 'latest-news') 
                             ->first();
 
-        // dd($data['latest_news']);
         return view('main.theme-1.homepage', $data);
     }
 }

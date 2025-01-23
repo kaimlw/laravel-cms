@@ -51,21 +51,13 @@
           <div class="splide" id="main_slide" role="group" aria-label="FKIP main slide">
             <div class="splide__track">
               <ul class="splide__list">
+                @foreach ($main_slide as $slide)
                 <li class="splide__slide">
                   <div class="splide__slide__container">
-                    <img src="{{ asset('assets/main/theme-1/img/banner-1.jpg') }}" alt="">
+                    <img src="{{ asset($slide->meta_value) }}" alt="">
                   </div>
                 </li>
-                <li class="splide__slide">
-                  <div class="splide__slide__container">
-                    <img src="{{ asset('assets/main/theme-1/img/banner-2.jpg') }}" alt="">
-                  </div>
-                </li>
-                <li class="splide__slide">
-                  <div class="splide__slide__container">
-                    <img src="{{ asset('assets/main/theme-1/img/banner-2.jpg') }}" alt="">
-                  </div>
-                </li>
+                @endforeach
               </ul>
             </div>
           </div>
@@ -602,6 +594,7 @@
       </div>
     </div>
     <div class="row row-gap-3">
+      @if(isset($latest_news->post))
       @foreach ($latest_news->post as $post)
       <div class="col-lg-4">
         <div class="card border-0 h-100">
@@ -619,6 +612,7 @@
         </div>
       </div>
       @endforeach
+      @endif
     </div>
     <div class="row mt-3">
       <div class="col-12 text-center">

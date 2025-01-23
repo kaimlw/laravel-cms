@@ -3,10 +3,10 @@
     <div class="col-6">
       <div class="d-flex gap-1 nav-text">
         <i class="bi bi-telephone-fill me-2"></i>
-        <span class="top-nav-text">(0511) – 3304914</span>
+        <span class="top-nav-text">{{ $web->phone_number }}</span>
         <span class="mx-1">|</span>
         <i class="bi bi-envelope-fill me-2"></i>
-        <a href="mailto:fkip@ulm.ac.id" class="top-nav-text text-decoration-none">fkip@ulm.ac.id</a>
+        <a href="mailto:fkip@ulm.ac.id" class="top-nav-text text-decoration-none">{{ $web->email }}</a>
       </div>
     </div>
     <div class="col-6">
