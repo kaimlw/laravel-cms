@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @yield('meta')
     
-    <title> @yield('title') - Web Desa</title>
+    <title> @yield('title') - CMS FKIP</title>
 
     {{-- Bootstrap --}}
     <link rel="stylesheet" href="{{ asset('assets/admin/assets/css/bootstrap.css') }}">

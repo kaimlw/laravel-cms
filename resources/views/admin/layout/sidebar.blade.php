@@ -54,6 +54,12 @@
                 </a>
             </li>
             <li class="sidebar-item">
+                <a href="{{ route('admin.theme') }}" class='sidebar-link'>
+                    <i class="bi bi-brush-fill"></i>
+                    <span>Theme</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
                 <a href="{{ route('admin.setting') }}" class='sidebar-link'>
                     <i class="bi bi-gear-fill"></i>
                     <span>Settings</span>

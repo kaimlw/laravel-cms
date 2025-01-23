@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\ThemeController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WebController;
 use App\Http\Controllers\Main\MainController;
@@ -122,6 +123,16 @@ Route::middleware('auth')->group(function(){
             Route::get('/cms-admin/setting', 'index')->name('admin.setting');
             Route::put('/cms-admin/setting/{id}', 'update')->name('admin.setting.update');
             Route::put('/cms-admin/setting/{id}/banner-null', 'set_banner_post_null');
+        });
+
+        /**
+         * Admin: Theme Route
+         */
+        Route::controller(ThemeController::class)->group(function(){
+            Route::get('/cms-admin/theme', 'index')->name('admin.theme');
+            Route::post('/cms-admin/theme/main-slide/{media_id}', 'store_main_slide')->name('admin.theme.store_main_slide');
+            Route::post('/cms-admin/theme/main-slide', 'upload_main_slide')->name('admin.theme.upload_main_slide');
+            Route::delete('/cms-admin/theme/main-slide/{id}', 'destroy_main_slide')->name('admin.theme.delete_main_slide');
         });
     });
 });
