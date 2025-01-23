@@ -17,6 +17,8 @@ document.querySelector('#btnMediaPilih').addEventListener('click', function(){
         insertAgendaSlideFromMediaBrowser(selected_media)
     } else if (target == 'gallery-slide') {
         insertGallerySlideFromMediaBrowser(selected_media)
+    } else if (target == 'partnership-slide') {
+        insertPartnershipSlideFromMediaBrowser(selected_media)
     }
 
     target = null
@@ -77,6 +79,25 @@ gallery_slide_upload_input.addEventListener('change', function(){
     uploadImage('gallery-slide', gallery_slide_upload_input.files[0])
 })
 document.querySelectorAll('.gallery-slide .btn-hapus').forEach(el => {
+    el.addEventListener('click', function(){deleteSlide(el.getAttribute('data-id'))})
+})
+
+// Gallery Upload Button 
+const partnership_slide_media_btn = document.querySelector('#partnership_media_btn')
+const partnership_slide_upload_input = document.querySelector('#partnership_upload_input')
+const partnership_slide_upload_btn = document.querySelector('#partnership_upload_btn')
+
+partnership_slide_media_btn.addEventListener('click', function(){
+    target = 'partnership-slide'
+    openMediaBrowser('partnership-slide')
+})
+partnership_slide_upload_btn.addEventListener('click', function(){
+    partnership_slide_upload_input.click();
+})
+partnership_slide_upload_input.addEventListener('change', function(){
+    uploadImage('partnership-slide', partnership_slide_upload_input.files[0])
+})
+document.querySelectorAll('.partnership-slide .btn-hapus').forEach(el => {
     el.addEventListener('click', function(){deleteSlide(el.getAttribute('data-id'))})
 })
 
@@ -275,6 +296,52 @@ function insertGallerySlideFromMediaBrowser(mediaId) {
     })
 }
 
+function insertPartnershipSlideFromMediaBrowser(mediaId) {
+    fetch(`/cms-admin/theme/partnership-slide/${mediaId}`,{
+        method: 'POST',
+        headers: {
+            'Accept':'application/json',
+            "Content-type": "application/json",
+            "X-CSRF-TOKEN" : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        credentials: 'same-origin',
+    })
+    .then(res => res.json())
+    .then(data => {
+        let element = `
+            <li class="slide-item partnership-slide" data-id="${data.slide_id}">
+                <button class="btn btn-hapus" data-id="${data.slide_id}" data-section="partnership-slide"><i class="bi bi-trash-fill"></i></button>
+                <img class="img-fluid rounded-2" src="/${data.img_path}">
+            </li>
+        `
+        document.querySelector(`#partnership-slide`).insertAdjacentHTML('beforeend', element)
+        document.querySelectorAll(`#partnership-slide .btn-hapus`).forEach(el => {
+            el.addEventListener('click', function(){deleteSlide(el.getAttribute('data-id'))})
+        })
+
+        let alert = `
+            <div class="alert alert-success alert-dismissible show fade">
+                Slider berhasil ditambahkan!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+        `
+        $('.main-content').prepend(alert)
+    })
+    .catch(err => {
+        let alert = `
+            <div class="alert alert-danger alert-dismissible show fade">
+                ${err}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+        `
+        $('.main-content').prepend(alert)
+    })
+}
+
 function uploadImage(section, file) {
     if (file == null) {
         console.log('file null');
@@ -355,6 +422,10 @@ function getClassNameBySection(section) {
 
         case 'gallery-slide':
             className = 'gallery'
+            break;
+
+        case 'partnership-slide':
+            className = 'partnership'
             break;
     
         default:

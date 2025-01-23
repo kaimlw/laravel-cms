@@ -46,6 +46,10 @@ class MainController extends Controller
         $data['gallery_slide'] = WebMeta::where('web_id', $this->web_id)
                             ->where('meta_key', 'gallery_slide')
                             ->get();
+
+        $data['partnership_slide'] = WebMeta::where('web_id', $this->web_id)
+                            ->where('meta_key', 'partnership_slide')
+                            ->get();
                             
         $data['categories'] = Category::with('post')
                         ->where('web_id', $this->web_id)

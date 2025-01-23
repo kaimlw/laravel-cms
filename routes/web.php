@@ -140,6 +140,9 @@ Route::middleware('auth')->group(function(){
             Route::post('/cms-admin/theme/gallery-slide/{media_id}', 'store_gallery_slide')->name('admin.theme.store_gallery_slide');
             Route::post('/cms-admin/theme/gallery-slide', 'upload_gallery_slide')->name('admin.theme.upload_gallery_slide');
             
+            Route::post('/cms-admin/theme/partnership-slide/{media_id}', 'store_partnership_slide')->name('admin.theme.store_partnership_slide');
+            Route::post('/cms-admin/theme/partnership-slide', 'upload_partnership_slide')->name('admin.theme.upload_partnership_slide');
+            
             Route::delete('/cms-admin/theme/slide/{id}', 'destroy_slide')->name('admin.theme.delete_slide');
         });
     });

@@ -20,26 +20,13 @@
           <div class="splide" id="partner_slide" role="group" aria-label="FKIP Partners Slide">
             <div class="splide__track">
               <ul class="splide__list">
+                @foreach ($partnership_slide as $slide)
                 <li class="splide__slide">
                   <div class="splide__slide__container">
-                    <img src="{{ asset('assets/main/theme-1/img/UTM.png') }}" alt="">
+                    <img src="{{ asset($slide->meta_value) }}" alt="">
                   </div>
                 </li>
-                <li class="splide__slide">
-                  <div class="splide__slide__container">
-                    <img src="{{ asset('assets/main/theme-1/img/nihon.png') }}" alt="">
-                  </div>
-                </li>
-                <li class="splide__slide">
-                  <div class="splide__slide__container">
-                    <img src="{{ asset('assets/main/theme-1/img/sea.png') }}" alt="">
-                  </div>
-                </li>
-                <li class="splide__slide">
-                  <div class="splide__slide__container">
-                    <img src="{{ asset('assets/main/theme-1/img/gibs.png') }}" alt="">
-                  </div>
-                </li>
+                @endforeach
               </ul>
             </div>
           </div>
@@ -666,9 +653,11 @@
       @for($j = 0; $j < 3; $j++)
         @if($j == 0 || $j == 2)
           <div class="col-3">
+            @if(isset($gallery_slide[$gallery_idx]))
             <div data-bs-toggle="modal" data-bs-target="#gallery-lightbox-modal" class="gallery-img-wrapper img-outer rounded-3">
-              <img src="{{ isset($gallery_slide[$gallery_idx]) ? asset($gallery_slide[$gallery_idx]->meta_value) : "" }}" >
+              <img src="{{ asset($gallery_slide[$gallery_idx]->meta_value) }}" >
             </div>
+            @endif
           </div>
           @php
             $gallery_idx++;
@@ -677,26 +666,34 @@
           <div class="col-6">
             <div class="row mb-3">
               <div class="col-7">
+                @if(isset($gallery_slide[$gallery_idx]))
                 <div data-bs-toggle="modal" data-bs-target="#gallery-lightbox-modal" class="gallery-img-wrapper img-inner rounded-3">
-                  <img src="{{ isset($gallery_slide[$gallery_idx]) ? asset($gallery_slide[$gallery_idx]->meta_value) : "" }}" >
+                  <img src="{{ asset($gallery_slide[$gallery_idx]->meta_value) }}" >
                 </div>
+                @endif
               </div>
               <div class="col-5">
+                @if(isset($gallery_slide[$gallery_idx+1]))
                 <div data-bs-toggle="modal" data-bs-target="#gallery-lightbox-modal" class="gallery-img-wrapper img-inner rounded-3">
-                  <img src="{{ isset($gallery_slide[$gallery_idx+1]) ? asset($gallery_slide[$gallery_idx+1]->meta_value) : "" }}" >
+                  <img src="{{ asset($gallery_slide[$gallery_idx+1]->meta_value) }}" >
                 </div>
+                @endif
               </div>
             </div>
             <div class="row">
               <div class="col-5">
+              @if(isset($gallery_slide[$gallery_idx+2]))
                 <div data-bs-toggle="modal" data-bs-target="#gallery-lightbox-modal" class="gallery-img-wrapper img-inner rounded-3">
-                  <img src="{{ isset($gallery_slide[$gallery_idx+2]) ? asset($gallery_slide[$gallery_idx+2]->meta_value) : "" }}" >
+                  <img src="{{ asset($gallery_slide[$gallery_idx+2]->meta_value) }}" >
                 </div>
+              @endif
               </div>
               <div class="col-7">
+                @if(isset($gallery_slide[$gallery_idx+3]))
                 <div data-bs-toggle="modal" data-bs-target="#gallery-lightbox-modal" class="gallery-img-wrapper img-inner rounded-3">
-                  <img src="{{ isset($gallery_slide[$gallery_idx+3]) ? asset($gallery_slide[$gallery_idx+3]->meta_value) : "" }}" >
+                  <img src="{{ asset($gallery_slide[$gallery_idx+3]->meta_value) }}" >
                 </div>
+                @endif
               </div>
             </div>
           </div>
@@ -721,76 +718,15 @@
       </div>
     </div>
     <div class="row gap-0 column-gap-0 justify-content-center">
+      @foreach ($partnership_slide as $slide)
       <div class="col-lg-3 p-0">
         <div class="card partner-card">
           <div class="card-body">
-            <img src="{{ asset('assets/main/theme-1/img/utm-partner.png') }}" class="partner-card-img">
+            <img src="{{ asset($slide->meta_value) }}" class="partner-card-img">
           </div>
         </div>
       </div>
-      <div class="col-lg-3 p-0">
-        <div class="card partner-card">
-          <div class="card-body">
-            <img src="{{ asset('assets/main/theme-1/img/nihon-color.png') }}" class="partner-card-img">
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 p-0">
-        <div class="card partner-card">
-          <div class="card-body">
-            <img src="{{ asset('assets/main/theme-1/img/sea.png') }}" class="partner-card-img">
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 p-0">
-        <div class="card partner-card">
-          <div class="card-body">
-            <img src="{{ asset('assets/main/theme-1/img/gibs.png') }}" class="partner-card-img">
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 p-0">
-        <div class="card partner-card">
-          <div class="card-body">
-            <img src="{{ asset('assets/main/theme-1/img/gibs.png') }}" class="partner-card-img">
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 p-0">
-        <div class="card partner-card">
-          <div class="card-body">
-            <img src="{{ asset('assets/main/theme-1/img/gibs.png') }}" class="partner-card-img">
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 p-0">
-        <div class="card partner-card">
-          <div class="card-body">
-            <img src="{{ asset('assets/main/theme-1/img/gibs.png') }}" class="partner-card-img">
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 p-0">
-        <div class="card partner-card">
-          <div class="card-body">
-            <img src="{{ asset('assets/main/theme-1/img/gibs.png') }}" class="partner-card-img">
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 p-0">
-        <div class="card partner-card">
-          <div class="card-body">
-            <img src="{{ asset('assets/main/theme-1/img/gibs.png') }}" class="partner-card-img">
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 p-0">
-        <div class="card partner-card">
-          <div class="card-body">
-            <img src="{{ asset('assets/main/theme-1/img/gibs.png') }}" class="partner-card-img">
-          </div>
-        </div>
-      </div>
+      @endforeach
     </div>
   </div>
 </section>
