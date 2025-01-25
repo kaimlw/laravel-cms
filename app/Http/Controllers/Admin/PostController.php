@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\CustomHelpers;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
@@ -125,13 +126,20 @@ class PostController extends Controller
                 'msg' => $msg 
             ], 403);
         }
-
+        
         // Lakukan update
         try {
             DB::transaction(function() use($post, $request){
+                $title = $request->title;
+                // Jika title berubah
+                if ($post->title != $request->title) {
+                    // Jika title sudah ada, tambahkan angka pada judul
+                    $title = CustomHelpers::add_number_if_post_title_exist($post->id, $request->title);
+                }
+
                 $updateArray = [
-                    'title' => $request->title,
-                    'slug' => Str::slug($request->title),
+                    'title' => $title,
+                    'slug' => Str::slug($title),
                     'content' => $request->content,
                     'author' => $request->author,
                     'excerpt' => Str::excerpt($request->content,'',[

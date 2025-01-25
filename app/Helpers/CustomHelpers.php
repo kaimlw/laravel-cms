@@ -1,11 +1,12 @@
 <?php
 namespace App\Helpers;
 
+use App\Models\Post;
 use App\Models\Media;
 use App\Models\Category;
 use Illuminate\Support\Str;
-use function Laravel\Prompts\error;
 
+use function Laravel\Prompts\error;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager;
@@ -24,6 +25,25 @@ class CustomHelpers
               ->count();
               
     return $isExist;
+  }
+
+  /**
+   * Admin: Post Helper
+   * Add number to title if slug is exist where web_id is same
+   */
+  public static function add_number_if_post_title_exist($id, $title) : string {
+    $post_count = Post::where('web_id', Auth::user()->web_id)
+              ->where('id', '!=', $id)
+              ->where(function($query) use ($title){
+                $query->where('title', $title)
+                ->orWhere('title', 'LIKE', $title . ' - %');
+              })
+              ->count();
+    
+    if ($post_count) {
+      return $title . ' - ' . $post_count;
+    }
+    return $title;
   }
 
   /**
