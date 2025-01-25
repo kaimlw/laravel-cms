@@ -19,6 +19,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('subdomain')->group(function(){
     Route::controller(MainController::class)->group(function(){
         Route::get('/', 'index')->name('main');
+        Route::get('/page/{slug}', 'show_page')->name('main.page');
+        Route::get('/post/{slug}', 'show_post')->name('main.post');
+        Route::get('/category/{slug}', 'show_category')->name('main.category');
     });
 });
 

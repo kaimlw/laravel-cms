@@ -64,4 +64,63 @@ class MainController extends Controller
 
         return view('main.theme-1.homepage', $data);
     }
+
+    /**
+     * (GET)
+     * Menampilkan halaman page berdasarkan slug
+     */
+    function show_page($slug) : View {
+        $data['web'] = Web::findOrFail($this->web_id);
+
+        $menu = Menu::with('children')
+                ->where('web_id', $this->web_id)
+                ->orderBy('parent_id')
+                ->orderBy('menu_order')
+                ->get();
+        $data['menu_html'] = CustomHelpers::build_menu_main($menu);
+
+        $data['page'] = Post::where('web_id', $this->web_id)
+                        ->where('slug', $slug)
+                        ->where('type', 'page')
+                        ->where('status', 'publish')
+                        ->first();
+                        
+        // Jika page tidak ditemukan, tampilkan halaman 404
+        if (!$data['page']) {
+            return abort(404);
+        }
+
+        return view('main.theme-1.page', $data);
+    }
+
+    /**
+     * (GET)
+     * Menampilkan halaman post berdasarkan slug
+     */
+    function show_post($slug) : View {
+        $data['web'] = Web::findOrFail($this->web_id);
+
+        $menu = Menu::with('children')
+                ->where('web_id', $this->web_id)
+                ->orderBy('parent_id')
+                ->orderBy('menu_order')
+                ->get();
+        $data['menu_html'] = CustomHelpers::build_menu_main($menu);
+        
+        $data['categories'] = Category::where('web_id', $this->web_id)
+                        ->orderBy('name')
+                        ->get();
+
+        $data['post'] = Post::where('web_id', $this->web_id)
+                        ->where('slug', $slug)
+                        ->where('type', 'post')
+                        ->where('status', 'publish')
+                        ->first();
+        // Jika page tidak ditemukan, tampilkan halaman 404
+        if (!$data['post']) {
+            return abort(404);
+        }
+
+        return view('main.theme-1.post', $data);
+    }
 }

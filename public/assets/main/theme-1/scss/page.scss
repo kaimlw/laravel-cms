@@ -1,0 +1,41 @@
+$primary-color: #4A1B9D;
+$yellow-btn-color: #FEF400;
+$top-nav-text-color: #25273C;
+$secondary-text-color: #7C7D8A;
+$small10-text : 10px;
+$smal14-text: 14px;
+
+#banner{
+  overflow: hidden;
+  height: 60vh;
+  padding: 10em 0;
+}
+
+#content{
+  img{
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  .category-list{
+    list-style: none;
+    padding: 0;
+    
+    &-item {
+      padding: 0.5rem 0.25rem;
+      border-bottom: 1px solid lightgray;
+      
+      a{
+        text-decoration: none;
+        color: $primary-color;
+      }
+    }
+  }
+}
+
+@media (max-height: 996px){
+  #banner {
+    height: max-content;
+    padding: 8em 0;
+  }
+}

@@ -3,7 +3,7 @@
 @section('title', 'Home')
 
 @section('css-addon')
-  
+<link rel="stylesheet" href="{{ asset('assets/main/theme-1/css/homepage.css') }}">
 @endsection
 
 @section('content')
@@ -613,22 +613,29 @@
         <div class="info-post-wrapper {{ $loop->index == 0 ? 'show' : '' }}" data-category="{{ $category->slug }}">
           
           <div class="row row-gap-3">
-          @foreach ($category->post as $post)
-              <div class="col-lg-6">
-                <div class="card card-info">
-                  <div class="card-body">
-                    <div class="text-secondary mb-2" style="font-size: 14px;"><i class="bi bi-calendar me-2"></i> {{ $post->updated_at }}</div>
-                    <a class="h5 text-decoration-none fw-semibold" href="">{{ $post->title }}</a>
-                  </div>
+          @for($i = 0; $i < 6; $i++)
+            {{-- Jika post index tidak ada, break loop --}}
+            @if(!isset($category->post[$i]))
+              @break
+            @endif
+            <div class="col-lg-6">
+              <div class="card card-info">
+                <div class="card-body">
+                  <div class="text-secondary mb-2" style="font-size: 14px;"><i class="bi bi-calendar me-2"></i> {{ $category->post[$i]->updated_at }}</div>
+                  <a class="h5 text-decoration-none fw-semibold" href="{{ route('main.post', ['slug' => $category->post[$i]->slug]) }}">{{ $category->post[$i]->title }}</a>
                 </div>
               </div>
-          @endforeach
+            </div>
+          @endfor
           </div>
+
+          @if(count($category->post) > 6)
           <div class="row mt-3">
             <div class="col-12 text-center">
-              <a href="" class="btn text-white">See More <i class="bi bi-chevron-right"></i></a>
+              <a href="{{ route('main.category', ['slug', $category->slug]) }}" class="btn text-white">See More <i class="bi bi-chevron-right"></i></a>
             </div>
           </div>
+          @endif
 
         </div>
         @endforeach
@@ -749,6 +756,6 @@
 @endsection
 
 @section('js-addon')
-  
+<script src="{{ asset('assets/main/theme-1/js/homepage.js') }}"></script>
 @endsection
 

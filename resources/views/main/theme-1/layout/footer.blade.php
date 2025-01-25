@@ -3,7 +3,7 @@
     <div class="row row-gap-3" id="footer-top">
       <div class="col-lg-5">
         <div class="d-flex gap-3 align-items-center mb-3">
-          <img src="assets/img/ULM.png" width="68" height="68">
+          <img src="{{ asset('assets/img/ULM.png') }}" width="68" height="68">
           <div class="">
             <h6 class="fw-normal text-white mb-2">Fakultas Keguruan dan Ilmu Pendidikan</h6>
             <h6 class="fw-bold text-white m-0">UNIVERSITAS LAMBUNG <br> MANGKURAT</h6>

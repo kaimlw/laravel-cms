@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg blur" id="main-nav">
   <div class="container-fluid mx-3 position-relative">
-    <a class="navbar-brand d-flex align-items-center gap-2 gap-lg-3 order-first" href="#">
-      <img src="assets/img/ULM.png" alt="Logo" width="45" height="45" class="align-text-top">
+    <a class="navbar-brand d-flex align-items-center gap-2 gap-lg-3 order-first" href="{{ route('main') }}">
+      <img src="{{ asset('assets/img/ULM.png') }}" alt="Logo" width="45" height="45" class="align-text-top">
       <div class="text-white">
         <h6 class="mb-1">Fakultas Keguruan dan Ilmu Pengetahuan</h6>
         <h5 class="m-0">Universitas Lambung Mangkurat</h5>

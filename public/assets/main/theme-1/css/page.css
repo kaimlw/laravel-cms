@@ -1,0 +1,29 @@
+#banner {
+  overflow: hidden;
+  height: 60vh;
+  padding: 10em 0;
+}
+
+#content img {
+  max-width: 100% !important;
+  height: auto !important;
+}
+#content .category-list {
+  list-style: none;
+  padding: 0;
+}
+#content .category-list-item {
+  padding: 0.5rem 0.25rem;
+  border-bottom: 1px solid lightgray;
+}
+#content .category-list-item a {
+  text-decoration: none;
+  color: #4A1B9D;
+}
+
+@media (max-height: 996px) {
+  #banner {
+    height: max-content;
+    padding: 8em 0;
+  }
+}/*# sourceMappingURL=page.css.map */
