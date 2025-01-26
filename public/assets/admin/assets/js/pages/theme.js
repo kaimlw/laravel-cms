@@ -363,9 +363,9 @@ function uploadImage(section, file) {
     })
     xhr.onload = () => {
         toggleProgress(section, 0)
+        const data = JSON.parse(xhr.response)
 
         if (xhr.status == 200) {
-            const data = JSON.parse(xhr.response)
             let element = `
                 <li class="slide-item ${section}" data-id="${data.slide_id}">
                     <button class="btn btn-hapus" data-id="${data.slide_id}" data-section="${section}"><i class="bi bi-trash-fill"></i></button>

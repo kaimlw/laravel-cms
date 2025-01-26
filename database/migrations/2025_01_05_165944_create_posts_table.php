@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('excerpt')->nullable();
             $table->enum('type', ['post','page']);
             $table->enum('status', ['draft', 'publish']);
+            $table->string('banner_post_path')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

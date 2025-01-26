@@ -1,25 +1,35 @@
 const postId = document.getElementById('postId').value
 const judulInput = document.getElementById('judulInput');
 const authorSelect = document.getElementById('authorSelect');
-const bannerInput = document.getElementById('bannerPost');
 const btnSave = document.getElementById('btnSave');
 const btnPublish = document.getElementById('btnPublish');
-const formBannerPost = document.getElementById('formBannerPost');
 
 let checkedCategory
 const kategoriChecks = document.querySelectorAll('.kategori-check');
 
-let selected_media = null
+// Media Browser
+let target_media = null;
+let selected_media = null;
 const mediaBrowserModal = new bootstrap.Modal('#mediaBrowserModal')
 const media_wrapper = document.querySelector('#media-wrapper')
+
+// Insert image from media browser to text editor
 document.querySelector('#btnInsertImage').addEventListener('click', function(){
+    target_media = 'text-editor'
     openMediaBrowser()
 })
 document.querySelector('#btnMediaPilih').addEventListener('click', function(){
     if (selected_media == null) {
         return
     }
-    insertImageFromMediaBrowser(selected_media)
+
+    if (target_media == 'text-editor') {
+        insertImageFromMediaBrowser(selected_media)
+    } else if ( target_media == 'banner-post') {
+        setBannerFromMedia(selected_media)
+    }
+
+    target_media = null;
     mediaBrowserModal.hide()
 })
 
@@ -201,10 +211,28 @@ if (btnPublish) {
     btnPublish.addEventListener('click',publishPost);
 }
 
+// Banner Post
+// -- Mengubah banner post dari file upload
+document.querySelector('#banner_post_upload_btn').addEventListener('click', function(){
+    document.querySelector('#banner_post_input').click()
+})
+document.querySelector('#banner_post_input').addEventListener('change', function(){
+    uploadMedia(document.querySelector('#banner_post_input').files[0]);
+})
+
+// -- Mengubah banner post dari media browser
+document.querySelector('#banner_post_media_btn').addEventListener('click', function(){
+    target_media = 'banner-post';
+    openMediaBrowser();
+})
+
+// -- Menghapus banner post
+const banner_post_delete_modal = new bootstrap.Modal('#hapusBannerModal');
+document.querySelector('#banner_post_delete_submit').addEventListener('click', function(){deleteBanner()})
+
 // Menambahkan change event ke semua input untuk mengaktifkan tombol save
 addChangeListenerToActivateSave(judulInput)
 addChangeListenerToActivateSave(authorSelect)
-addChangeListenerToActivateSave(bannerInput)
 if (kategoriChecks) {    
     addChangeListenerToActivateSave(kategoriChecks)
 }
@@ -435,4 +463,152 @@ function checkMediaSelected() {
     } else{
         $('#btnMediaPilih').attr('disabled');
     }
+}
+
+function setBannerFromMedia(mediaId) {
+    fetch(`/cms-admin/post/${postId}/banner-media`,{
+        method: 'POST',
+        headers: {
+            'Accept':'application/json',
+            "Content-type": "application/json",
+            'x-csrf-token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            media_id: mediaId 
+        }),
+        credentials: 'same-origin',
+    })
+    .then(res => res.json())
+    .then(data => {
+        let element = `
+            <img src="/${data.img_path}" style="height:100px; width:100%" loading="lazy">
+            <button class="btn-danger btn btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#hapusBannerModal"><i class="bi bi-trash-fill"></i></button>
+        `
+        document.querySelector(`#banner_post_preview`).innerHTML = element;
+        
+        let alert = `
+        <div class="alert alert-success alert-dismissible show fade">
+            Banner post telah diperbarui!
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        `
+        $('.main-content').prepend(alert)
+    })
+    .catch(err => {
+        let alert = `
+            <div class="alert alert-danger alert-dismissible show fade">
+                ${err.msg}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            `
+            $('.main-content').prepend(alert)
+    })
+}
+
+function uploadMedia(file) {
+    if (file == null) {
+        console.log('file null');
+        return
+    }
+
+    const formData = new FormData();
+    formData.append('upload', file);
+
+    const xhr = new XMLHttpRequest()
+    xhr.open('POST', `/cms-admin/post/${postId}/banner`, true)
+    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').getAttribute('content'))
+    xhr.withCredentials = true
+    xhr.upload.addEventListener('progress', (event) => {
+        if (event.lengthComputable) {
+            const percentComplete = (event.loaded / event.total) * 100;
+            toggleBannerUploadProgress(percentComplete)
+        }
+    })
+    xhr.onload = () => {
+        toggleBannerUploadProgress(0)
+        const data = JSON.parse(xhr.response)
+
+        if (xhr.status == 200) {
+            let element = `
+                <img src="/${data.img_path}" style="height:100px; width:100%" loading="lazy">
+                <button class="btn-danger btn btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#hapusBannerModal"><i class="bi bi-trash-fill"></i></button>
+            `
+            document.querySelector(`#banner_post_preview`).innerHTML = element;
+            
+            let alert = `
+            <div class="alert alert-success alert-dismissible show fade">
+                Banner post telah diperbarui!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            `
+            $('.main-content').prepend(alert)
+        } else {
+            let alert = `
+            <div class="alert alert-danger alert-dismissible show fade">
+                ${data.msg}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            `
+            $('.main-content').prepend(alert)
+        }
+    };
+    
+    xhr.send(formData);
+}
+
+function toggleBannerUploadProgress(progressValue) {
+    let display ='block';
+    if (progressValue == 0) {
+        display = 'none'
+    }
+    document.querySelector('#banner_post_upload_progress_wrapper').style.display = display
+    document.querySelector('#banner_post_upload_progress_wrapper .progress').setAttribute('aria-value-now', progressValue)
+    document.querySelector('#banner_post_upload_progress_wrapper .progress-bar').style.width = progressValue + '%'
+    document.querySelector('#banner_post_upload_progress_wrapper .progress-bar').innerHTML = progressValue + '%'
+}
+
+function deleteBanner() {
+    fetch(`/cms-admin/post/${postId}/banner`,{
+        method: 'DELETE',
+        headers: {
+            'Accept':'application/json',
+            "Content-type": "application/json",
+            'x-csrf-token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        credentials: 'same-origin',
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.querySelector(`#banner_post_preview`).innerHTML = `<small class="d-block">Tidak ada banner post</small>`;
+        let alert = `
+            <div class="alert alert-success alert-dismissible show fade">
+                Banner post telah dihapus!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            `
+        $('.main-content').prepend(alert)
+        banner_post_delete_modal.hide()
+    })
+    .catch(err => {
+        let alert = `
+            <div class="alert alert-danger alert-dismissible show fade">
+                Terjadi kesalahan! Coba beberapa saat lagi.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            `
+        $('.main-content').prepend(alert)
+        banner_post_delete_modal.hide()
+    })
 }

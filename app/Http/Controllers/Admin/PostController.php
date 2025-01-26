@@ -12,6 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
+use App\Models\Media;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;
@@ -207,5 +208,83 @@ class PostController extends Controller
         }
         
         return redirect()->intended('/cms-admin/post?type='.$type)->with('showAlert', ['type' => 'success', 'msg' => ucfirst($type).' telah dihapus!']);
+    }
+
+    /**
+     * (PUT)
+     * Mengubah image post banner dari file upload
+     */
+    function set_banner_upload(Request $request, $id) : JsonResponse {
+        $request->validate([
+            'upload' => 'required|mimes:png,jpg,jpeg|file|max:5000'
+        ]);
+
+        $post = Post::findOrFail($id);
+
+        try {
+            $img_path = CustomHelpers::upload_image($request->file('upload'));
+        } catch (\Exception $e) {
+            return response()->json([
+                'alert' => 'danger',
+                'msg' => $e->getMessage()
+            ], 500);
+        }
+
+        $post->banner_post_path = $img_path['thumbnail'];
+        if (!$post->save()) {
+            return response()->json([
+                'alert' => 'danger',
+                'msg' => "Terjadi kesalahan! Coba beberapa saat lagi."
+            ], 500);
+        }
+
+        return response()->json([
+            'post_id' => $post->id,
+            'img_path' => $img_path['thumbnail']
+        ]);
+    }
+
+    /**
+     * (POST)
+     * Mengubah image post banner dari media browser
+     */
+    function set_banner_media(Request $request, $id) : JsonResponse {
+        $post = Post::findOrFail($id);
+        $media = Media::findOrFail($request->media_id);
+
+        $post->banner_post_path = $media->media_meta['filepath']['thumbnail'];
+
+        if (!$post->save()) {
+            return response()->json([
+                'alert' => 'danger',
+                'msg' => "Terjadi kesalahan! Coba beberapa saat lagi."
+            ], 500);
+        }
+
+        return response()->json([
+            'post_id' => $post->id,
+            'img_path' => $media->media_meta['filepath']['thumbnail']
+        ]);
+    }
+
+    /**
+     * (POST)
+     * Set banner post ke null
+     */
+    function delete_banner($id) : JsonResponse {
+        $post = Post::findOrFail($id);
+        $post->banner_post_path = null;
+
+        if (!$post->save()) {
+            return response()->json([
+                'alert' => 'danger',
+                'msg' => "Terjadi kesalahan! Coba beberapa saat lagi."
+            ], 500);
+        }
+        
+        return response()->json([
+                'alert' => 'success',
+                'msg' => "Banner berhasil dihapus!"
+            ]);
     }
 }

@@ -64,8 +64,15 @@
 @endif
 
 <section class="section">
-    <div class="text-end mb-2">
-        <button class="btn btn-success" id="btnInsertImage" data-bs-toggle="modal" data-bs-target="#mediaBrowserModal">Insert Image From Media</button>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="">
+            <button class="btn btn-success btn-sm" disabled id="btnSave"><i class="bi bi-floppy-fill"></i> Save</button>
+
+            @if ($post->status != 'publish')
+            <button class="btn btn-primary btn-sm" id="btnPublish"><i class="bi bi-globe2"></i> Publish</button>
+            @endif
+        </div>
+        <button class="btn btn-success btn-sm" id="btnInsertImage" data-bs-toggle="modal" data-bs-target="#mediaBrowserModal"><i class="bi bi-images"></i> Insert Image From Media</button>
     </div>
     <div id="editor">
         {!! $post->content !!}

@@ -39,33 +39,49 @@
             @endif
 
             <div class="form-group">
+                <input type="file" class="custom-file-input" id="banner_post_input" name="bannerPost" style="display: none">
                 <label for="bannerPost">Banner Page/Post</label>
-                <div class="form-file w-75">
-                    <form action="" id="formBannerPost" method="POST" enctype="multipart/form-data">
-                        @method('PUT')
-                        @csrf
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="bannerPost" name="bannerPost">
-                        </div>
-                        <div class="mt-1 text-center">
-                            <button class="btn btn-sm btn-primary">Upload</button>
-                        </div>
-                    </form>
+                <div class="w-100 mb-3" id="banner_post_upload_progress_wrapper" style="display: none">
+                    <h6>Upload Progress</h6>
+                    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height: 10px">
+                        <div class="progress-bar" style="width: 25%"></div>
+                    </div>
                 </div>
-                @if ($post->url_post_image)
-                <h6 class="mt-2">Preview Banner Post:</h6>
-                <img src="{{ $post->url_post_thumbnail }}" style="height:100px; width:100%" loading="lazy">
-                @endif
+                <div id="banner_post_preview" class="text-center">
+                    @if ($post->banner_post_path)
+                    <img src="{{ asset($post->banner_post_path) }}" style="height:100px; width:100%" loading="lazy">
+                    <button class="btn-danger btn btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#hapusBannerModal"><i class="bi bi-trash-fill"></i></button>
+                    @else
+                    <small class="d-block">Tidak ada banner post</small>
+                    @endif
+                </div>
+                <div class="btn-group mt-3" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-sm btn-outline-primary" id="banner_post_media_btn"><i class="bi bi-images"></i> Buka Media Browser</button>
+                    <button type="button" class="btn btn-sm btn-outline-primary" id="banner_post_upload_btn">Upload <i class="bi bi-upload"></i></button>
+                </div>
+
             </div>
-        </div>
-
-        <div class="sidebar-footer">
-            <button class="btn btn-success" disabled id="btnSave">Save</button>
-
-            @if ($post->status != 'publish')
-            <button class="btn btn-primary" id="btnPublish">Publish</button>
-            @endif
         </div>
     </div>
     <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+</div>
+
+{{-- Hapus Banner Modal --}}
+<div class="modal fade" id="hapusBannerModal" tabindex="-1" aria-labelledby="hapusBannerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-body">
+            <div class="text-center">
+                <i class="bi bi-exclamation-circle-fill fs-1 text-danger display-4"></i>
+                <h3>
+                    Apakah anda yakin ingin menghapus banner post?
+                </h3>
+            </div>
+        </div>
+        <div class="modal-footer justify-content-center">
+            <button type="submit" class="btn btn-danger" id="banner_post_delete_submit">Hapus</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        </div>
+    </div>
+    </div>
 </div>

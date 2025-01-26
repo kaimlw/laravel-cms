@@ -94,7 +94,11 @@ Route::middleware('auth')->group(function(){
             Route::get('/cms-admin/post/{id}', 'edit')->name('admin.post.edit');
             Route::put('/cms-admin/post/{id}', 'update')->name('admin.post.update');
             Route::put('/cms-admin/post/{id}/publish', 'publish')->name('admin.post.publish');
+            Route::post('/cms-admin/post/{id}/banner', 'set_banner_upload')->name('admin.post.set_banner_upload');
+            Route::post('/cms-admin/post/{id}/banner-media', 'set_banner_media')->name('admin.post.set_banner_media');
+            Route::delete('/cms-admin/post/{id}/banner', 'delete_banner')->name('admin.post.delete_banner');
             Route::delete('/cms-admin/post/{id}', 'destroy')->name('admin.post.destroy');
+
         });
     
         /**
