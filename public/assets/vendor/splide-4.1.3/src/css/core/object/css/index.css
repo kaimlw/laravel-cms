@@ -1,25 +1,26 @@
-.splide__track--draggable {
-  -webkit-touch-callout: none;
-  user-select: none;
+.splide__container {
+  box-sizing: border-box;
+  position: relative;
 }
 
-.splide__track--fade > .splide__list > .splide__slide {
+.splide__list {
+  backface-visibility: hidden;
+  display: flex;
+  height: 100%;
   margin: 0 !important;
-  opacity: 0;
-  z-index: 0;
+  padding: 0 !important;
 }
-.splide__track--fade > .splide__list > .splide__slide.is-active {
-  opacity: 1;
-  z-index: 1;
-}
-
-.splide--rtl {
-  direction: rtl;
-}
-
-.splide__track--ttb > .splide__list {
+.splide.is-initialized:not(.is-active) .splide__list {
   display: block;
-}/*# sourceMappingURL=index.css.map */ne;
+}
+
+.splide__pagination {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0;
+  pointer-events: none;
 }
 .splide__pagination li {
   display: inline-block;

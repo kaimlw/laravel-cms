@@ -348,10 +348,12 @@ $smal14-text: 14px;
 // PARTNERS
 #partners{
   .partner-card{
-    min-height: 140px;
+    height: 140px;
     border-radius: 0;
     
     .card-body{
+      width: 100%;
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -359,7 +361,8 @@ $smal14-text: 14px;
     }
 
     &-img{
-      width: 100%;
+      width: auto;
+      height: 100%;
     }
   }
 }

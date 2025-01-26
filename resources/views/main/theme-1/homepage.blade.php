@@ -729,7 +729,7 @@
       <div class="col-lg-3 p-0">
         <div class="card partner-card">
           <div class="card-body">
-            <img src="{{ asset($slide->meta_value) }}" class="partner-card-img">
+            <img src="{{ asset($slide->meta_value) }}" class="partner-card-img img-fluid">
           </div>
         </div>
       </div>
