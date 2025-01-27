@@ -621,7 +621,7 @@
             <div class="col-lg-6">
               <div class="card card-info">
                 <div class="card-body">
-                  <div class="text-secondary mb-2" style="font-size: 14px;"><i class="bi bi-calendar me-2"></i> {{ $category->post[$i]->updated_at }}</div>
+                  <div class="text-secondary mb-2" style="font-size: 14px;"><i class="bi bi-calendar me-2"></i> {{ date("d-m-Y", strtotime($category->post[$i]->updated_at)) }}</div>
                   <a class="h5 text-decoration-none fw-semibold" href="{{ route('main.post', ['slug' => $category->post[$i]->slug]) }}">{{ $category->post[$i]->title }}</a>
                 </div>
               </div>
