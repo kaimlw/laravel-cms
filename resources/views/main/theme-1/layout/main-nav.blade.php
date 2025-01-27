@@ -20,7 +20,7 @@
     </div>
     <button class="btn btn-round-white d-none d-lg-block order-last ms-3" id="btn-search-lg"><i class="bi bi-search"></i></button>
     <div class="w-100 px-3" id="searchbar">
-      <form action="">
+      <form action="{{ route('main.search') }}" method="GET">
         <div class="input-group">
           <input type="text" name="search" id="search-input" class="form-control" placeholder="Search something..." aria-label="Search" aria-describedby="btn-search-submit" role="search">
           <button class="btn btn-purple" type="button" id="btn-search-submit" type="submit">Search</button>

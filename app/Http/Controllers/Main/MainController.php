@@ -96,7 +96,10 @@ class MainController extends Controller
                         
         // Jika page tidak ditemukan, tampilkan halaman 404
         if (!$data['page']) {
-            return abort(404);
+            $data['categories'] = Category::where('web_id', $this->web_id)
+                        ->orderBy('name')
+                        ->get();
+            return view('main.theme-1.404', $data);
         }
 
         return view('main.theme-1.page', $data);
@@ -125,11 +128,73 @@ class MainController extends Controller
                         ->where('type', 'post')
                         ->where('status', 'publish')
                         ->first();
+
         // Jika page tidak ditemukan, tampilkan halaman 404
         if (!$data['post']) {
-            return abort(404);
+            return view('main.theme-1.404', $data);
         }
 
         return view('main.theme-1.post', $data);
+    }
+
+    /**
+     * (GET)
+     * Menampilkan halaman category
+     */
+    function show_category($slug) : View {
+        $data['web'] = Web::findOrFail($this->web_id);
+
+        $menu = Menu::with('children')
+                ->where('web_id', $this->web_id)
+                ->orderBy('parent_id')
+                ->orderBy('menu_order')
+                ->get();
+        $data['menu_html'] = CustomHelpers::build_menu_main($menu);
+        
+        $data['categories'] = Category::where('web_id', $this->web_id)
+                        ->orderBy('name')
+                        ->get();
+
+        $data['category'] = Category::where('web_id', $this->web_id)
+                        ->where('slug', $slug)
+                        ->first();
+        // Jika category tidak ditemukan, tampilkan halaman 404
+        if (!$data['category']) {
+            return view('main.theme-1.404', $data);
+        }
+        
+        $data['posts'] = $data['category']->post()
+                        ->where('status', 'publish')
+                        ->orderBy('updated_at', 'desc')
+                        ->get();
+
+        return view('main.theme-1.category', $data);
+    }
+
+    /**
+     * (GET)
+     * Menampilkan halaman search
+     */
+    function show_search(Request $request) : View {
+        $data['web'] = Web::findOrFail($this->web_id);
+
+        $menu = Menu::with('children')
+                ->where('web_id', $this->web_id)
+                ->orderBy('parent_id')
+                ->orderBy('menu_order')
+                ->get();
+        $data['menu_html'] = CustomHelpers::build_menu_main($menu);
+        $data['categories'] = Category::where('web_id', $this->web_id)
+                        ->orderBy('name')
+                        ->get();
+
+        $data['search_keyword'] = $request->get('search');
+        $data['posts'] = Post::where('web_id', $this->web_id)
+                ->where('title', 'LIKE', '%'. $request->get('search') . '%')
+                ->where('status', 'publish')
+                ->orderBy('updated_at', 'desc')
+                ->get();
+
+        return view('main.theme-1.search', $data);
     }
 }

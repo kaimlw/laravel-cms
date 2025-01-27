@@ -22,6 +22,7 @@ Route::middleware('subdomain')->group(function(){
         Route::get('/page/{slug}', 'show_page')->name('main.page');
         Route::get('/post/{slug}', 'show_post')->name('main.post');
         Route::get('/category/{slug}', 'show_category')->name('main.category');
+        Route::get('/search', 'show_search')->name('main.search');
     });
 });
 
