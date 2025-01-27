@@ -136,6 +136,46 @@ class CustomHelpers
   }
 
   /**
+   * Main: Menu Helper
+   * Build menu hierarchy to display in Main Nav.
+   */
+  public static function build_menu_top($menu, $parent_id = null) : string {
+    $result = "";
+
+    // Menghentikan rekursif
+    $children = $menu->filter(function ($menu) use ($parent_id){
+      return $menu->parent_id == $parent_id;
+    });
+
+    if ($children->isNotEmpty()) {
+      // Menentukan class <ul> berdasarkan parent_id 
+      if ($parent_id != null) {
+        $result .= '<ul class="nav-sub-menu">';
+      }
+      
+      foreach ($children as $child){
+        // Menentukan class <li> berdasarkan parent_id
+        if ($parent_id == null) {
+          $result .= $child->children->isEmpty() ? "<li>" : "<li class='has-sub'>";
+        } else{
+          $result .= $child->children->isEmpty() ? "<li class='menu-item'>" : "<li class='menu-item has-sub'>";
+        }
+
+        // Isi <li>
+        $result .= "<a href='$child->target'>$child->name</a>";
+        $result .= CustomHelpers::build_menu_top($menu, $child->id);
+        $result .= "</li>";
+      }
+
+      if ($parent_id != null) {
+        $result .= '</ul>';
+      }
+    }
+
+    return $result;
+  }
+
+  /**
    * Admin: Upload Media Helper
    * Upload Image
    * 

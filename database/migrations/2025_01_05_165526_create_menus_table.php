@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('target');
             $table->foreignId('parent_id')->nullable()->constrained('menus');
             $table->enum('type', ['custom', 'page', 'post', 'category']);
+            $table->enum('menu_placement', ['main', 'top']);
             $table->integer('menu_order');
             $table->timestamps();
         });

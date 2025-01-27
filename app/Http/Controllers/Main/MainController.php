@@ -37,12 +37,21 @@ class MainController extends Controller
     function index() : View {
         $data['web'] = Web::findOrFail($this->web_id);
 
-        $menu = Menu::with('children')
+        $main_menu = Menu::with('children')
                 ->where('web_id', $this->web_id)
+                ->where('menu_placement', 'main')
                 ->orderBy('parent_id')
                 ->orderBy('menu_order')
                 ->get();
-        $data['menu_html'] = CustomHelpers::build_menu_main($menu);
+        $data['main_menu_html'] = CustomHelpers::build_menu_main($main_menu);
+
+        $top_menu = Menu::with('children')
+                ->where('web_id', $this->web_id)
+                ->where('menu_placement', 'top')
+                ->orderBy('parent_id')
+                ->orderBy('menu_order')
+                ->get();
+        $data['top_menu_html'] = CustomHelpers::build_menu_main($top_menu);
         
         $data['main_slide'] = WebMeta::where('web_id', $this->web_id)
                             ->where('meta_key', 'main_slide')
@@ -81,12 +90,13 @@ class MainController extends Controller
     function show_page($slug) : View {
         $data['web'] = Web::findOrFail($this->web_id);
 
-        $menu = Menu::with('children')
+        $main_menu = Menu::with('children')
                 ->where('web_id', $this->web_id)
+                ->where('menu_placement', 'main')
                 ->orderBy('parent_id')
                 ->orderBy('menu_order')
                 ->get();
-        $data['menu_html'] = CustomHelpers::build_menu_main($menu);
+        $data['main_menu_html'] = CustomHelpers::build_menu_main($main_menu);
 
         $data['page'] = Post::where('web_id', $this->web_id)
                         ->where('slug', $slug)
@@ -112,12 +122,13 @@ class MainController extends Controller
     function show_post($slug) : View {
         $data['web'] = Web::findOrFail($this->web_id);
 
-        $menu = Menu::with('children')
+        $main_menu = Menu::with('children')
                 ->where('web_id', $this->web_id)
+                ->where('menu_placement', 'main')
                 ->orderBy('parent_id')
                 ->orderBy('menu_order')
                 ->get();
-        $data['menu_html'] = CustomHelpers::build_menu_main($menu);
+        $data['main_menu_html'] = CustomHelpers::build_menu_main($main_menu);
         
         $data['categories'] = Category::where('web_id', $this->web_id)
                         ->orderBy('name')
@@ -144,12 +155,13 @@ class MainController extends Controller
     function show_category($slug) : View {
         $data['web'] = Web::findOrFail($this->web_id);
 
-        $menu = Menu::with('children')
+        $main_menu = Menu::with('children')
                 ->where('web_id', $this->web_id)
+                ->where('menu_placement', 'main')
                 ->orderBy('parent_id')
                 ->orderBy('menu_order')
                 ->get();
-        $data['menu_html'] = CustomHelpers::build_menu_main($menu);
+        $data['main_menu_html'] = CustomHelpers::build_menu_main($main_menu);
         
         $data['categories'] = Category::where('web_id', $this->web_id)
                         ->orderBy('name')
@@ -178,12 +190,13 @@ class MainController extends Controller
     function show_search(Request $request) : View {
         $data['web'] = Web::findOrFail($this->web_id);
 
-        $menu = Menu::with('children')
+        $main_menu = Menu::with('children')
                 ->where('web_id', $this->web_id)
+                ->where('menu_placement', 'main')
                 ->orderBy('parent_id')
                 ->orderBy('menu_order')
                 ->get();
-        $data['menu_html'] = CustomHelpers::build_menu_main($menu);
+        $data['main_menu_html'] = CustomHelpers::build_menu_main($main_menu);
         $data['categories'] = Category::where('web_id', $this->web_id)
                         ->orderBy('name')
                         ->get();

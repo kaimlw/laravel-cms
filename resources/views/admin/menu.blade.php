@@ -56,6 +56,20 @@
             </nav>
         </div>
     </div>
+    <div class="row mb-3">
+        <div class="col-12">
+            <form method="GET">
+                <label for="select_menu">Pilih menu:</label>
+                <div class="input-group">
+                    <select class="form-select" id="select_menu" name="select_menu">
+                      <option value="main" {{ $menu_placement == 'main' ? 'selected' : '' }} >Main Menu</option>
+                      <option value="top" {{ $menu_placement == 'top' ? 'selected' : '' }}>Top Menu</option>
+                    </select>
+                    <button class="btn btn-outline-primary" type="submit">Tampilkan</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 <section class="section">
     <div class="row">
@@ -84,6 +98,7 @@
                         <div class="tab-pane fade active show" id="page" role="tabpanel" aria-labelledby="page-tab">
                             <form id="formPage" method="POST">
                                 @csrf
+                                <input type="hidden" name="menu_placement" value="{{ $menu_placement }}">
                                 <input type="hidden" name="menu_item_type" value="page">
                                 <input type="hidden" name="menu_item_title" id="pageMenuTitle" value="">
                                 <input type="hidden" name="menu_item_slug" id="pageMenuSlug" value="">
@@ -122,6 +137,7 @@
                         <div class="tab-pane fade" id="post" role="tabpanel" aria-labelledby="post-tab">
                             <form id="formPost" method="POST">
                                 @csrf
+                                <input type="hidden" name="menu_placement" value="{{ $menu_placement }}">
                                 <input type="hidden" name="menu_item_type" value="post">
                                 <input type="hidden" name="menu_item_title" id="postMenuTitle" value="">
                                 <input type="hidden" name="menu_item_slug" id="postMenuSlug" value="">
@@ -161,6 +177,7 @@
                         <div class="tab-pane fade" id="kategori" role="tabpanel" aria-labelledby="kategori-tab">
                             <form id='formCategory' method="POST">
                                 @csrf
+                                <input type="hidden" name="menu_placement" value="{{ $menu_placement }}">
                                 <input type="hidden" name="menu_item_type" value="category">
                                 <input type="hidden" name="menu_item_title" id="categoryMenuTitle" value="">
                                 <input type="hidden" name="menu_item_slug" id="categoryMenuSlug" value="">
@@ -200,6 +217,7 @@
                         <div class="tab-pane fade" id="custom-link" role="tabpanel" aria-labelledby="custom-link-tab">
                             <form id="formCustom" method="POST">
                                 @csrf
+                                <input type="hidden" name="menu_placement" value="{{ $menu_placement }}">
                                 <input type="hidden" name="menu_item_type" value="custom">
                                 <div class="form-group">
                                     <label for="labelInput">Label</label>

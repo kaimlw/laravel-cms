@@ -21,9 +21,16 @@ class MenuController extends Controller
      * (GET)
      * Menampilkan halaman menu
      */
-    function index() : View {
+    function index(Request $request) : View {
+        $data['menu_placement'] = 'main';
+        // Jika ada request select menu, tampilkan menu sesuai request
+        if ($request->get('select_menu')) {
+            $data['menu_placement'] = $request->get('select_menu');
+        }
+        
         $data['menus'] = Menu::with('children')
                         ->where('web_id', Auth::user()->web_id)
+                        ->where('menu_placement', $data['menu_placement'])
                         ->orderBy('menu_order')
                         ->get();
 
@@ -55,7 +62,8 @@ class MenuController extends Controller
     function store(Request $request) : RedirectResponse {
         $validateRules = [
             'menu_item_title' => 'required',
-            'menu_order' => 'required|integer'
+            'menu_order' => 'required|integer',
+            'menu_placement' => 'required'
         ];
 
         // Jika tipe item selain custom, tambahkan validasi tipe menu dan slug,
@@ -79,7 +87,8 @@ class MenuController extends Controller
             'name' => $request->menu_item_title,
             'parent_id' => $request->parent,
             'type' => $request->menu_item_type,
-            'menu_order' => $request->menu_order
+            'menu_order' => $request->menu_order,
+            'menu_placement' => $request->menu_placement
         ];
         // Link menu berdasarkan tipe menu
         $link = "";
@@ -104,10 +113,10 @@ class MenuController extends Controller
 
         // Jika gagal membuat menu, redirect ke halaman menu dan munculkan pesan gagal
         if (!Menu::create($insertArray)) {
-            return redirect()->route('admin.menu')->with('showAlert', ['type' => 'danger', 'msg' => 'Terjadi kesalahan! Coba beberapa saat lagi.']);
+            return redirect()->route('admin.menu', ['select_menu' => $request->menu_placement])->with('showAlert', ['type' => 'danger', 'msg' => 'Terjadi kesalahan! Coba beberapa saat lagi.']);
         }
 
-        return redirect()->route('admin.menu')->with('showAlert', ['type' => 'success', 'msg' => 'Menu berhasil ditambahkan!']);
+        return redirect()->route('admin.menu', ['select_menu' => $request->menu_placement])->with('showAlert', ['type' => 'success', 'msg' => 'Menu berhasil ditambahkan!']);
     }
 
     /**

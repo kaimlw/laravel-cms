@@ -24,26 +24,26 @@ class DatabaseSeeder extends Seeder
             'password' => password_hash("admin", PASSWORD_DEFAULT),
             'email' => 'fkip@ulm.ac.id'
         ]);
-        Web::create([
-            'id' => 1,
-            'name' => 'Pendidikan Komputer',
-            'subdomain' => 'pilkom',
-            'email' => 'fkip@ulm.ac.id',
-            'phone_number' => '(0511) - 3304914'
-        ]);
-        User::create([
-            'web_id' => '1',
-            'display_name' => 'Admin Pendidikan Komputer',
-            'username' => 'pilkom-admin',
-            'password' => password_hash("admin", PASSWORD_DEFAULT),
-            'email' => 'english.fkip@ulm.ac.id',
-            'roles' => 'web_admin'
-        ]);
-        Category::create([
-            'web_id' => '1',
-            'name' => 'Tak berkategori',
-            'slug' => 'uncategorized',
-            'description' => '',
-        ]);
+        // Web::create([
+        //     'id' => 1,
+        //     'name' => 'Pendidikan Komputer',
+        //     'subdomain' => 'pilkom',
+        //     'email' => 'fkip@ulm.ac.id',
+        //     'phone_number' => '(0511) - 3304914'
+        // ]);
+        // User::create([
+        //     'web_id' => '1',
+        //     'display_name' => 'Admin Pendidikan Komputer',
+        //     'username' => 'pilkom-admin',
+        //     'password' => password_hash("admin", PASSWORD_DEFAULT),
+        //     'email' => 'english.fkip@ulm.ac.id',
+        //     'roles' => 'web_admin'
+        // ]);
+        // Category::create([
+        //     'web_id' => '1',
+        //     'name' => 'Tak berkategori',
+        //     'slug' => 'uncategorized',
+        //     'description' => '',
+        // ]);
     }
 }

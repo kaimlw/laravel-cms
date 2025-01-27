@@ -15,7 +15,7 @@
     </div>
     <div class="collapse navbar-collapse justify-content-lg-end order-lg-3 order-3" id="mainNavbarNav">
       <ul class="navbar-nav gap-lg-3">
-        {!! $menu_html !!}
+        {!! $main_menu_html !!}
       </ul>
     </div>
     <button class="btn btn-round-white d-none d-lg-block order-last ms-3" id="btn-search-lg"><i class="bi bi-search"></i></button>

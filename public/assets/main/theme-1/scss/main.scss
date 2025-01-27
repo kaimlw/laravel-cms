@@ -69,6 +69,7 @@ section{
 // NAVBAR
 // --- TOP NAV
 #top-nav{
+  z-index: 99999;
   *{
     color: $top-nav-text-color;
   }
@@ -76,6 +77,75 @@ section{
   li a{
     text-decoration: none;
   }
+
+  .has-sub{
+    position: relative;
+
+    &>a::before{
+      content: "\f282";
+      font-family: bootstrap-icons !important;
+      vertical-align: -.1rem;
+      font-size: 14px;
+      font-weight: bold;
+      margin-right: .2rem;
+    }
+
+    i{
+      display: none;
+      opacity: 0;
+      transition: all 1000ms;
+    }
+    
+    .nav-sub-menu{
+      position: absolute;
+      right: 0;
+      opacity: 0;
+      display: none;
+      z-index: 999;
+      list-style-type: none;
+      padding: 0.5rem;
+      background-color: white;
+      border-radius: 0.25rem;
+      width: fit-content;
+      text-align: end;
+  
+      &-point{
+        position: absolute;
+        bottom: -10px;
+        left: 30%;
+      }
+  
+      li{
+        &:hover{
+          background-color: rgb(74, 27, 157, 0.1);
+          
+          & > a{
+            color: $primary-color;
+          }
+        }
+      }
+  
+      a{
+        display: block;
+        height: 100%;
+        width: 100%;
+        color: $secondary-text-color;
+        font-weight: 500;
+        text-decoration: none;
+        padding: 10px;
+      }
+    }
+  }
+
+  .nav-sub-menu .has-sub > a::before{
+    content: "\f284";
+    font-family: bootstrap-icons !important;
+    vertical-align: -.1rem;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: .2rem;
+  }
+
 }
 
 // --- MAIN NAV
@@ -236,6 +306,21 @@ footer{
 }
 
 @media (min-width: 996px){
+  #top-nav{
+    .nav-sub-menu .nav-sub-menu{
+      right: 80px !important;
+      width: 150px;
+      top: 0;
+    }
+    .has-sub:hover{
+      i, & > .nav-sub-menu{
+        display: block;
+        opacity: 1;
+        z-index: 999;
+      }
+    }
+  }
+
   #main-nav{
     .nav-sub-menu .nav-sub-menu{
       left: 200px !important;
