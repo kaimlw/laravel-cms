@@ -55,11 +55,20 @@ class WebController extends Controller
                 ]);
                 
                 // Menambahkan kategori default
-                $newCategory = Category::create([
+                $newCategory1 = Category::create(
+                    [
                     'web_id' => $newWeb->id,
                     'name' => 'Tidak Berkategori',
                     'slug' => 'uncategorized' 
-                ]);
+                    ]
+                );
+                $newCategory2 = Category::create(
+                    [
+                    'web_id' => $newWeb->id,
+                    'name' => 'Latest News',
+                    'slug' => 'latest-news' 
+                    ]
+                );
 
                 // Menambahkan post default
                 $newPost = Post::create([
@@ -73,7 +82,7 @@ class WebController extends Controller
                     'status' => 'draft'
                 ]);
                 // Mengaitkan post dengan category default
-                $newPost->categories()->attach([$newCategory->id]);
+                $newPost->categories()->attach([$newCategory1->id, $newCategory2->id]);
 
                 // Menambahkan page tambahan
                 Post::create([
