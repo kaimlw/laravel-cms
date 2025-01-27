@@ -564,30 +564,35 @@
     </div>
     <div class="row row-gap-3">
       @if(isset($latest_news->post))
-      @foreach ($latest_news->post as $post)
-      <div class="col-lg-4">
-        <div class="card border-0 h-100">
-          <a href="">
-            <img src="{{ asset('assets/main/theme-1/img/headings-1.png') }}" class="card-img-top rounded-2">
-          </a>
-          <div class="card-body p-0 mt-3">
-            <div class="text-secondary mb-2" style="font-size: 14px;"><i class="bi bi-calendar me-2"></i> {{ $post->updated_at }}</div>
-            <a class="h5 text-decoration-none fw-semibold" href="">{{ $post->title }}</a>
-            <div class="text-secondary mt-2">
-              {!! $post->excerpt !!}
+        @foreach ($latest_news->post as $post)
+          @if($post->status == "draft")
+            @continue
+          @endif
+          <div class="col-lg-4">
+            <div class="card border-0 h-100">
+              <a href="{{ route('main.post', ['slug' => $post->slug]) }}">
+                <img src="{{ $post->banner_post_path ? asset($post->banner_post_path) : ($web->default_post_banner_path ? asset($web->default_post_banner_path) : "") }}" class="card-img-top rounded-2">
+              </a>
+              <div class="card-body p-0 mt-3">
+                <div class="text-secondary mb-2" style="font-size: 14px;"><i class="bi bi-calendar me-2"></i> {{ date("d-m-Y", strtotime($post->updated_at)) }}</div>
+                <a class="h5 text-decoration-none fw-semibold" href="{{ route('main.post', ['slug' => $post->slug]) }}">{{ $post->title }}</a>
+                <div class="text-secondary mt-2">
+                  {!! $post->excerpt !!}
+                </div>
+                
+              </div>
             </div>
-            
           </div>
-        </div>
-      </div>
-      @endforeach
+        @endforeach
       @endif
     </div>
+    @if(count($latest_news->post) > 3)
     <div class="row mt-3">
       <div class="col-12 text-center">
         <a href="" class="btn btn-round-purple">More Article <i class="bi bi-chevron-right"></i></a>
       </div>
     </div>
+    @endif
   </div>
 </section>
 <section id="info" class="bg-purple">
@@ -617,6 +622,9 @@
             {{-- Jika post index tidak ada, break loop --}}
             @if(!isset($category->post[$i]))
               @break
+            @endif
+            @if($category->post[$i]->status == "draft")
+              @continue
             @endif
             <div class="col-lg-6">
               <div class="card card-info">
