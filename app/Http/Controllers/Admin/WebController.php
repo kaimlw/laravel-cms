@@ -133,11 +133,11 @@ class WebController extends Controller
     function destroy($id) : RedirectResponse {
         $web = Web::findOrFail(decrypt(base64_decode($id)));
 
-        if ($web->delete()) {
-            return redirect()->route('admin.web')->with('showAlert', ['type' => 'success', 'msg' => 'Web berhasil dihapus!']);
+        if (!$web->delete()) {
+            return redirect()->route('admin.web')->with('showAlert', ['type' => 'danger', 'msg' => 'Terjadi kesalahan! Coba lagi beberapa saat!']);
         }
         
-        return redirect()->route('admin.web')->with('showAlert', ['type' => 'danger', 'msg' => 'Terjadi kesalahan! Coba lagi beberapa saat!']);
+        return redirect()->route('admin.web')->with('showAlert', ['type' => 'success', 'msg' => 'Web berhasil dihapus!']);
     }
 
     /**

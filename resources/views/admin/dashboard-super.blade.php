@@ -54,7 +54,7 @@
                             <tbody>
                                 @foreach ($webs as $web)
                                 <tr>
-                                    <td>{{ $web->nama }}</td>
+                                    <td>{{ $web->name }}</td>
                                     <td>{{ $web->subdomain }}</td>
                                     <td>{{ $web->email }}</td>
                                     <td>{{ $web->phone_number }}</td>

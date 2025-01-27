@@ -23,13 +23,13 @@ class checkSubdomain
             $subdomain = $host_parts[0];
             $web = Web::where('subdomain', $subdomain)->first();
             if (!$web) {
-                return redirect()->route('login');
+                // return redirect()->route('login');
+                return abort(404);
             }
 
             $request->attributes->set('web_id', $web->id);
-            return $next($request);
         }
-
-        return redirect()->route('login');
+        
+        return $next($request);
     }
 }

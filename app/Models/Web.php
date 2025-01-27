@@ -48,6 +48,8 @@ class Web extends Model
                 $web->category()->delete();
                 // Menghapus menu terkait web
                 $web->menu()->delete();
+                // Menghapus web meta terkait web
+                $web->web_meta()->delete();
                 // Menghapus user terkait web
                 $web->user()->delete();
             });

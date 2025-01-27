@@ -18,6 +18,15 @@ class MainController extends Controller
     protected $web_id = 0;
 
     public function __construct(Request $request) {
+        // Jika tidak ada web_id dari middleware
+        if (!$request->get('web_id')) {
+            // Gunakan web_id pertama dari db
+            $web = Web::first();
+            if ($web) {
+                $this->web_id = $web->id;
+            }
+        }
+        
         $this->web_id = $request->get('web_id');
     }
 
