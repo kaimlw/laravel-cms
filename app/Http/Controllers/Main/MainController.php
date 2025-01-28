@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\Web;
 use App\Models\WebMeta;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
 class MainController extends Controller
@@ -34,7 +35,7 @@ class MainController extends Controller
      * (GET)
      * Menampilkan halaman utama website
      */
-    function index() : View {
+    function index() : View|RedirectResponse {
         $data['web'] = Web::findOrFail($this->web_id);
 
         $main_menu = Menu::with('children')
@@ -87,8 +88,16 @@ class MainController extends Controller
      * (GET)
      * Menampilkan halaman page berdasarkan slug
      */
-    function show_page($slug) : View {
+    function show_page($slug) : View|RedirectResponse {
         $data['web'] = Web::findOrFail($this->web_id);
+
+        $top_menu = Menu::with('children')
+                ->where('web_id', $this->web_id)
+                ->where('menu_placement', 'top')
+                ->orderBy('parent_id')
+                ->orderBy('menu_order')
+                ->get();
+        $data['top_menu_html'] = CustomHelpers::build_menu_main($top_menu);
 
         $main_menu = Menu::with('children')
                 ->where('web_id', $this->web_id)
@@ -119,8 +128,16 @@ class MainController extends Controller
      * (GET)
      * Menampilkan halaman post berdasarkan slug
      */
-    function show_post($slug) : View {
+    function show_post($slug) : View|RedirectResponse {
         $data['web'] = Web::findOrFail($this->web_id);
+
+        $top_menu = Menu::with('children')
+                ->where('web_id', $this->web_id)
+                ->where('menu_placement', 'top')
+                ->orderBy('parent_id')
+                ->orderBy('menu_order')
+                ->get();
+        $data['top_menu_html'] = CustomHelpers::build_menu_main($top_menu);
 
         $main_menu = Menu::with('children')
                 ->where('web_id', $this->web_id)
@@ -152,8 +169,16 @@ class MainController extends Controller
      * (GET)
      * Menampilkan halaman category
      */
-    function show_category($slug) : View {
+    function show_category($slug) : View|RedirectResponse {
         $data['web'] = Web::findOrFail($this->web_id);
+
+        $top_menu = Menu::with('children')
+                ->where('web_id', $this->web_id)
+                ->where('menu_placement', 'top')
+                ->orderBy('parent_id')
+                ->orderBy('menu_order')
+                ->get();
+        $data['top_menu_html'] = CustomHelpers::build_menu_main($top_menu);
 
         $main_menu = Menu::with('children')
                 ->where('web_id', $this->web_id)
@@ -187,8 +212,16 @@ class MainController extends Controller
      * (GET)
      * Menampilkan halaman search
      */
-    function show_search(Request $request) : View {
+    function show_search(Request $request) : View|RedirectResponse {
         $data['web'] = Web::findOrFail($this->web_id);
+
+        $top_menu = Menu::with('children')
+                ->where('web_id', $this->web_id)
+                ->where('menu_placement', 'top')
+                ->orderBy('parent_id')
+                ->orderBy('menu_order')
+                ->get();
+        $data['top_menu_html'] = CustomHelpers::build_menu_main($top_menu);
 
         $main_menu = Menu::with('children')
                 ->where('web_id', $this->web_id)
@@ -197,6 +230,7 @@ class MainController extends Controller
                 ->orderBy('menu_order')
                 ->get();
         $data['main_menu_html'] = CustomHelpers::build_menu_main($main_menu);
+
         $data['categories'] = Category::where('web_id', $this->web_id)
                         ->orderBy('name')
                         ->get();
