@@ -69,11 +69,11 @@ class MediaController extends Controller
             
             // Cek apakah file termasuk image
             if (strpos($file->getMimeType(), 'image/') === 0) {
-                $medium_path = 'uploads/' . Auth::user()->web_id . '/' . date('Y') . '/' . date('m') . '/' . $filename . '-800x800.' . $file->getClientOriginalExtension();        
-                $thumbnail_path = 'uploads/' . Auth::user()->web_id . '/' . date('Y') . '/' . date('m') . '/' . $filename . '-150x150.' . $file->getClientOriginalExtension();        
+                $medium_path = 'uploads/' . Auth::user()->web_id . '/' . date('Y') . '/' . date('m') . '/' . $filename . '-medium.' . $file->getClientOriginalExtension();        
+                $thumbnail_path = 'uploads/' . Auth::user()->web_id . '/' . date('Y') . '/' . date('m') . '/' . $filename . '-thumbnail.' . $file->getClientOriginalExtension();        
                 
-                ImageManager::gd()->read($file)->resizeDown(800,800)->save(public_path($medium_path));
-                ImageManager::gd()->read($file)->resizeDown(150,150)->save(public_path($thumbnail_path));
+                ImageManager::gd()->read($file)->scaleDown(width: 800)->save(public_path($medium_path));
+                ImageManager::gd()->read($file)->scaleDown(width: 150)->save(public_path($thumbnail_path));
                 
                 $insertArray['media_meta']['width'] = ImageManager::gd()->read($file)->width();
                 $insertArray['media_meta']['height'] = ImageManager::gd()->read($file)->height();
@@ -166,10 +166,10 @@ class MediaController extends Controller
             }
 
             $original_path = 'uploads/' . Auth::user()->web_id . '/' . date('Y') . '/' . date('m') . '/' . $filename . '.' . $file->getClientOriginalExtension();
-            $medium_path = 'uploads/' . Auth::user()->web_id . '/' . date('Y') . '/' . date('m') . '/' . $filename . '-800x800.' . $file->getClientOriginalExtension();        
-            $thumbnail_path = 'uploads/' . Auth::user()->web_id . '/' . date('Y') . '/' . date('m') . '/' . $filename . '-150x150.' . $file->getClientOriginalExtension();
-            ImageManager::gd()->read($file)->resizeDown(800,800)->save(public_path($medium_path));
-            ImageManager::gd()->read($file)->resizeDown(150,150)->save(public_path($thumbnail_path));
+            $medium_path = 'uploads/' . Auth::user()->web_id . '/' . date('Y') . '/' . date('m') . '/' . $filename . '-medium.' . $file->getClientOriginalExtension();        
+            $thumbnail_path = 'uploads/' . Auth::user()->web_id . '/' . date('Y') . '/' . date('m') . '/' . $filename . '-thumbnail.' . $file->getClientOriginalExtension();
+            ImageManager::gd()->read($file)->scaleDown(width: 800)->save(public_path($medium_path));
+            ImageManager::gd()->read($file)->scaleDown(width: 150)->save(public_path($thumbnail_path));
 
             $insertArray = [
                 'web_id' => Auth::user()->web_id,
@@ -218,7 +218,7 @@ class MediaController extends Controller
         }
 
         return response()->json([
-            'url' => asset($insertArray['media_meta']['filepath']['medium'])
+            'url' => asset($insertArray['media_meta']['filepath']['original'])
         ]);
     }
 }

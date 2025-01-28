@@ -26,9 +26,9 @@ class MainController extends Controller
             if ($web) {
                 $this->web_id = $web->id;
             }
+        } else{
+            $this->web_id = $request->get('web_id');
         }
-        
-        $this->web_id = $request->get('web_id');
     }
 
     /**

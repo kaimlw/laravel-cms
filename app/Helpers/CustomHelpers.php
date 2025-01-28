@@ -197,10 +197,10 @@ class CustomHelpers
       }
 
       $original_path = 'uploads/' . Auth::user()->web_id . '/' . date('Y') . '/' . date('m') . '/' . $filename . '.' . $file_request->getClientOriginalExtension();
-      $medium_path = 'uploads/' . Auth::user()->web_id . '/' . date('Y') . '/' . date('m') . '/' . $filename . '-800x800.' . $file_request->getClientOriginalExtension();        
-      $thumbnail_path = 'uploads/' . Auth::user()->web_id . '/' . date('Y') . '/' . date('m') . '/' . $filename . '-150x150.' . $file_request->getClientOriginalExtension();
-      ImageManager::gd()->read($file_request)->resizeDown(800,800)->save(public_path($medium_path));
-      ImageManager::gd()->read($file_request)->resizeDown(150,150)->save(public_path($thumbnail_path));
+      $medium_path = 'uploads/' . Auth::user()->web_id . '/' . date('Y') . '/' . date('m') . '/' . $filename . '-medium.' . $file_request->getClientOriginalExtension();        
+      $thumbnail_path = 'uploads/' . Auth::user()->web_id . '/' . date('Y') . '/' . date('m') . '/' . $filename . '-thumbnail.' . $file_request->getClientOriginalExtension();
+      ImageManager::gd()->read($file_request)->scaleDown(width: 800)->save(public_path($medium_path));
+      ImageManager::gd()->read($file_request)->scaleDown(width: 150)->save(public_path($thumbnail_path));
 
       $insertArray = [
           'web_id' => Auth::user()->web_id,

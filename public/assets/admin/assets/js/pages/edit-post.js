@@ -453,7 +453,7 @@ function insertImageFromMediaBrowser(mediaId) {
     })
     .then(res => res.json())
     .then(data => {
-        editor.execute( 'insertImage', { source: "/" + data.media_meta.filepath.medium } );
+        editor.execute( 'insertImage', { source: "/" + data.media_meta.filepath.original } );
     })
 }
 
