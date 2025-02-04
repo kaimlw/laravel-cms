@@ -21,6 +21,16 @@
 <body>
     <div id="auth">
         <div class="container">
+            @if (session('showAlert'))
+            <div class="alert alert-{{ session('showAlert')['type'] }} alert-dismissible show fade">
+                {{ session('showAlert')['msg'] }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            @endif
+        </div>
+        <div class="container">
             <div class="row">
                 <div class="col-md-5 col-sm-12 mx-auto">
                     <div class="card pt-4">

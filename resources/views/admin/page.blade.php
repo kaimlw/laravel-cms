@@ -61,7 +61,9 @@
                         <td>{{ $page->updated_at->format('d-m-Y') }}</td>
                         <td>{{ ucfirst($page->status) }}</td>
                         <td>
-                            <button class="btn btn-sm btn-primary"><i class="bi bi-eye-fill"></i></button>
+                            @if($page->status == 'publish')
+                            <a class="btn btn-sm btn-primary" href="{{ route('main.page', ['slug' => $page->slug]) }}"><i class="bi bi-eye-fill"></i></a>
+                            @endif
                             <a href="{{ route('admin.post.edit',['id' => $page->id]) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
                             <button class="btn btn-sm btn-danger" onclick="openHapusModal({{ $page->id }})"><i class="bi bi-trash-fill"></i></button>
                         </td>
