@@ -19,12 +19,16 @@ class checkSubdomain
         $host = $request->getHost();
         $host_parts = explode('.', $host);
 
+        if (Web::count() == 0) {
+            return redirect()->route('login')->with('showAlert', ['type' => 'danger', 'msg' => 'Web belum dibuat! Silahkan masuk sebagai Super Admin untuk membuat web.']);
+        }
+
         if (count($host_parts) >= 3) {
             $subdomain = $host_parts[0];
             $web = Web::where('subdomain', $subdomain)->first();
             if (!$web) {
-                // return redirect()->route('login');
-                return abort(404);
+                // return abort(404);
+                $web = Web::first();
             }
 
             $request->attributes->set('web_id', $web->id);
