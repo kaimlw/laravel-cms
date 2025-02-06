@@ -3,6 +3,7 @@
 @section('title', 'Media')
 
 @section('css-addOn')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" href="{{ asset('assets/vendor/simple-datatables/style.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-5.3.3/css/bootstrap.min.css') }}">
 <style>
@@ -27,6 +28,12 @@
     .media-card .media-filename{
         position: absolute;
         bottom: 0
+    }
+    .media-card img{
+        background: url({{ asset('assets/img/png_bg.jpg') }})
+    }
+    #detail_media img{
+        background: url({{ asset('assets/img/png_bg.jpg') }})
     }
 </style>
 @endsection
@@ -78,37 +85,35 @@
 <section class="section">
     <div class="card">
         <div class="card-body">
-            <div class="row">
-                <div class="col-md-8 col-sm-12 d-flex gap-3">
-                    <div class="file-filter-container d-flex gap-2">
-                        <fieldset class="form-group m-0">
-                            <select class="form-select" id="fileTypeSelect">
-                                <option value="all">All media items</option>
-                                <option value="image">Images</option>
-                                <option value="audio">Audio</option>
-                                <option value="video">Video</option>
-                                <option value="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-word.document.macroEnabled.12,application/vnd.ms-word.template.macroEnabled.12,application/vnd.oasis.opendocument.text,application/vnd.apple.pages,application/pdf,application/vnd.ms-xpsdocument,application/oxps,application/rtf,application/wordperfect,application/octet-stream">Documents</option>
-                                <option value="application/vnd.apple.numbers,application/vnd.oasis.opendocument.spreadsheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel.sheet.macroEnabled.12,application/vnd.ms-excel.sheet.binary.macroEnabled.12">Spreadsheets</option>
-                                <option value="application/x-gzip,application/rar,application/x-tar,application/zip,application/x-7z-compressed">Archives</option>
-                                <option value="unattached">Unattached</option>
-                                <option value="mine">Mine</option>
-                            </select>
-                        </fieldset>
-                        <fieldset class="form-group m-0">
-                            <select class="form-select" id="fileDateSelect">
-                                <option value="all">All dates</option>
-                                <option value="0">Januari 2024</option>
-                            </select>
-                        </fieldset>
+            <form method="GET">
+                <div class="row">
+                    <div class="col-md-10 col-sm-12 d-flex gap-3">
+                        <div class="file-filter-container d-flex gap-2">
+                            <fieldset class="form-group m-0">
+                                <select class="form-select" id="fileTypeSelect" name="file_type">
+                                    <option value="all" {{ $filter['file_type'] == 'all' ? 'selected' : '' }}>All media items</option>
+                                    <option value="image" {{ $filter['file_type'] == 'image' ? 'selected' : '' }}>Images</option>
+                                    <option value="documents" {{ $filter['file_type'] == 'documents' ? 'selected' : '' }}>Documents</option>
+                                    <option value="spreadsheets" {{ $filter['file_type'] == 'spreadsheets' ? 'selected' : '' }}>Spreadsheets</option>
+                                </select>
+                            </fieldset>
+                            <fieldset class="form-group m-0">
+                                <select class="form-select" id="fileDateSelect" name="file_date">
+                                    <option value="all">All dates</option>
+                                    @foreach ($media_date_group as $item)
+                                    <option value="{{ $item->month . "-" . $item->year }}" {{ $filter['file_date'] == $item->month . "-" . $item->year ? 'selected' : '' }}>{{ date("F Y", strtotime("01-" . $item->month . "-" . $item->year )) }}</option>
+                                    @endforeach
+                                </select>
+                            </fieldset>
+                            <div class="input-group" style="width: auto">
+                                <span class="input-group-text" id="media-search"><i class="bi bi-search"></i></span>
+                                <input type="text" class="form-control" name="file_search" placeholder="Cari media..." aria-label="Media Search" aria-describedby="media-search" value="{{ $filter['file_search'] }}">
+                            </div>
+                            <button class="btn btn-primary" type="submit">Terapkan</button>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-12">
-                    <div class="input-group">
-                        <span class="input-group-text" id="media-search"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" placeholder="Cari media..." aria-label="Media Search" aria-describedby="media-search">
-                    </div>
-                </div>
-            </div>
+            </form>
             
         </div>
     </div>
@@ -117,7 +122,7 @@
     <div class="card">
         <div class="card-body">
             @if (count($media))
-            <div class="row">
+            <div class="row" id="media_row">
                 @foreach ($media as $item)
                     <div class="col-lg-2 col-sm-3 col-5 p-0">
                         <div class="card m-0 me-1 mb-1 media-card" data-media-id="{{ $item->id }}" data-bs-toggle="modal" data-bs-target="#mediaDetailModal">
@@ -136,10 +141,18 @@
                         </div>
                     </div>
                 @endforeach
+                @if(count($media) < $media_count )
+                <div class="col-12 text-center">
+                    <button class="btn btn-primary btn-sm" id="btn_load">Load More</button>
+                    <div class="spinner-border spinner-border-sm d-none" role="status" id="load_spinner">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                @endif
             </div>
             <div class="row mt-3">
                 <div class="col-12 text-center">
-                    <small>Menampilkan {{ count($media) }} media</small>
+                    <small>Menampilkan <span id="displayed_media">{{ count($media) }}</span> media dari {{ $media_count }}</small>
                 </div>
             </div>
             @else
@@ -249,9 +262,11 @@
 @endsection
 
 @section('js-addOn')
+<script>
+    const site_url = "{{ $web->site_url }}";
+    const media_count = {{ $media_count }};
+    let displayed_media = {{ count($media) }};
+</script>
 <script src="{{ asset('assets/admin/assets/js/pages/media.js') }}"></script>
 <script src="{{ asset('assets/vendor/bootstrap-5.3.3/js/bootstrap.min.js') }}"></script>
-<script>
-    const site_url = "{{ $web->site_url }}"
-</script>
 @endsection

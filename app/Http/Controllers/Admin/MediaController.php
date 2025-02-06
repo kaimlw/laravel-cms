@@ -17,15 +17,76 @@ use Illuminate\Database\QueryException;
 
 class MediaController extends Controller
 {
+    protected $documentTypes = [
+        "image" => [
+            "image/jpeg",
+            "image/png",
+        ],
+        "spreadsheets" => [
+            "application/vnd.apple.numbers",
+            "application/vnd.oasis.opendocument.spreadsheet",
+            "application/vnd.ms-excel",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "application/vnd.ms-excel.sheet.macroEnabled.12",
+            "application/vnd.ms-excel.sheet.binary.macroEnabled.12",
+        ],
+        "documents" => [
+            "application/msword",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "application/vnd.ms-word.document.macroEnabled.12",
+            "application/vnd.ms-word.template.macroEnabled.12",
+            "application/vnd.oasis.opendocument.text",
+            "application/vnd.apple.pages",
+            "application/pdf",
+            "application/vnd.ms-xpsdocument",
+            "application/oxps",
+            "application/rtf",
+            "application/wordperfect",
+            "application/octet-stream",
+        ],
+    ];
+
     /**
      * (GET)
      * Menampilkan halaman media
      */
-    function index() : View {
+    function index(Request $request) : View {
         $data['web'] = Web::findOrFail(Auth::user()->web_id)->select('site_url')->first();
-        $data['media'] = Media::where('web_id', Auth::user()->web_id)
-                        ->orderBy('created_at', 'desc')
+
+        $media_query = Media::where('web_id', Auth::user()->web_id);
+        $data['filter'] = [
+            "file_type" => null,
+            "file_date" => null,
+            "file_search" => null,
+        ];
+        // If there is file_type request
+        if ($request->get('file_type') && $request->get('file_type') != 'all') {
+            $media_query = $media_query->whereIn('media_meta->mime_type', $this->documentTypes[$request->get('file_type')]);
+            $data['filter']['file_type'] = $request->get('file_type');
+        }
+        // If there is file_date request
+        if ($request->get('file_date') && $request->get('file_date') != 'all') {
+            $month = explode('-', $request->get('file_date'))[0]; 
+            $year = explode('-', $request->get('file_date'))[1]; 
+            $media_query = $media_query->whereYear('created_at', $year)->whereMonth('created_at', $month);
+            $data['filter']['file_date'] = $request->get('file_date');
+        }
+        // If there is file_search request
+        if ($request->get('file_search') && $request->get('file_search') != null) {
+            $media_query = $media_query->where('filename', "LIKE", "%" . $request->get('file_search') . '%');
+            $data['filter']['file_search'] = $request->get('file_search');
+        }
+        $data['media'] = $media_query->orderBy('created_at', 'desc')
+                        ->limit(30)
                         ->get();
+
+        $data['media_count'] = $media_query->count();
+        $data['media_date_group'] = Media::selectRaw("YEAR(created_at) as year, MONTH(created_at) as month")
+                                    ->where('web_id', Auth::user()->web_id)
+                                    ->groupBy('year', 'month')
+                                    ->orderBy('year', 'desc')
+                                    ->orderBy('month','desc')
+                                    ->get();
 
         return view('admin.media', $data);
     }
@@ -136,6 +197,36 @@ class MediaController extends Controller
         } else{
             $media = Media::findOrFail($id);
         }
+
+        return response()->json($media);
+    }
+
+    /**
+     * (GET)
+     * Mengembalikan data media per offset
+     */
+    function media_load(Request $request) : JsonResponse {
+        $media_query = Media::where('web_id', Auth::user()->web_id);
+        // If there is file_type request
+        if ($request->post('file_type') && $request->post('file_type') != 'all') {
+            $media_query = $media_query->whereIn('media_meta->mime_type', $this->documentTypes[$request->get('file_type')]);
+        }
+        // If there is file_date request
+        if ($request->post('file_date') && $request->post('file_date') != 'all') {
+            $month = explode('-', $request->post('file_date'))[0]; 
+            $year = explode('-', $request->post('file_date'))[1]; 
+            $media_query = $media_query->whereYear('created_at', $year)->whereMonth('created_at', $month);
+        }
+        // If there is file_search request
+        if ($request->post('file_search') && $request->post('file_search') != null) {
+            $media_query = $media_query->where('filename', "LIKE", "%" . $request->post('file_search') . '%');
+        }
+
+        $media = $media_query
+                ->offset($request->offset)
+                ->limit(10)
+                ->orderBy('created_at', 'desc')
+                ->get();
 
         return response()->json($media);
     }

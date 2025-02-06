@@ -122,6 +122,7 @@ Route::middleware('auth')->group(function(){
             Route::delete('/cms-admin/media/{id}', 'destroy')->name('admin.media.delete');
             Route::get('/cms-admin/media/{id}', 'media_get')->name('admin.media.get');
             Route::post('/cms-admin/media/upload', 'upload_image')->name('admin.media.upload');
+            Route::post('/cms-admin/media/load', 'media_load')->name('admin.media.load');
         });
 
         /**
