@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helpers\CustomHelpers;
+use App\Models\Web;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Media;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Helpers\CustomHelpers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
-use App\Models\Media;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;
@@ -24,6 +25,8 @@ class PostController extends Controller
      * Menampilkan halaman post
      */
     function index(Request $request) : View {
+        $data['web'] = Web::findOrFail(Auth::user()->web_id)->select('site_url')->first();
+
         $data['post_type'] = $request->query('type');
         // Jika terdapat query = page, tampilkan view page
         // Jika terdapat query = post atau tanpa query, tampilkan view post
@@ -88,6 +91,7 @@ class PostController extends Controller
      * Menampilkan halaman edit post
      */
     function edit($id) : View {
+        $data['web'] = Web::findOrFail(Auth::user()->web_id)->select('site_url')->first();
         $data['post'] = Post::findOrFail($id);
         $data['post_categories'] = $data['post']->categories;
         $data['type'] = $data['post']->type;

@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Web;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +23,8 @@ class MenuController extends Controller
      * Menampilkan halaman menu
      */
     function index(Request $request) : View {
+        $data['web'] = Web::findOrFail(Auth::user()->web_id)->select('site_url')->first();
+        
         $data['menu_placement'] = 'main';
         // Jika ada request select menu, tampilkan menu sesuai request
         if ($request->get('select_menu')) {

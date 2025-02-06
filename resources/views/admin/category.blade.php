@@ -55,12 +55,14 @@
                             <td>{{ $category->description ? $category->description : '-' }}</td>
                             <td>{{ $category->slug }}</td>
                             <td>
+                                @if(!in_array($category->slug, ['uncategorized', 'latest-news']))
                                 <button class="btn btn-sm btn-warning" onclick="openEditModal({{ $category->id }})">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
                                 <button class="btn btn-sm btn-danger" onclick="openHapusModal({{ $category->id }})">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -239,6 +241,7 @@
 
 
 <script>
+    const site_url = "{{ $web->site_url }}"
     @if ($errors->edit->any())
     $('#editKategoriModal').modal('show')
     @endif

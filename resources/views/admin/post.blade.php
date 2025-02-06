@@ -106,5 +106,7 @@
 @section('js-addOn')
 <script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
 <script src="{{ asset('assets/admin/assets/js/pages/posts.js') }}"></script>
-
+<script>
+const site_url = "{{ $web->site_url }}"
+</script>
 @endsection

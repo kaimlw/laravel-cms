@@ -10,14 +10,14 @@ let parentCategoryEditSelectOptions = parentCategoryEditSelect.children
 
 // FUNCTION
 function openEditModal(id){
-    fetch(`/cms-admin/category/${id}`,{
+    fetch(`${site_url}/cms-admin/category/${id}`,{
         method: 'GET',
         credentials: 'same-origin'
     })
     .then((res)=>res.json())
     .then((data)=>{
         $('#editKategoriModal').modal('show')
-        $('#formEdit').attr('action',`/cms-admin/category/${id}`)
+        $('#formEdit').attr('action',`${site_url}/cms-admin/category/${id}`)
         document.querySelector('#formEdit #categoryEdit').value = data.id
         kategoriEditInput.value = data.name;
         deskripsiEditInput.value = data.description;
@@ -55,5 +55,5 @@ function openEditModal(id){
 
 function openHapusModal(id){
     $('#hapusKategoriModal').modal('show')
-    $('#formHapus').attr('action',`/cms-admin/category/${id}`)
+    $('#formHapus').attr('action',`${site_url}/cms-admin/category/${id}`)
 }

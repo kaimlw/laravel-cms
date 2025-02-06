@@ -118,6 +118,17 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
+                                        <label for="siteWeb">Site Address (URL)</label>
+                                        <input type="site" id="siteWeb" class="form-control @error('site_web') is-invalid @enderror" name="site_web" placeholder="Masukkan site Web" value="{{ $web->site_url }}">
+                                        @error('site_web')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
                                         <label for="">Banner Default Page dan Post</label>
                                         <div class="input-group mb-3">
                                             <button class="btn btn-outline-primary" type="button" id="banner_default_btn">Buka Media Browser</button>
@@ -171,4 +182,7 @@
 @section('js-addOn')
 <script src="{{ asset('assets/vendor/bootstrap-5.3.3/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('assets/admin/assets/js/pages/setting.js') }}"></script>
+<script>
+const site_url = "{{ $web->site_url }}"
+</script>
 @endsection

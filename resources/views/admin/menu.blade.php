@@ -364,5 +364,8 @@
 @endsection
 
 @section('js-addOn')
+<script>
+const site_url = "{{ $web->site_url }}"
+</script>
 <script src="{{ asset('assets/admin/assets/js/pages/menu.js') }}"></script>
 @endsection

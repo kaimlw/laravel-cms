@@ -58,13 +58,8 @@
                                     <td>{{ $web->subdomain }}</td>
                                     <td>{{ $web->email }}</td>
                                     <td>{{ $web->phone_number }}</td>
-                                    @php
-                                        $main_url_explode = explode("/", route('main'));
-                                        $length_url = count($main_url_explode);
-                                        $subdomain_url = $web->subdomain . '.' . $main_url_explode[$length_url-1]
-                                    @endphp
                                     <td>
-                                        <a href="https://{{ $subdomain_url }}" class="btn btn-success"><i class="bi bi-eye-fill"></i> Lihat</a>
+                                        <a href="{{ $web->site_url }}" class="btn btn-success"><i class="bi bi-eye-fill"></i> Lihat</a>
                                     </td>
                                 </tr>
                                 @endforeach

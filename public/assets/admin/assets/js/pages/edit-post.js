@@ -179,7 +179,7 @@ ClassicEditor
             contentToolbar: [ 'tableColumn', 'tableRow', 'mergeTableCells' ]
         },
         simpleUpload: {
-            uploadUrl: '/cms-admin/media/upload',
+            uploadUrl: `${site_url}/cms-admin/media/upload`,
 
             // Enable the XMLHttpRequest.withCredentials property.
             withCredentials: true,
@@ -241,7 +241,7 @@ if (kategoriChecks) {
 // Save Content Function
 function saveContentChanges(editor){
     btnSave.setAttribute('disabled', true)
-    fetch(`/cms-admin/post/${postId}`,{
+    fetch(`${site_url}/cms-admin/post/${postId}`,{
         method: 'PUT',
         headers: {
             'Accept':'application/json',
@@ -318,7 +318,7 @@ function saveContentChanges(editor){
 // Publish Post Function
 function publishPost(){
     btnPublish.setAttribute('disabled', true);
-    fetch(`/cms-admin/post/${postId}/publish`,{
+    fetch(`${site_url}/cms-admin/post/${postId}/publish`,{
         method: 'PUT',
         credentials: 'same-origin',
         body: JSON.stringify({
@@ -395,7 +395,7 @@ function addChangeListenerToActivateSave(element){
 }
 
 function openMediaBrowser() {
-    fetch(`/cms-admin/media/all`,{
+    fetch(`${site_url}/cms-admin/media/all`,{
         method: 'GET',
         headers: {
             'Accept':'application/json',
@@ -423,8 +423,8 @@ function openMediaBrowser() {
             media_item_element.classList.add('media-item');
             media_item_element.setAttribute('data-id', item.id)
             media_item_element.innerHTML = `
-                <div class="thumbnail">
-                    <img src="/${item.media_meta.filepath.thumbnail}" alt="" class="img-fluid">
+                <div class="thumbnail overflow-hidden">
+                    <img src="${site_url}/${item.media_meta.filepath.thumbnail}" alt="" class="img-fluid">
                 </div>
             `
             media_wrapper.insertAdjacentElement('beforeend', media_item_element)
@@ -440,10 +440,23 @@ function openMediaBrowser() {
 
         mediaBrowserModal.show()
     })
+    .catch(err => {
+        console.log(err);
+        
+        let alert = `
+            <div class="alert alert-danger alert-dismissible show fade">
+                Terjadi kesalahan! Coba beberapa saat lagi.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            `
+        $('.main-content').prepend(alert)
+    })
 }
 
 function insertImageFromMediaBrowser(mediaId) {
-    fetch(`/cms-admin/media/${mediaId}`,{
+    fetch(`${site_url}/cms-admin/media/${mediaId}`,{
         method: 'GET',
         headers: {
             'Accept':'application/json',
@@ -453,7 +466,20 @@ function insertImageFromMediaBrowser(mediaId) {
     })
     .then(res => res.json())
     .then(data => {
-        editor.execute( 'insertImage', { source: "/" + data.media_meta.filepath.original } );
+        editor.execute( 'insertImage', { source: site_url + "/" + data.media_meta.filepath.original } );
+    })
+    .catch(err => {
+        console.log(err);
+        
+        let alert = `
+            <div class="alert alert-danger alert-dismissible show fade">
+                Terjadi kesalahan! Coba beberapa saat lagi.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            `
+        $('.main-content').prepend(alert)
     })
 }
 
@@ -466,7 +492,7 @@ function checkMediaSelected() {
 }
 
 function setBannerFromMedia(mediaId) {
-    fetch(`/cms-admin/post/${postId}/banner-media`,{
+    fetch(`${site_url}/cms-admin/post/${postId}/banner-media`,{
         method: 'POST',
         headers: {
             'Accept':'application/json',
@@ -481,7 +507,7 @@ function setBannerFromMedia(mediaId) {
     .then(res => res.json())
     .then(data => {
         let element = `
-            <img src="/${data.img_path}" style="height:100px; width:100%" loading="lazy">
+            <img src="${site_url}/${data.img_path}" style="height:100px; width:100%" loading="lazy">
             <button class="btn-danger btn btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#hapusBannerModal"><i class="bi bi-trash-fill"></i></button>
         `
         document.querySelector(`#banner_post_preview`).innerHTML = element;
@@ -497,6 +523,8 @@ function setBannerFromMedia(mediaId) {
         $('.main-content').prepend(alert)
     })
     .catch(err => {
+        console.log(err);
+        
         let alert = `
             <div class="alert alert-danger alert-dismissible show fade">
                 ${err.msg}
@@ -505,7 +533,7 @@ function setBannerFromMedia(mediaId) {
                 </button>
             </div>
             `
-            $('.main-content').prepend(alert)
+        $('.main-content').prepend(alert)
     })
 }
 
@@ -519,7 +547,7 @@ function uploadMedia(file) {
     formData.append('upload', file);
 
     const xhr = new XMLHttpRequest()
-    xhr.open('POST', `/cms-admin/post/${postId}/banner`, true)
+    xhr.open('POST', `${site_url}/cms-admin/post/${postId}/banner`, true)
     xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').getAttribute('content'))
     xhr.withCredentials = true
     xhr.upload.addEventListener('progress', (event) => {
@@ -534,7 +562,7 @@ function uploadMedia(file) {
 
         if (xhr.status == 200) {
             let element = `
-                <img src="/${data.img_path}" style="height:100px; width:100%" loading="lazy">
+                <img src="${site_url}/${data.img_path}" style="height:100px; width:100%" loading="lazy">
                 <button class="btn-danger btn btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#hapusBannerModal"><i class="bi bi-trash-fill"></i></button>
             `
             document.querySelector(`#banner_post_preview`).innerHTML = element;
@@ -576,7 +604,7 @@ function toggleBannerUploadProgress(progressValue) {
 }
 
 function deleteBanner() {
-    fetch(`/cms-admin/post/${postId}/banner`,{
+    fetch(`${site_url}/cms-admin/post/${postId}/banner`,{
         method: 'DELETE',
         headers: {
             'Accept':'application/json',
@@ -600,6 +628,8 @@ function deleteBanner() {
         banner_post_delete_modal.hide()
     })
     .catch(err => {
+        console.log(err);
+        
         let alert = `
             <div class="alert alert-danger alert-dismissible show fade">
                 Terjadi kesalahan! Coba beberapa saat lagi.

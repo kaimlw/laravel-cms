@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Web;
 use App\Models\Media;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
-use Illuminate\Database\QueryException;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Database\QueryException;
 
 class MediaController extends Controller
 {
@@ -22,6 +22,7 @@ class MediaController extends Controller
      * Menampilkan halaman media
      */
     function index() : View {
+        $data['web'] = Web::findOrFail(Auth::user()->web_id)->select('site_url')->first();
         $data['media'] = Media::where('web_id', Auth::user()->web_id)
                         ->orderBy('created_at', 'desc')
                         ->get();

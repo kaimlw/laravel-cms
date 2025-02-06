@@ -30,7 +30,8 @@ class SettingController extends Controller
         $request->validate([
             'nama_web' => 'required',
             'telepon_web' => 'required',
-            'email_web' => 'email|required'
+            'email_web' => 'email|required',
+            'site_web' => 'required',
         ]);
 
         $web_id = decrypt(base64_decode($id));
@@ -38,7 +39,8 @@ class SettingController extends Controller
         $update_array = [
             'name' => $request->nama_web,
             'phone_number' => $request->telepon_web,
-            'email' => $request->email_web
+            'email' => $request->email_web,
+            'site_url' => $request->site_web,
         ];
 
         // Jika user mengganti default banner dari upload

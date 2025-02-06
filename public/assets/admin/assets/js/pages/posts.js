@@ -15,7 +15,7 @@ btnNewPage.addEventListener('click', createNewPage)
 // -----------FUNCTION------------
 function createNewPage(){
     document.querySelector('#btnNewPage').setAttribute('disable',true)
-    fetch('/cms-admin/post',{
+    fetch(`${site_url}/cms-admin/post`,{
         method: 'POST',
         headers: {
             "Content-type": "application/json",
@@ -28,9 +28,11 @@ function createNewPage(){
     })
     .then((res)=>res.json())
     .then((data)=>{
-        window.location.href = `/cms-admin/post/${data.id}`
+        window.location.href = `${site_url}/cms-admin/post/${data.id}`
     })
     .catch((err)=>{
+        console.log(err);
+        
         document.querySelector('#btnNewPage').removeAttribute('disabled');
         let alert = `
             <div class="alert alert-danger alert-dismissible show fade">
@@ -46,5 +48,5 @@ function createNewPage(){
 
 function openHapusModal(id){
     $('#hapusPageModal').modal('show')
-    $('#formHapus').attr('action',`/cms-admin/post/${id}`)
+    $('#formHapus').attr('action',`${site_url}/cms-admin/post/${id}`)
 }

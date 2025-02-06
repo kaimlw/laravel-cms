@@ -9,14 +9,14 @@ let subdomainEditInput = document.querySelector('#formEdit #subDomainInput');
 
 // FUNCTION
 function openEditModal(id){
-    fetch(`/cms-admin/web/${id}`,{
+    fetch(`${site_url}/cms-admin/web/${id}`,{
         method: 'GET',
         credentials: 'same-origin'
     })
     .then((res)=>res.json())
     .then((data)=>{
         $('#editWebModal').modal('show')
-        $('#formEdit').attr('action',`/cms-admin/web/${id}`)
+        $('#formEdit').attr('action',`${site_url}/cms-admin/web/${id}`)
 
         document.querySelector('#webEdit').value = data.encrypted_id
         namaWebEditInput.value = data.name;
@@ -42,5 +42,5 @@ function openEditModal(id){
 
 function openHapusModal(id){
     $('#hapusWebModal').modal('show')
-    $('#formHapus').attr('action',`/cms-admin/web/${id}`)
+    $('#formHapus').attr('action',`${site_url}/cms-admin/web/${id}`)
 }

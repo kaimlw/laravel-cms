@@ -117,19 +117,21 @@
     <div class="card">
         <div class="card-body">
             @if (count($media))
-            <div class="row gap-3">
+            <div class="row">
                 @foreach ($media as $item)
                     <div class="col-lg-2 col-sm-3 col-5 p-0">
-                        <div class="card m-0 media-card" data-media-id="{{ $item->id }}" data-bs-toggle="modal" data-bs-target="#mediaDetailModal">
-                            <div class="card-body p-1 text-center">
-                                @if (strpos($item->media_meta['mime_type'], 'image/') === 0)
-                                    <img src="{{ asset($item->media_meta['filepath']['thumbnail']) }}" class="img-fluid">
-                                @else
-                                    <i class="bi bi-file-earmark-fill fs-1"></i>
-                                    <div class="media-filename">
-                                        {{ strlen($item->filename) > 30 ? substr($item->filename, 0, 20) . ' ... ' . substr($item->filename, strlen($item->filename)-5, strlen($item->filename)) : $item->filename }}
-                                    </div>
-                                @endif
+                        <div class="card m-0 me-1 mb-1 media-card" data-media-id="{{ $item->id }}" data-bs-toggle="modal" data-bs-target="#mediaDetailModal">
+                            <div class="card-body p-1 text-center h-100 w-100">
+                                <div class="overflow-hidden h-100 w-100">
+                                    @if (strpos($item->media_meta['mime_type'], 'image/') === 0)
+                                        <img src="{{ asset($item->media_meta['filepath']['thumbnail']) }}" class="img-fluid">
+                                    @else
+                                        <i class="bi bi-file-earmark-fill fs-1"></i>
+                                        <div class="media-filename">
+                                            {{ strlen($item->filename) > 30 ? substr($item->filename, 0, 20) . ' ... ' . substr($item->filename, strlen($item->filename)-5, strlen($item->filename)) : $item->filename }}
+                                        </div>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -249,14 +251,7 @@
 @section('js-addOn')
 <script src="{{ asset('assets/admin/assets/js/pages/media.js') }}"></script>
 <script src="{{ asset('assets/vendor/bootstrap-5.3.3/js/bootstrap.min.js') }}"></script>
-
 <script>
-    @if ($errors->edit->any())
-    $('#editUserModal').modal('show')
-    @endif
-
-    @if ($errors->tambah->any())
-    $('#tambahUserModal').modal('show')
-    @endif
+    const site_url = "{{ $web->site_url }}"
 </script>
 @endsection

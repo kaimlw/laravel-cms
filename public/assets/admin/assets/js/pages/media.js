@@ -17,7 +17,7 @@ let btn_download_media = document.querySelector('#btn_download_media')
 
 // FUNCTION
 function openMediaDetailModal(id){
-    fetch(`/cms-admin/media/${id}`,{
+    fetch(`${site_url}/cms-admin/media/${id}`,{
         method: 'GET',
         credentials: 'same-origin'
     })
@@ -29,7 +29,7 @@ function openMediaDetailModal(id){
         if (data.media_meta.mime_type.includes('image')) {
             // Menampilkan gambar
             detail_media.innerHTML = `
-                <img src="/${data.media_meta.filepath.original}" class="img-fluid" style="height: 500px">
+                <img src="${site_url}/${data.media_meta.filepath.original}" class="img-fluid" style="max-height: 500px">
             `
             // Menampilkan detail dimensi
             detail_dimensi_img.innerHTML = `<b>Dimensi Gambar:</b> ${data.media_meta.width} &times ${data.media_meta.height} `
@@ -52,7 +52,7 @@ function openMediaDetailModal(id){
         detail_ukuran_file.innerHTML = `<b>Ukuran File:</b> ${formatBytes(data.media_meta.size, 0)} `
 
         btn_hapus_media.addEventListener('click', function(){openHapusModal(id)})
-        btn_download_media.setAttribute('href', "/" + data.media_meta.filepath.original)
+        btn_download_media.setAttribute('href', site_url + "/" + data.media_meta.filepath.original)
 
         $('.invalid-feedback').remove();
         $('.is-invalid').removeClass('is-invalid')
@@ -72,7 +72,7 @@ function openMediaDetailModal(id){
 
 function openHapusModal(id){
     $('#hapusMediaModal').modal('show')
-    $('#formHapus').attr('action',`/cms-admin/media/${id}`)
+    $('#formHapus').attr('action',`${site_url}/cms-admin/media/${id}`)
 }
 
 function formatBytes(bytes, decimals = 2) {

@@ -72,7 +72,7 @@
             <button class="btn btn-primary btn-sm" id="btnPublish"><i class="bi bi-globe2"></i> Publish</button>
             @endif
         </div>
-        <button class="btn btn-success btn-sm" id="btnInsertImage" data-bs-toggle="modal" data-bs-target="#mediaBrowserModal"><i class="bi bi-images"></i> Insert Image From Media</button>
+        <button class="btn btn-success btn-sm" id="btnInsertImage"><i class="bi bi-images"></i> Insert Image From Media</button>
     </div>
     <div id="editor">
         {!! $post->content !!}
@@ -102,12 +102,8 @@
 
 @section('js-addOn')
 <script>
-    let post_id = {{ $post->id }}
-    let post_type = '{{ $post->type }}'
+    const site_url = "{{ $web->site_url }}"
 </script>
 <script src="{{ asset('assets/vendor/bootstrap-5.3.3/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('assets/admin/assets/js/pages/edit-post.js') }}" type="module"></script>
-<script>
-    
-</script>
 @endsection

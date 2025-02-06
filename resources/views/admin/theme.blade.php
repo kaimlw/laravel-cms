@@ -366,6 +366,9 @@
 @endsection
 
 @section('js-addOn')
+<script>
+const site_url = "{{ $web->site_url }}"
+</script>
 <script src="{{ asset('assets/vendor/bootstrap-5.3.3/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('assets/admin/assets/js/pages/theme.js') }}"></script>
 @endsection

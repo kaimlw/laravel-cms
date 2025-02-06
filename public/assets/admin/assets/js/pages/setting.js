@@ -16,13 +16,15 @@ document.querySelector('#btnMediaPilih').addEventListener('click', function(){
 })
 
 // Hapus Banner Post
-document.querySelector('#btn_hapus_banner_post').addEventListener('click', function(){
-    hapusBannerPost(web_id);
-})
+if (document.querySelector('#btn_hapus_banner_post')) {
+    document.querySelector('#btn_hapus_banner_post').addEventListener('click', function(){
+        hapusBannerPost(web_id);
+    })
+}
 
 // FUNCTION
 function openMediaBrowser() {
-  fetch(`/cms-admin/media/all`,{
+  fetch(`${site_url}/cms-admin/media/all`,{
       method: 'GET',
       headers: {
           'Accept':'application/json',
@@ -67,6 +69,17 @@ function openMediaBrowser() {
 
       mediaBrowserModal.show()
   })
+  .catch(err => {
+    let alert = `
+        <div class="alert alert-danger alert-dismissible show fade">
+            Terjadi kesalahan! Coba beberapa saat lagi.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    `
+    $('.main-content').prepend(alert)
+  })
 }
 
 function checkMediaSelected() {
@@ -78,7 +91,7 @@ function checkMediaSelected() {
 }
 
 function insertImageFromMediaBrowser(mediaId) {
-  fetch(`/cms-admin/media/${mediaId}`,{
+  fetch(`${site_url}/cms-admin/media/${mediaId}`,{
       method: 'GET',
       headers: {
           'Accept':'application/json',
@@ -94,7 +107,7 @@ function insertImageFromMediaBrowser(mediaId) {
 }
 
 function hapusBannerPost(web_id){
-  fetch(`/cms-admin/setting/${web_id}/banner-null`,{
+  fetch(`${site_url}/cms-admin/setting/${web_id}/banner-null`,{
     method: 'PUT',
     credentials: 'same-origin',
     body: JSON.stringify({

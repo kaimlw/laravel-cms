@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helpers\CustomHelpers;
+use App\Models\Web;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Helpers\CustomHelpers;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 
@@ -19,6 +20,7 @@ class CategoryController extends Controller
      * Menampilkan halaman kategori
      */
     function index() : View {
+        $data['web'] = Web::findOrFail(Auth::user()->web_id)->select('site_url')->first();
         $data['categories'] = Category::select('id','name', 'slug', 'description', 'parent')
                             ->where('web_id', Auth::user()->web_id)
                             ->get();

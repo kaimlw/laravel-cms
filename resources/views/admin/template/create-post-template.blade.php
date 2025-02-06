@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title> @yield('title') - Web Desa</title>
+    <title> @yield('title') | CMS FKIP</title>
 
     {{-- Bootstrap --}}
     <link rel="stylesheet" href="{{ asset('assets/admin/assets/css/bootstrap.css') }}">

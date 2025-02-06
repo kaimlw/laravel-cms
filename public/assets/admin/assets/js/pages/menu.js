@@ -53,14 +53,14 @@ function addChangeListenerToRadiosSelect(radioSelect,titleInput,slugInput){
 }
 
 function openEditModal(id){
-    fetch(`/cms-admin/menu/${id}`,{
+    fetch(`${site_url}/cms-admin/menu/${id}`,{
         method: 'GET',
         credentials: 'same-origin'
     })
     .then((res)=>res.json())
     .then((data)=>{
         $('#editMenuItemModal').modal('show')
-        $('#formEdit').attr('action',`/cms-admin/menu/${id}`)
+        $('#formEdit').attr('action',`${site_url}/cms-admin/menu/${id}`)
         
         let parentEditSelectChildren = parentEditSelect.children
 
@@ -85,6 +85,8 @@ function openEditModal(id){
         $('.is-invalid').removeClass('is-invalid')
     })
     .catch((err)=>{
+        console.log(err);
+        
         let alert = `
             <div class="alert alert-danger alert-dismissible show fade">
                 Terjadi kesalahan! Coba beberapa saat lagi.
@@ -99,7 +101,7 @@ function openEditModal(id){
 
 function openHapusModal(id){
     $('#hapusMenuModal').modal('show')
-    $('#formHapus').attr('action',`/cms-admin/menu/${id}`)
+    $('#formHapus').attr('action',`${site_url}/cms-admin/menu/${id}`)
 }
 
 function checksSelected(selectElements){

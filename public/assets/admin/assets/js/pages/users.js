@@ -11,14 +11,14 @@ let roleEditSelect = document.querySelector('#formEdit #roleSelect');
 
 // FUNCTION
 function openEditModal(id){
-    fetch(`/cms-admin/user/${id}`,{
+    fetch(`${site_url}/cms-admin/user/${id}`,{
         method: 'GET',
         credentials: 'same-origin'
     })
     .then((res)=>res.json())
     .then((data)=>{
         $('#editUserModal').modal('show')
-        $('#formEdit').attr('action',`/cms-admin/user/${id}`)
+        $('#formEdit').attr('action',`${site_url}/cms-admin/user/${id}`)
 
         document.querySelector('#formEdit #userEdit').value = data.encrypted_id
         usernameEditInput.value = data.username;
@@ -30,6 +30,8 @@ function openEditModal(id){
         $('.is-invalid').removeClass('is-invalid')
     })
     .catch((err)=>{
+        console.log(err);
+        
         let alert = `
             <div class="alert alert-danger alert-dismissible show fade">
                 Terjadi kesalahan! Coba beberapa saat lagi.
@@ -44,5 +46,5 @@ function openEditModal(id){
 
 function openHapusModal(id){
     $('#hapusUserModal').modal('show')
-    $('#formHapus').attr('action',`/cms-admin/user/${id}`)
+    $('#formHapus').attr('action',`${site_url}/cms-admin/user/${id}`)
 }

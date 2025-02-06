@@ -103,7 +103,7 @@ document.querySelectorAll('.partnership-slide .btn-hapus').forEach(el => {
 
 // FUNCTION
 function openMediaBrowser(section) {
-  fetch(`/cms-admin/media/all`,{
+  fetch(`${site_url}/cms-admin/media/all`,{
       method: 'GET',
       headers: {
           'Accept':'application/json',
@@ -132,7 +132,7 @@ function openMediaBrowser(section) {
           media_item_element.setAttribute('data-id', item.id)
           media_item_element.innerHTML = `
               <div class="thumbnail">
-                  <img src="/${item.media_meta.filepath.thumbnail}" alt="" class="img-fluid">
+                  <img src="${site_url}/${item.media_meta.filepath.thumbnail}" alt="" class="img-fluid">
               </div>
           `
           media_wrapper.insertAdjacentElement('beforeend', media_item_element)
@@ -148,6 +148,19 @@ function openMediaBrowser(section) {
 
       mediaBrowserModal.show()
   })
+  .catch(err => {
+    console.log(err);
+    
+    let alert = `
+            <div class="alert alert-danger alert-dismissible show fade">
+                Terjadi Kesalahan! Coba beberapa saat lagi.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+        `
+    $('.main-content').prepend(alert)
+  })
 }
 
 function checkMediaSelected() {
@@ -159,7 +172,7 @@ function checkMediaSelected() {
 }
 
 function insertMainSlideFromMediaBrowser(mediaId) {
-    fetch(`/cms-admin/theme/main-slide/${mediaId}`,{
+    fetch(`${site_url}/cms-admin/theme/main-slide/${mediaId}`,{
         method: 'POST',
         headers: {
             'Accept':'application/json',
@@ -173,7 +186,7 @@ function insertMainSlideFromMediaBrowser(mediaId) {
         let element = `
             <li class="slide-item main-slide" data-id="${data.slide_id}">
                 <button class="btn btn-hapus" data-id="${data.slide_id}" data-section="main-slide"><i class="bi bi-trash-fill"></i></button>
-                <img class="img-fluid rounded-2" src="/${data.img_path}">
+                <img class="img-fluid rounded-2" src="${site_url}/${data.img_path}">
             </li>
         `
         document.querySelector(`#main-slide`).insertAdjacentHTML('beforeend', element)
@@ -205,7 +218,7 @@ function insertMainSlideFromMediaBrowser(mediaId) {
 }
 
 function insertAgendaSlideFromMediaBrowser(mediaId) {
-    fetch(`/cms-admin/theme/agenda-slide/${mediaId}`,{
+    fetch(`${site_url}/cms-admin/theme/agenda-slide/${mediaId}`,{
         method: 'POST',
         headers: {
             'Accept':'application/json',
@@ -219,7 +232,7 @@ function insertAgendaSlideFromMediaBrowser(mediaId) {
         let element = `
             <li class="slide-item agenda-slide" data-id="${data.slide_id}">
                 <button class="btn btn-hapus" data-id="${data.slide_id}" data-section="agenda-slide"><i class="bi bi-trash-fill"></i></button>
-                <img class="img-fluid rounded-2" src="/${data.img_path}">
+                <img class="img-fluid rounded-2" src="${site_url}/${data.img_path}">
             </li>
         `
         document.querySelector(`#agenda-slide`).insertAdjacentHTML('beforeend', element)
@@ -251,7 +264,7 @@ function insertAgendaSlideFromMediaBrowser(mediaId) {
 }
 
 function insertGallerySlideFromMediaBrowser(mediaId) {
-    fetch(`/cms-admin/theme/gallery-slide/${mediaId}`,{
+    fetch(`${site_url}/cms-admin/theme/gallery-slide/${mediaId}`,{
         method: 'POST',
         headers: {
             'Accept':'application/json',
@@ -265,7 +278,7 @@ function insertGallerySlideFromMediaBrowser(mediaId) {
         let element = `
             <li class="slide-item gallery-slide" data-id="${data.slide_id}">
                 <button class="btn btn-hapus" data-id="${data.slide_id}" data-section="gallery-slide"><i class="bi bi-trash-fill"></i></button>
-                <img class="img-fluid rounded-2" src="/${data.img_path}">
+                <img class="img-fluid rounded-2" src="${site_url}/${data.img_path}">
             </li>
         `
         document.querySelector(`#gallery-slide`).insertAdjacentHTML('beforeend', element)
@@ -297,7 +310,7 @@ function insertGallerySlideFromMediaBrowser(mediaId) {
 }
 
 function insertPartnershipSlideFromMediaBrowser(mediaId) {
-    fetch(`/cms-admin/theme/partnership-slide/${mediaId}`,{
+    fetch(`${site_url}/cms-admin/theme/partnership-slide/${mediaId}`,{
         method: 'POST',
         headers: {
             'Accept':'application/json',
@@ -311,7 +324,7 @@ function insertPartnershipSlideFromMediaBrowser(mediaId) {
         let element = `
             <li class="slide-item partnership-slide" data-id="${data.slide_id}">
                 <button class="btn btn-hapus" data-id="${data.slide_id}" data-section="partnership-slide"><i class="bi bi-trash-fill"></i></button>
-                <img class="img-fluid rounded-2" src="/${data.img_path}">
+                <img class="img-fluid rounded-2" src="${site_url}/${data.img_path}">
             </li>
         `
         document.querySelector(`#partnership-slide`).insertAdjacentHTML('beforeend', element)
@@ -352,7 +365,7 @@ function uploadImage(section, file) {
     formData.append('upload', file);
 
     const xhr = new XMLHttpRequest()
-    xhr.open('POST', `/cms-admin/theme/${section}`, true)
+    xhr.open('POST', `${site_url}/cms-admin/theme/${section}`, true)
     xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').getAttribute('content'))
     xhr.withCredentials = true
     xhr.upload.addEventListener('progress', (event) => {
@@ -369,7 +382,7 @@ function uploadImage(section, file) {
             let element = `
                 <li class="slide-item ${section}" data-id="${data.slide_id}">
                     <button class="btn btn-hapus" data-id="${data.slide_id}" data-section="${section}"><i class="bi bi-trash-fill"></i></button>
-                    <img class="img-fluid rounded-2" src="/${data.img_path}">
+                    <img class="img-fluid rounded-2" src="${site_url}/${data.img_path}">
                 </li>
             `
             document.querySelector(`.slide-preview-wrapper#${section}`).insertAdjacentHTML('beforeend', element)
@@ -405,7 +418,7 @@ function toggleProgress(section, progressValue) {
 }
 
 function deleteSlide(id) {
-    document.querySelector('#formHapus').setAttribute('action', `/cms-admin/theme/slide/${id}`);
+    document.querySelector('#formHapus').setAttribute('action', `${site_url}/cms-admin/theme/slide/${id}`);
     modal_hapus.show()
 }
 

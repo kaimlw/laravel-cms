@@ -42,6 +42,7 @@ class WebController extends Controller
                 $newWeb = Web::create([
                     'name' => $request->nama_web,
                     'subdomain' => $request->sub_domain,
+                    'site_url' => route('main')
                 ]);
                 
                 // Menambahkan User pada web baru
@@ -58,7 +59,7 @@ class WebController extends Controller
                 $newCategory1 = Category::create(
                     [
                     'web_id' => $newWeb->id,
-                    'name' => 'Tidak Berkategori',
+                    'name' => 'Uncategorized',
                     'slug' => 'uncategorized' 
                     ]
                 );

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Web;
 use App\Models\Media;
 use App\Models\WebMeta;
 use Illuminate\View\View;
@@ -19,6 +20,7 @@ class ThemeController extends Controller
      * Menampilkan halaman tema
      */
     function index() : View {
+        $data['web'] = Web::findOrFail(Auth::user()->web_id)->select('site_url')->first();
         $data['main_slide'] = WebMeta::where('web_id', Auth::user()->web_id)
                             ->where('meta_key', 'main_slide')
                             ->get();
