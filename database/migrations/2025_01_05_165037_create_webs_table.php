@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string("subdomain")->unique();
             $table->string('email')->nullable();
             $table->string("phone_number")->nullable();
+            $table->string("site_url")->nullable();
             $table->string("default_post_banner_path")->nullable();
             $table->timestamps();
         });
