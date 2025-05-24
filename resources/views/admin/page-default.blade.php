@@ -189,7 +189,7 @@
 <script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
 <script src="{{ asset('assets/admin/assets/js/pages/page-default.js') }}?time={{ now() }}"></script>
 <script>
-    const site_url = "{{ route('main') ?? route('main') }}"
+    const site_url = "{{ $web->site_url ?? route('main') }}"
     @if ($errors->edit->any())
     $('#editPageModal').modal('show')
     @endif
