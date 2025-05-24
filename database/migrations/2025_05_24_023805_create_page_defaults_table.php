@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('page_defaults', function (Blueprint $table) {
             $table->id();
-            $table->integer('author');
             $table->string('title')->nullable();
             $table->string('slug')->unique()->nullable();
             $table->longText('content')->nullable();
