@@ -1,6 +1,6 @@
 @extends('admin.template.template')
 
-@section('title', 'Users')
+@section('title', 'Page Default')
 
 @section('css-addOn')
 <link rel="stylesheet" href="{{ asset('assets/vendor/simple-datatables/style.css') }}">
