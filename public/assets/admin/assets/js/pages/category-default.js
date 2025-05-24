@@ -4,7 +4,6 @@ let dataTable = new simpleDatatables.DataTable(table1);
 
 // FORM TAMBAH
 const btnTambah = document.querySelector('button[data-target="#tambahCategoryModal"]')
-const formTambah = document.querySelector('#formTambah')
 btnTambah.addEventListener('click', ()=>{
     $('#formTambah input, #formTambah textarea').val('')
     $('.invalid-feedback').remove();
@@ -68,8 +67,4 @@ function openEditModal(id){
 function openHapusModal(id){
     $('#hapusCategoryModal').modal('show')
     $('#formHapus').attr('action',`${site_url}/cms-admin/default/category/${id}`)
-}
-
-function resetForm(form) {
-    form.reset();
 }
