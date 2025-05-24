@@ -36,7 +36,7 @@
                         <a href="{{ route('admin.default.page') }}">Page</a>
                     </li>
                     <li>
-                        <a href="">Category</a>
+                        <a href="{{ route('admin.default.category') }}">Category</a>
                     </li>
                     <li>
                         <a href="">Menu</a>

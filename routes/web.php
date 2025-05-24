@@ -1,18 +1,19 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\WebController;
+use App\Http\Controllers\Main\MainController;
 use App\Http\Controllers\Admin\AuthController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\PostController;
-use App\Http\Controllers\Admin\SettingController;
-use App\Http\Controllers\Admin\ThemeController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\WebController;
+use App\Http\Controllers\Admin\MediaController;
+use App\Http\Controllers\Admin\ThemeController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\WebPageDefaultController;
-use App\Http\Controllers\Main\MainController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\WebCategoryDefaultController;
 
 /**
  * Main Web Route
@@ -77,6 +78,14 @@ Route::middleware('auth')->group(function(){
             Route::put('/cms-admin/default/page/{id}', 'update')->name('admin.default.page.update');
             Route::delete('/cms-admin/default/page/{id}', 'destroy')->name('admin.default.page.destroy');
             Route::get('/cms-admin/default/page/{id}', 'page_get')->name('admin.default.page.get');
+        });
+
+        Route::controller(WebCategoryDefaultController::class)->group(function(){
+            Route::get('/cms-admin/default/category', 'index')->name('admin.default.category');
+            Route::post('/cms-admin/default/category', 'store')->name('admin.default.category.store');
+            Route::put('/cms-admin/default/category/{id}', 'update')->name('admin.default.category.update');
+            Route::delete('/cms-admin/default/category/{id}', 'destroy')->name('admin.default.category.destroy');
+            Route::get('/cms-admin/default/category/{id}', 'category_get')->name('admin.default.category.get');
         });
     });
 
