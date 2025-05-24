@@ -18,8 +18,6 @@ return new class extends Migration
             $table->string('slug')->unique()->nullable();
             $table->longText('content')->nullable();
             $table->string('excerpt')->nullable();
-            $table->enum('type', ['post','page']);
-            $table->enum('status', ['draft', 'publish']);
             $table->string('banner_post_path')->nullable();
             $table->timestamps();
         });
