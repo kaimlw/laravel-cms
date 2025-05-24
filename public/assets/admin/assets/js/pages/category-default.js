@@ -5,7 +5,7 @@ let dataTable = new simpleDatatables.DataTable(table1);
 // FORM TAMBAH
 const btnTambah = document.querySelector('button[data-target="#tambahCategoryModal"]')
 btnTambah.addEventListener('click', ()=>{
-    $('#formTambah input, #formTambah textarea').val('')
+    $('#formTambah #nameInput, #formTambah textarea').val('')
     $('.invalid-feedback').remove();
     $('.is-invalid').removeClass('is-invalid')
 })
