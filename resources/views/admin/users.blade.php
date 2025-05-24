@@ -296,7 +296,7 @@
 <script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
 <script src="{{ asset('assets/admin/assets/js/pages/users.js') }}"></script>
 <script>
-    const site_url = "{{ route('main') }}"
+    const site_url = "{{ route('main') ?? route('main') }}"
     @if ($errors->edit->any())
     $('#editUserModal').modal('show')
     @endif

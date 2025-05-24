@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('webs', function (Blueprint $table) {
             $table->id();
             $table->string("name");
+            $table->string("sub_title")->nullable();
+            $table->string("description")->nullable();
             $table->string("subdomain")->unique();
             $table->string('email')->nullable();
             $table->string("phone_number")->nullable();

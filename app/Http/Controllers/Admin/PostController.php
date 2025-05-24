@@ -61,7 +61,7 @@ class PostController extends Controller
         ]);
         // Jika gagal, kembali ke halaman post
         if (!$post) {
-            return response([],500);
+            return response()->json([], 500);
         }
 
         // Mendapatkan default category untuk post sesuai web_id
@@ -80,7 +80,7 @@ class PostController extends Controller
         }
 
         if (!$newPost->save()) {
-            return response([], 500);
+            return response()->json([], 500);
         }
 
         return response()->json($newPost, 200);
@@ -148,7 +148,7 @@ class PostController extends Controller
                     'content' => $request->content,
                     'author' => $request->author,
                     'excerpt' => Str::excerpt($request->content,'',[
-                        'radius'=> 30
+                        'radius'=> 100
                     ])
                 ];
                 

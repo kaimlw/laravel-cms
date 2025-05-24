@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function(){
       updateOnMove : true
     })
     var agenda_splide = new Splide('#agenda_slide', {
-      type : 'loop',
+      type : (agenda_count >= 4) ? "loop" : "slide",
       pagination: false,
       autoWidth: true,
       autoplay: true,

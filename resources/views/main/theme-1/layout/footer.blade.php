@@ -5,15 +5,17 @@
         <div class="d-flex gap-3 align-items-center mb-3">
           <img src="{{ asset('assets/img/ULM.png') }}" width="68" height="68">
           <div class="">
-            <h6 class="fw-normal text-white mb-2">Fakultas Keguruan dan Ilmu Pendidikan</h6>
-            <h6 class="fw-bold text-white m-0">UNIVERSITAS LAMBUNG <br> MANGKURAT</h6>
+            @if($web->sub_title)
+            <h6 class="fw-normal text-white mb-2">{{ $web->sub_title }}</h6>
+            @endif
+            <h6 class="fw-bold text-white m-0">{{ $web->name }}</h6>
           </div>
         </div>
         <p class="text-white mb-4" style="font-size: 14px;">
           Integrated Utility Building FKIP ULM <br> Brigjen H. Hasan Basry Street, Banjarmasin, <br> South Kalimantan 70123
         </p>
-        <p class="text-white mb-1" style="font-size: 14px;"><i class="bi bi-telephone-fill me-2"></i> (0511) – 3304914</p>
-        <a href="mailto: fkip@ulm.ac.id" class="text-white text-decoration-none"><i class="bi bi-envelope-fill me-2"></i> fkip@ulm.ac.id</a>
+        <p class="text-white mb-1" style="font-size: 14px;"><i class="bi bi-telephone-fill me-2"></i> {{ $web->phone_number }}</p>
+        <a href="mailto: fkip@ulm.ac.id" class="text-white text-decoration-none"><i class="bi bi-envelope-fill me-2"></i> {{ $web->email }}</a>
         <div class="d-flex gap-2 mt-4">
           <a href="https://www.youtube.com/channel/UCparrkBPHf4Z4BI1AD02gaA/videos" class="btn btn-footer"><i class="bi bi-youtube"></i></a>
           <a href="https://www.instagram.com/fkipulm.official/" class="btn btn-footer"><i class="bi bi-instagram"></i></a>

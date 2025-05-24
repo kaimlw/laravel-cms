@@ -392,13 +392,14 @@ function uploadImage(section, file) {
         } else {
             let alert = `
             <div class="alert alert-danger alert-dismissible show fade">
-                ${data.msg}
+                ${data.msg.upload}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             `
             $('.main-content').prepend(alert)
+            window.scrollTo(0,0)
         }
     };
     

@@ -235,7 +235,7 @@ class MainController extends Controller
                         ->orderBy('name')
                         ->get();
 
-        $data['search_keyword'] = $request->get('search');
+        $data['search_keyword'] = $request->get('keyword');
         $data['posts'] = Post::where('web_id', $this->web_id)
                 ->where('title', 'LIKE', '%'. $request->get('search') . '%')
                 ->where('status', 'publish')

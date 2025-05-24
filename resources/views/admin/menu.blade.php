@@ -119,7 +119,9 @@
                                     <select class="form-select" name="parent" id="pageParentSelect">
                                         <option value="">Tidak Ada</option>
                                         @foreach ($menus as $item)
-                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @if($item->type == 'custom')
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </fieldset>
@@ -159,7 +161,9 @@
                                     <select class="form-select" name="parent" id="postParentSelect">
                                         <option value="">Tidak Ada</option>
                                         @foreach ($menus as $item)
-                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @if($item->type == 'custom')
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </fieldset>
@@ -199,7 +203,9 @@
                                     <select class="form-select" name="parent" id="categoryParentSelect">
                                         <option value="">Tidak Ada</option>
                                         @foreach ($menus as $item)
-                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @if($item->type == 'custom')
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </fieldset>
@@ -232,7 +238,9 @@
                                     <select class="form-select" id="customParentSelect" name="parent">
                                         <option value="">Tidak Ada</option>
                                         @foreach ($menus as $item)
-                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @if($item->type == 'custom')
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </fieldset>
@@ -365,7 +373,7 @@
 
 @section('js-addOn')
 <script>
-const site_url = "{{ $web->site_url }}"
+const site_url = "{{ $web->site_url ?? route('main') }}"
 </script>
 <script src="{{ asset('assets/admin/assets/js/pages/menu.js') }}"></script>
 @endsection

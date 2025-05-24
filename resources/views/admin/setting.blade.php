@@ -76,6 +76,12 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
+                <div class="col-12 mb-3">
+                    <div class="text-center">
+                        <h5>Petunjuk Pengaturan</h5>
+                        <img src="{{ asset('assets/img/petunjuk.jpg') }}" alt="" class="img-fluid" width="80%">
+                    </div>
+                </div>
                 <div class="col-12">
                     <form class="form form-vertical" action="{{ route('admin.setting.update', ['id' => base64_encode(encrypt($web->id))]) }}" method="POST" enctype="multipart/form-data">
                         @method('PUT')
@@ -85,9 +91,31 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label for="namaWeb">Nama Web</label>
-                                        <input type="text" id="namaWeb" class="form-control @error('nama_web') is-invalid @enderror" name="nama_web" placeholder="Masukkan nama Web" value="{{ $web->name }}">
+                                        <label for="namaWeb">Judul Web Utama</label>
+                                        <input type="text" id="namaWeb" class="form-control @error('nama_web') is-invalid @enderror" name="nama_web" placeholder="Masukkan judul pendukung Web" value="{{ $web->name }}">
                                         @error('nama_web')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="judulPendukungWeb">Judul Web Pendukung</label>
+                                        <input type="text" id="judulPendukungWeb" class="form-control @error('judul_pendukung_web') is-invalid @enderror" name="judul_pendukung_web" placeholder="Masukkan judul pendukung Web" value="{{ $web->sub_title }}">
+                                        @error('judul_pendukung_web')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="deskripsiWeb">Deskripsi</label>
+                                        <textarea id="deskripsiWeb" class="form-control @error('deskripsi_web') is-invalid @enderror" name="deskripsi_web" placeholder="Masukkan deskripsi web">{{ $web->description }}</textarea>
+                                        @error('deskripsi_web')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
                                             </div>
@@ -183,6 +211,6 @@
 <script src="{{ asset('assets/vendor/bootstrap-5.3.3/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('assets/admin/assets/js/pages/setting.js') }}"></script>
 <script>
-const site_url = "{{ $web->site_url }}"
+const site_url = "{{ $web->site_url ?? route('main') }}"
 </script>
 @endsection

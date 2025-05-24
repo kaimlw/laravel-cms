@@ -74,6 +74,11 @@ return [
         ],
         'parent' => [
             'exist' => 'Menu induk tidak valid'
+        ],
+
+        // THEME
+        'upload' => [
+            'max' => 'Maksimal ukuran file 5 MB'
         ]
     ],
 

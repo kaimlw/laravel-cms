@@ -29,8 +29,15 @@
         position: absolute;
         bottom: 0
     }
-    .media-card img{
+    /* .media-card img{
         background: url({{ asset('assets/img/png_bg.jpg') }})
+    } */
+    .media-card .img-box{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: url({{ asset('assets/img/png_bg.jpg') }});
+        height: 100%;
     }
     #detail_media img{
         background: url({{ asset('assets/img/png_bg.jpg') }})
@@ -129,7 +136,9 @@
                             <div class="card-body p-1 text-center h-100 w-100">
                                 <div class="overflow-hidden h-100 w-100">
                                     @if (strpos($item->media_meta['mime_type'], 'image/') === 0)
-                                        <img src="{{ asset($item->media_meta['filepath']['thumbnail']) }}" class="img-fluid">
+                                        <div class="img-box">
+                                            <img src="{{ asset($item->media_meta['filepath']['thumbnail']) }}" class="img-fluid">
+                                        </div>
                                     @else
                                         <i class="bi bi-file-earmark-fill fs-1"></i>
                                         <div class="media-filename">
@@ -263,7 +272,7 @@
 
 @section('js-addOn')
 <script>
-    const site_url = "{{ $web->site_url }}";
+    const site_url = "{{ $web->site_url ?? route('main') }}";
     const media_count = {{ $media_count }};
     let displayed_media = {{ count($media) }};
 </script>

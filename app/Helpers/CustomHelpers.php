@@ -1,11 +1,14 @@
 <?php
 namespace App\Helpers;
 
+use App\Models\Web;
 use App\Models\Post;
+use App\Models\User;
 use App\Models\Media;
 use App\Models\Category;
-use Illuminate\Support\Str;
 
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use function Laravel\Prompts\error;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -15,7 +18,7 @@ use Illuminate\Database\QueryException;
 class CustomHelpers
 {
   /**
-   * Admin: Category Helper
+   * Admin: Category Helper |
    * Check if category with same web_id is exist in database
    */
   public static function check_category_exist($name) : Bool {
@@ -28,7 +31,7 @@ class CustomHelpers
   }
 
   /**
-   * Admin: Post Helper
+   * Admin: Post Helper |
    * Add number to title if slug is exist where web_id is same
    */
   public static function add_number_if_post_title_exist($id, $title) : string {
@@ -47,7 +50,7 @@ class CustomHelpers
   }
 
   /**
-   * Admin: Menu Helper
+   * Admin: Menu Helper |
    * Build menu hierarchy to display in menu page.
    */
   public static function build_menu_admin($menus, $parent_id = null) : string {
@@ -92,7 +95,7 @@ class CustomHelpers
   }
 
   /**
-   * Main: Menu Helper
+   * Main: Menu Helper |
    * Build menu hierarchy to display in Main Nav.
    */
   public static function build_menu_main($menu, $parent_id = null) : string {
@@ -136,7 +139,7 @@ class CustomHelpers
   }
 
   /**
-   * Main: Menu Helper
+   * Main: Menu Helper |
    * Build menu hierarchy to display in Main Nav.
    */
   public static function build_menu_top($menu, $parent_id = null) : string {
@@ -176,7 +179,7 @@ class CustomHelpers
   }
 
   /**
-   * Admin: Upload Media Helper
+   * Admin: Upload Media Helper |
    * Upload Image
    * 
    * Return: Image Path (array)
@@ -241,6 +244,41 @@ class CustomHelpers
     }
 
     return $insertArray['media_meta']['filepath'];
+  }
+
+  /**
+   * Login: Authenticate Helper |
+   * Cek apakah username yang dimasukkan memiliki web_id sama
+   */
+  public static function check_username_in_web(string $username, int $web_id) : bool {
+    $user = User::where('username', $username)->first();
+
+    if ($user->roles == "super_admin") {
+      return true;
+    }
+    
+    return $user->web_id == $web_id;
+  }
+
+  /**
+   * Login: Authenticate Helper |
+   * Mendapatkan web_id dari subdomain
+   */
+  public static function get_webid_subdomain() : int {
+    $currentUrl = url()->current();
+    $host = explode('/', $currentUrl)[2];
+    $host_parts = explode('.', $host);
+
+    if (count($host_parts) >= 3) {
+      $subdomain = $host_parts[0];
+      $web = Web::where('subdomain', $subdomain)->first();
+      if (!$web) {
+          return 1;
+      }
+      return $web->id;
+    }
+
+    return 1;
   }
 }
 ?>

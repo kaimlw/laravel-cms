@@ -89,12 +89,12 @@ class WebController extends Controller
                 Post::create([
                     'web_id' => $newWeb->id,
                     'author' => $newUser->id,
-                    'title' => 'Sample Page',
-                    'slug' => 'sample-page-' . $newWeb->id,
+                    'title' => 'Profil',
+                    'slug' => 'profil',
                     'content' => '<p>Ini halaman contoh</p>',
                     'excerpt' => '<p>Ini halaman contoh</p>',
                     'type' => 'page',
-                    'status' => 'draft'
+                    'status' => 'publish'
                 ]);
             });
         } catch (\Exception $e) {

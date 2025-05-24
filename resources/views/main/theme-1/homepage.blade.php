@@ -12,9 +12,9 @@
     <div class="row">
       <div class="col-lg-6 banner-description order-last order-md-first">
         <h5 class="text-white">WELCOME TO</h5>
-        <h1 class="text-white display-5 fw-bold">Faculty of <br>Teacher Training and Education</h1>
-        <p class="text-white">We are commited to building an Integrity Zone towards a Corruption-Free Area and a Clean and Serving Bureaucratic Area</p>
-        <a href="#" class="btn btn-round-yellow">Selengkapnya <i class="bi bi-chevron-right ms-2"></i></a>
+        <h1 class="text-white display-5 fw-bold">{{ $web->name }}</h1>
+        <p class="text-white">{{ $web->description }}</p>
+        <a href="{{ route('main.page', ['slug' => 'profil']) }}" class="btn btn-round-yellow">Selengkapnya <i class="bi bi-chevron-right ms-2"></i></a>
         <div class="splide__container mt-4">
           <div class="fade-left"></div>
           <div class="splide" id="partner_slide" role="group" aria-label="FKIP Partners Slide">
@@ -175,10 +175,10 @@
       <div class="col-lg-3">
         <div class="card shadow border-0">
           <div class="card-body px-3">
-            <span class="fw-bold reasons-card-number">01</span>
-            <h5 class="reasons-card-title">Academic Reputation</h5>
+            <span class="fw-bold reasons-card-number">03</span>
+            <h5 class="reasons-card-title">Quality Lecturer</h5>
             <p class="reasons-card-content">
-              FKIP ULM has a good reputation in education and research, providing a supportive academic environment for students.
+              FKIP ULM has qualified and experienced lecturers in their fields, ready to guide and inspire students in achieving their maximum potential.
             </p>
           </div>
         </div>
@@ -186,10 +186,10 @@
       <div class="col-lg-3">
         <div class="card shadow border-0">
           <div class="card-body px-3">
-            <span class="fw-bold reasons-card-number">01</span>
-            <h5 class="reasons-card-title">Academic Reputation</h5>
+            <span class="fw-bold reasons-card-number">04</span>
+            <h5 class="reasons-card-title">Various Study Programs</h5>
             <p class="reasons-card-content">
-              FKIP ULM has a good reputation in education and research, providing a supportive academic environment for students.
+              FKIP ULM offers various study programs that suit students' interests and talents, ranging from teacher education, language education, to sports education.
             </p>
           </div>
         </div>
@@ -197,10 +197,10 @@
       <div class="col-lg-3">
         <div class="card shadow border-0">
           <div class="card-body px-3">
-            <span class="fw-bold reasons-card-number">01</span>
-            <h5 class="reasons-card-title">Academic Reputation</h5>
+            <span class="fw-bold reasons-card-number">05</span>
+            <h5 class="reasons-card-title">Cooperation with Schools</h5>
             <p class="reasons-card-content">
-              FKIP ULM has a good reputation in education and research, providing a supportive academic environment for students.
+              FKIP ULM has close partnerships with various schools in the area, both elementary and secondary levels. Through this collaboration, students have the opportunity to engage in community service activities, teaching internships, and other collaborative projects that enrich their educational experience and provide positive contributions to the local community.
             </p>
           </div>
         </div>
@@ -208,10 +208,10 @@
       <div class="col-lg-3">
         <div class="card shadow border-0">
           <div class="card-body px-3">
-            <span class="fw-bold reasons-card-number">01</span>
-            <h5 class="reasons-card-title">Academic Reputation</h5>
+            <span class="fw-bold reasons-card-number">06</span>
+            <h5 class="reasons-card-title">Career Development</h5>
             <p class="reasons-card-content">
-              FKIP ULM has a good reputation in education and research, providing a supportive academic environment for students.
+              FKIP ULM pays serious attention to student career development, by organizing various career development activities, seminars, and workshops that can improve skills and prepare students to enter the world of work.
             </p>
           </div>
         </div>
@@ -219,10 +219,10 @@
       <div class="col-lg-3">
         <div class="card shadow border-0">
           <div class="card-body px-3">
-            <span class="fw-bold reasons-card-number">01</span>
-            <h5 class="reasons-card-title">Academic Reputation</h5>
+            <span class="fw-bold reasons-card-number">07</span>
+            <h5 class="reasons-card-title">Supportive Campus Environment</h5>
             <p class="reasons-card-content">
-              FKIP ULM has a good reputation in education and research, providing a supportive academic environment for students.
+              The Lambung Mangkurat University campus is located in a comfortable and safe environment, with supporting facilities such as dormitories, student activity centers, and sports facilities.
             </p>
           </div>
         </div>
@@ -230,10 +230,10 @@
       <div class="col-lg-3">
         <div class="card shadow border-0">
           <div class="card-body px-3">
-            <span class="fw-bold reasons-card-number">01</span>
-            <h5 class="reasons-card-title">Academic Reputation</h5>
+            <span class="fw-bold reasons-card-number">08</span>
+            <h5 class="reasons-card-title">Research and Publication Possibilities</h5>
             <p class="reasons-card-content">
-              FKIP ULM has a good reputation in education and research, providing a supportive academic environment for students.
+              For those interested in research, FKIP provides opportunities to engage in diverse research projects, with support from lecturers who are experts in their fields. This also opens up opportunities to publish scientific publications.
             </p>
           </div>
         </div>
@@ -241,10 +241,10 @@
       <div class="col-lg-3">
         <div class="card shadow border-0">
           <div class="card-body px-3">
-            <span class="fw-bold reasons-card-number">01</span>
-            <h5 class="reasons-card-title">Academic Reputation</h5>
+            <span class="fw-bold reasons-card-number">09</span>
+            <h5 class="reasons-card-title">Extensive Alumni Network</h5>
             <p class="reasons-card-content">
-              FKIP ULM has a good reputation in education and research, providing a supportive academic environment for students.
+              FKIP Universitas Lambung Mangkurat alumni are spread across various fields and industries, providing opportunities for new students to build extensive networks and gain inspiration and mentorship from successful alumni.
             </p>
           </div>
         </div>
@@ -252,10 +252,10 @@
       <div class="col-lg-3">
         <div class="card shadow border-0">
           <div class="card-body px-3">
-            <span class="fw-bold reasons-card-number">01</span>
-            <h5 class="reasons-card-title">Academic Reputation</h5>
+            <span class="fw-bold reasons-card-number">10</span>
+            <h5 class="reasons-card-title">Commitment to Educational Innovation</h5>
             <p class="reasons-card-content">
-              FKIP ULM has a good reputation in education and research, providing a supportive academic environment for students.
+              FKIP Universitas Lambung Mangkurat continues to be committed to developing innovative learning methods that are in accordance with current developments, so that students can gain valuable learning experiences that are relevant to the demands of the ever-changing job market.
             </p>
           </div>
         </div>
@@ -571,7 +571,7 @@
           <div class="col-lg-4">
             <div class="card border-0 h-100">
               <a href="{{ route('main.post', ['slug' => $post->slug]) }}">
-                <img src="{{ $post->banner_post_path ? asset($post->banner_post_path) : ($web->default_post_banner_path ? asset($web->default_post_banner_path) : "") }}" class="card-img-top rounded-2">
+                <img src="{{ $post->banner_post_path ? asset($post->banner_post_path) : ($web->default_post_banner_path ? asset($web->default_post_banner_path) : "") }}" class="card-img-top rounded-2" height="230">
               </a>
               <div class="card-body p-0 mt-3">
                 <div class="text-secondary mb-2" style="font-size: 14px;"><i class="bi bi-calendar me-2"></i> {{ date("d-m-Y", strtotime($post->updated_at)) }}</div>
@@ -729,7 +729,7 @@
         <p class="h5 fw-normal text-secondary">FKIP have collaborated with various institutions both domestically and internationally.</p>
       </div>
       <div class="col-lg-2 d-flex align-items-center justify-content-lg-end">
-        <a href="" class="btn btn-round-purple">See More <i class="bi bi-chevron-right"></i></a>
+        {{-- <a href="" class="btn btn-round-purple">See More <i class="bi bi-chevron-right"></i></a> --}}
       </div>
     </div>
     <div class="row gap-0 column-gap-0 justify-content-center">
@@ -764,6 +764,9 @@
 @endsection
 
 @section('js-addon')
+<script>
+  const agenda_count = {{ count($agenda_slide) }}
+</script>
 <script src="{{ asset('assets/main/theme-1/js/homepage.js') }}"></script>
 @endsection
 

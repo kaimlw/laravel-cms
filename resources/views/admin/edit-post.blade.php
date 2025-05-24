@@ -102,7 +102,7 @@
 
 @section('js-addOn')
 <script>
-    const site_url = "{{ $web->site_url }}"
+    const site_url = "{{ $web->site_url ?? route('main') }}"
 </script>
 <script src="{{ asset('assets/vendor/bootstrap-5.3.3/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('assets/admin/assets/js/pages/edit-post.js') }}" type="module"></script>

@@ -203,7 +203,7 @@
 
 
 <script>
-    const site_url = "{{ route('main') }}"
+    const site_url = "{{ route('main') ?? route('main') }}"
     @if ($errors->edit->any())
     $('#editWebModal').modal('show')
     @endif

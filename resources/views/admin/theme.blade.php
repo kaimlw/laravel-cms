@@ -157,7 +157,7 @@
                                 <i class="bi bi-plus-lg"></i> Tambah Slider
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><button class="dropdown-item" id="main_slide_upload_btn"><i class="bi bi-upload"></i> Upload</button></li>
+                                <li><button class="dropdown-item" id="main_slide_upload_btn"><i class="bi bi-upload"></i> Upload (Max: 5Mb)</button></li>
                                 <li><button class="dropdown-item" id="main_slide_media_btn"><i class="bi bi-images"></i> Buka Media Browser</button></li>
                             </ul>
                         </div>
@@ -201,7 +201,7 @@
                                 <i class="bi bi-plus-lg"></i> Tambah Poster Agenda
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><button class="dropdown-item" id="agenda_upload_btn"><i class="bi bi-upload"></i> Upload</button></li>
+                                <li><button class="dropdown-item" id="agenda_upload_btn"><i class="bi bi-upload"></i> Upload (Max: 5Mb)</button></li>
                                 <li><button class="dropdown-item" id="agenda_media_btn"><i class="bi bi-images"></i> Buka Media Browser</button></li>
                             </ul>
                         </div>
@@ -245,7 +245,7 @@
                                 <i class="bi bi-plus-lg"></i> Tambah Gambar
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><button class="dropdown-item" id="gallery_upload_btn"><i class="bi bi-upload"></i> Upload</button></li>
+                                <li><button class="dropdown-item" id="gallery_upload_btn"><i class="bi bi-upload"></i> Upload (Max: 5Mb)</button></li>
                                 <li><button class="dropdown-item" id="gallery_media_btn"><i class="bi bi-images"></i> Buka Media Browser</button></li>
                             </ul>
                         </div>
@@ -290,7 +290,7 @@
                                 <i class="bi bi-plus-lg"></i> Tambah Gambar
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><button class="dropdown-item" id="partnership_upload_btn"><i class="bi bi-upload"></i> Upload</button></li>
+                                <li><button class="dropdown-item" id="partnership_upload_btn"><i class="bi bi-upload"></i> Upload (Max: 5Mb)</button></li>
                                 <li><button class="dropdown-item" id="partnership_media_btn"><i class="bi bi-images"></i> Buka Media Browser</button></li>
                             </ul>
                         </div>
@@ -367,7 +367,7 @@
 
 @section('js-addOn')
 <script>
-const site_url = "{{ $web->site_url }}"
+const site_url = "{{ $web->site_url ?? route('main') }}"
 </script>
 <script src="{{ asset('assets/vendor/bootstrap-5.3.3/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('assets/admin/assets/js/pages/theme.js') }}"></script>

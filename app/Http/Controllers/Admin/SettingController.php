@@ -38,6 +38,8 @@ class SettingController extends Controller
         $web = Web::findOrFail($web_id);
         $update_array = [
             'name' => $request->nama_web,
+            'sub_title' => $request->judul_pendukung_web,
+            'description' => $request->deskripsi_web,
             'phone_number' => $request->telepon_web,
             'email' => $request->email_web,
             'site_url' => $request->site_web,

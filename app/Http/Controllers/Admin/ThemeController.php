@@ -12,6 +12,7 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Validator;
 
 class ThemeController extends Controller
 {
@@ -71,9 +72,16 @@ class ThemeController extends Controller
      * Mengupload slider utama
      */
     function upload_main_slide(Request $request) : JsonResponse {
-        $request->validate([
+        
+        $validator = Validator::make($request->all(), [
             'upload' => 'required|mimes:png,jpg,jpeg|file|max:5000'
         ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'alert' => 'danger',
+                'msg' => $validator->messages()->getMessages()
+            ], 500);
+        }
 
         try {
             $img_path = CustomHelpers::upload_image($request->file('upload'));
@@ -134,9 +142,15 @@ class ThemeController extends Controller
      * Mengupload slider utama
      */
     function upload_agenda_slide(Request $request) : JsonResponse {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'upload' => 'required|mimes:png,jpg,jpeg|file|max:5000'
         ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'alert' => 'danger',
+                'msg' => $validator->messages()->getMessages()
+            ], 500);
+        }
 
         try {
             $img_path = CustomHelpers::upload_image($request->file('upload'));
@@ -197,9 +211,15 @@ class ThemeController extends Controller
      * Mengupload slider utama
      */
     function upload_gallery_slide(Request $request) : JsonResponse {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'upload' => 'required|mimes:png,jpg,jpeg|file|max:5000'
         ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'alert' => 'danger',
+                'msg' => $validator->messages()->getMessages()
+            ], 500);
+        }
 
         try {
             $img_path = CustomHelpers::upload_image($request->file('upload'));
@@ -259,9 +279,15 @@ class ThemeController extends Controller
      * Mengupload slider utama
      */
     function upload_partnership_slide(Request $request) : JsonResponse {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'upload' => 'required|mimes:png,jpg,jpeg|file|max:5000'
         ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'alert' => 'danger',
+                'msg' => $validator->messages()->getMessages()
+            ], 500);
+        }
 
         try {
             $img_path = CustomHelpers::upload_image($request->file('upload'));

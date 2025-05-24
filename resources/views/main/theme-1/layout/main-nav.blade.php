@@ -3,8 +3,10 @@
     <a class="navbar-brand d-flex align-items-center gap-2 gap-lg-3 order-first" href="{{ route('main') }}">
       <img src="{{ asset('assets/img/ULM.png') }}" alt="Logo" width="45" height="45" class="align-text-top">
       <div class="text-white">
-        <h6 class="mb-1">Fakultas Keguruan dan Ilmu Pengetahuan</h6>
-        <h5 class="m-0">Universitas Lambung Mangkurat</h5>
+        @if($web->sub_title)
+        <h6 class="mb-1">{{ $web->sub_title }}</h6>
+        @endif
+        <h5 class="m-0">{{ $web->name }}</h5>
       </div>
     </a>
     <div class="d-flex align-items-center">
@@ -14,7 +16,7 @@
       </button>
     </div>
     <div class="collapse navbar-collapse justify-content-lg-end order-lg-3 order-3" id="mainNavbarNav">
-      <ul class="navbar-nav gap-lg-3">
+      <ul class="navbar-nav gap-lg-1">
         {!! $main_menu_html !!}
       </ul>
     </div>
@@ -22,8 +24,8 @@
     <div class="w-100 px-3" id="searchbar">
       <form action="{{ route('main.search') }}" method="GET">
         <div class="input-group">
-          <input type="text" name="search" id="search-input" class="form-control" placeholder="Search something..." aria-label="Search" aria-describedby="btn-search-submit" role="search">
-          <button class="btn btn-purple" type="button" id="btn-search-submit" type="submit">Search</button>
+          <input type="text" name="keyword" id="search-input" class="form-control" placeholder="Search something..." aria-label="Search" aria-describedby="btn-search-submit" role="search">
+          <button class="btn btn-purple" id="btn-search-submit" type="submit">Search</button>
         </div>
       </form>
     </div>
