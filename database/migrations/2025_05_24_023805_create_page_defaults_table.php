@@ -15,9 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('title')->nullable();
             $table->string('slug')->unique()->nullable();
-            $table->longText('content')->nullable();
-            $table->string('excerpt')->nullable();
-            $table->string('banner_post_path')->nullable();
             $table->timestamps();
         });
     }
