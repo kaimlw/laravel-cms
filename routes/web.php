@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\ThemeController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WebController;
+use App\Http\Controllers\Admin\WebPageDefaultController;
 use App\Http\Controllers\Main\MainController;
 use Illuminate\Support\Facades\Route;
 
@@ -68,6 +69,14 @@ Route::middleware('auth')->group(function(){
             Route::put('/cms-admin/web/{id}', 'update')->name('admin.web.update');
             Route::delete('/cms-admin/web/{id}', 'destroy')->name('admin.web.destroy');
             Route::get('/cms-admin/web/{id}', 'web_get')->name('admin.web.get');
+        });
+
+        Route::controller(WebPageDefaultController::class)->group(function(){
+            Route::get('/cms-admin/default/page', 'index')->name('admin.default.page');
+            Route::post('/cms-admin/default/page', 'store')->name('admin.default.page.store');
+            Route::put('/cms-admin/default/page/{id}', 'update')->name('admin.default.page.update');
+            Route::delete('/cms-admin/default/page/{id}', 'destroy')->name('admin.default.page.destroy');
+            Route::get('/cms-admin/default/page/{id}', 'page_get')->name('admin.default.page.get');
         });
     });
 

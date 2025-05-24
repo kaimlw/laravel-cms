@@ -33,7 +33,7 @@
                 </a>
                 <ul class="submenu">
                     <li>
-                        <a href="">Page</a>
+                        <a href="{{ route('admin.default.page') }}">Page</a>
                     </li>
                     <li>
                         <a href="">Category</a>

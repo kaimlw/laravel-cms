@@ -79,7 +79,17 @@ return [
         // THEME
         'upload' => [
             'max' => 'Maksimal ukuran file 5 MB'
-        ]
+        ],
+
+        // DEFAULT WEB
+        'title' => [
+            'required' => "Judul tidak boleh kosong",
+            'unique' => "Judul sudah ada"
+        ],
+        'slug' => [
+            'required' => "Slug tidak boleh kosong",
+            'unique' => "Slug sudah ada"
+        ],
     ],
 
     /*
