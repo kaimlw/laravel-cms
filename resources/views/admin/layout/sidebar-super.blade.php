@@ -26,6 +26,23 @@
                     <span>Web</span>
                 </a>
             </li>
+            <li class="sidebar-item has-sub">
+                <a href="" class='sidebar-link'>
+                    <i class="bi bi-file-fill"></i>
+                    <span>Web Default</span>
+                </a>
+                <ul class="submenu">
+                    <li>
+                        <a href="">Page</a>
+                    </li>
+                    <li>
+                        <a href="">Category</a>
+                    </li>
+                    <li>
+                        <a href="">Menu</a>
+                    </li>
+                </ul>
+            </li>
         </ul>
     </div>
     <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
