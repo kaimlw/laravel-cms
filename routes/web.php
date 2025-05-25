@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ThemeController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\WebMenuDefaultController;
 use App\Http\Controllers\Admin\WebPageDefaultController;
 use App\Http\Controllers\Admin\WebCategoryDefaultController;
 
@@ -86,6 +87,14 @@ Route::middleware('auth')->group(function(){
             Route::put('/cms-admin/default/category/{id}', 'update')->name('admin.default.category.update');
             Route::delete('/cms-admin/default/category/{id}', 'destroy')->name('admin.default.category.destroy');
             Route::get('/cms-admin/default/category/{id}', 'category_get')->name('admin.default.category.get');
+        });
+
+        Route::controller(WebMenuDefaultController::class)->group(function(){
+            Route::get('/cms-admin/default/menu', 'index')->name('admin.default.menu');
+            Route::post('/cms-admin/default/menu', 'store')->name('admin.default.menu.store');
+            Route::put('/cms-admin/default/menu/{id}', 'update')->name('admin.default.menu.update');
+            Route::delete('/cms-admin/default/menu/{id}', 'destroy')->name('admin.default.menu.destroy');
+            Route::get('/cms-admin/default/menu/{id}', 'menu_get')->name('admin.default.menu.get');
         });
     });
 
