@@ -86,7 +86,7 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="titleInput">Judul Halaman</label>
-                                    <input type="text" id="titleInput" class="form-control @error('title','tambah') is-invalid @enderror" name="title" placeholder="Masukkan nama pengguna" value="{{ old('title') }}">
+                                    <input type="text" id="titleInput" class="form-control @error('title','tambah') is-invalid @enderror" name="title" placeholder="Masukkan judul halaman" value="{{ old('title') }}">
                                     @error('title','tambah')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -187,7 +187,7 @@
 
 @section('js-addOn')
 <script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
-<script src="{{ asset('assets/admin/assets/js/pages/page-default.js') }}?time={{ now() }}"></script>
+<script src="{{ asset('assets/admin/assets/js/pages/page-default.js') }}"></script>
 <script>
     const site_url = "{{ $web->site_url ?? route('main') }}"
     @if ($errors->edit->any())
