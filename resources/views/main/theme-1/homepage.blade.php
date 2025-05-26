@@ -586,12 +586,14 @@
         @endforeach
       @endif
     </div>
-    @if(count($latest_news->post) > 3)
-    <div class="row mt-3">
-      <div class="col-12 text-center">
-        <a href="" class="btn btn-round-purple">More Article <i class="bi bi-chevron-right"></i></a>
+    @if(isset($latest_news->post))
+      @if(count($latest_news->post) > 3)
+      <div class="row mt-3">
+        <div class="col-12 text-center">
+          <a href="" class="btn btn-round-purple">More Article <i class="bi bi-chevron-right"></i></a>
+        </div>
       </div>
-    </div>
+      @endif
     @endif
   </div>
 </section>
