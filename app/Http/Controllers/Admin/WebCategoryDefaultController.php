@@ -38,7 +38,7 @@ class WebCategoryDefaultController extends Controller
             'name' => $request->name,
             'slug' => Str::slug($request->name),
             'description' => $request->deskripsi,
-            'parent' => $request->parent
+            'parent' => $request->parent_category
         ]);
         if (!$newCategory) {
             return redirect()->route('admin.default.category')->with('showAlert', ['type' => 'danger', 'msg' => 'Gagal menambahkan kategori baru!']);
