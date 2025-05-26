@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('web_id')->constrained('webs');
             $table->string('name');
             $table->string('target');
-            $table->foreignId('parent_id')->nullable()->constrained('menus');
+            $table->foreignId('parent_id')->nullable();
             $table->enum('type', ['custom', 'page', 'post', 'category']);
             $table->enum('menu_placement', ['main', 'top']);
             $table->integer('menu_order');
