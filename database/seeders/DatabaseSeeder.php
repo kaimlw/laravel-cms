@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\CategoryDefault;
 use App\Models\User;
 use App\Models\Web;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -23,6 +24,16 @@ class DatabaseSeeder extends Seeder
             'username' => 'admin',
             'password' => password_hash("admin", PASSWORD_DEFAULT),
             'email' => 'fkip@ulm.ac.id'
+        ]);
+
+        CategoryDefault::create([
+            'name' => "Uncategorized",
+            'slug' => "uncategorized",
+        ]);
+
+        CategoryDefault::create([
+            'name' => "Latest News",
+            'slug' => "latest-news",
         ]);
         // Web::create([
         //     'id' => 1,
