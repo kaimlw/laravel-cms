@@ -47,7 +47,7 @@ class CategoryController extends Controller
             'name' => $request->kategori,
             'slug' => Str::slug($request->kategori),
             'description' => $request->deskripsi,
-            'parent' => $request->parent
+            'parent' => $request->parent_category
         ]);
 
         if ($category) {
