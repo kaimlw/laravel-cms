@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Exception;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Web extends Model
 {
@@ -14,6 +17,141 @@ class Web extends Model
         'created_at',
         'updated_at'
     ];
+
+    /**
+     * Membuat web baru serta menyimpan page, category, dan menus ke dalam web
+     */
+    public static function createNewWeb($request) : bool {
+        $pageDefaults = PageDefault::all();
+        $categoryParentDefault = CategoryDefault::whereNull('parent')->get();
+        $categoryChildDefault = CategoryDefault::whereNotNull('parent')->orderBy('parent', 'asc')->get();
+        $menuParentDefault = MenuDefault::whereNull('parent_id')->get();
+        $menuChildDefault = MenuDefault::whereNotnUll('parent_id')->orderBy('parent_id', 'asc')->get();
+
+        DB::transaction(function() use ($request, $pageDefaults, $categoryParentDefault, $categoryChildDefault, $menuParentDefault, $menuChildDefault) {
+            $newWeb = Web::create([
+                'name' => $request->nama_web,
+                'subdomain' => $request->sub_domain,
+                'site_url' => route('main')
+            ]);
+
+            $newUser = User::create([
+                'web_id' => $newWeb->id,
+                'display_name'=> $request->nama_web . ' - Admin',
+                'username'=> Str::slug($request->sub_domain). '-admin',
+                'password'=> Hash::make('admin'),
+                'email' => Str::slug($request->sub_domain,'.').'@gmail.com',
+                'roles' => 'web_admin'
+            ]);
+
+            $pageDefArray = [];
+            $categoryDefArray = [];
+            $menuDefArray = [];
+            // Menyiapkan array untuk insert page
+            foreach ($pageDefaults as $page) {
+                array_push($pageDefArray, [
+                    'web_id' => $newWeb->id,
+                    'author' => $newUser->id,
+                    'title' => $page->title,
+                    'slug' => $page->slug,
+                    'content' => '<p>Ini halaman contoh</p>',
+                    'excerpt' => '<p>Ini halaman contoh</p>',
+                    'type' => 'page',
+                    'status' => 'publish',
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'updated_at' => date("Y-m-d H:i:s")
+                ]);
+            }
+            // Insert page
+            $newPages = DB::table('posts')->insert($pageDefArray);
+
+            // Menyiapkan array untuk insert category parent
+            foreach ($categoryParentDefault as $category) {
+                array_push($categoryDefArray, [
+                    'web_id' => $newWeb->id,
+                    'name' => $category->name,
+                    'slug' => $category->slug,
+                    'description' => $category->description,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'updated_at' => date("Y-m-d H:i:s")
+                ]);
+            }
+            // Insert category parent
+            $newCategories = DB::table('categories')->insert($categoryDefArray);
+            // Insert category child
+            $parentIds = [];
+            foreach ($categoryChildDefault as $category) {
+                $parentId = NULL;
+
+                if (isset($parentIds[$category->parent])) {
+                    $parentId = $parentIds[$category->parent];
+                } else if ($category->parent && !isset($parentIds[$category->parent])) {
+                    $parentDefault = CategoryDefault::find($category->parent);
+                    $parent = Category::where('web_id', $newWeb->id)
+                        ->where('slug', $parentDefault->slug)
+                        ->first();
+                    if ($parent) {
+                        $parentId = $parent->id;
+                        $parentIds[$category->parent] = $parentId;
+                    }
+                }
+
+                $newMenu = Category::create([
+                    'web_id' => $newWeb->id,
+                    'name' => $category->name,
+                    'slug' => $category->slug,
+                    'description' => $category->description,
+                    'parent' => $parentId,
+                ]);
+            }
+            
+            // Menyiapkan array untuk insert menu parent
+            foreach ($menuParentDefault as $menu) {
+                array_push($menuDefArray, [
+                    'web_id' => $newWeb->id,
+                    'name' => $menu->name,
+                    'parent_id' => $menu->parent_id,
+                    'type' => $menu->type,
+                    'menu_order' => $menu->menu_order,
+                    'menu_placement' => $menu->menu_placement,
+                    'target' => $menu->target,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'updated_at' => date("Y-m-d H:i:s")
+                ]);
+            }
+            // Insert menu parent
+            $newMenus = DB::table('menus')->insert($menuDefArray);
+            // Insert menu child 
+            $parentIds = [];
+            foreach ($menuChildDefault as $menu) {
+                $parentId = NULL;
+
+                if (isset($parentIds[$menu->parent_id])) {
+                    $parentId = $parentIds[$menu->parent_id];
+                } else if ($menu->parent && !isset($parentIds[$menu->parent_id])) {
+                    $parent = Menu::where('web_id', $newWeb->id)
+                        ->where('name', $menu->parent->name)
+                        ->select('id')->first();
+                    if ($parent) {
+                        $parentId = $parent->id;
+                        $parentIds[$menu->parent_id] = $parentId;
+                    }
+                }
+
+                $newMenu = Menu::create([
+                    'web_id' => $newWeb->id,
+                    'name' => $menu->name,
+                    'target' => $menu->target,
+                    'type' => $menu->type,
+                    'menu_order' => $menu->menu_order,
+                    'menu_placement' => $menu->menu_placement,
+                    'parent_id' => $parentId,
+                ]);
+            }
+        });
+
+        return true;      
+    }
 
     /**
      * Modifikasi function delete() web

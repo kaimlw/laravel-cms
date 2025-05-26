@@ -38,65 +38,7 @@ class WebController extends Controller
         ]);
         
         try {
-            DB::transaction(function() use($request) {
-                $newWeb = Web::create([
-                    'name' => $request->nama_web,
-                    'subdomain' => $request->sub_domain,
-                    'site_url' => route('main')
-                ]);
-                
-                // Menambahkan User pada web baru
-                $newUser = User::create([
-                    'web_id' => $newWeb->id,
-                    'display_name'=> $request->nama_web . ' - Admin',
-                    'username'=> Str::slug($request->sub_domain). '-admin',
-                    'password'=> Hash::make('admin'),
-                    'email' => Str::slug($request->sub_domain,'.').'@gmail.com',
-                    'roles' => 'web_admin'
-                ]);
-                
-                // Menambahkan kategori default
-                $newCategory1 = Category::create(
-                    [
-                    'web_id' => $newWeb->id,
-                    'name' => 'Uncategorized',
-                    'slug' => 'uncategorized' 
-                    ]
-                );
-                $newCategory2 = Category::create(
-                    [
-                    'web_id' => $newWeb->id,
-                    'name' => 'Latest News',
-                    'slug' => 'latest-news' 
-                    ]
-                );
-
-                // Menambahkan post default
-                $newPost = Post::create([
-                    'web_id' => $newWeb->id,
-                    'author' => $newUser->id,
-                    'title' => 'Sample Post',
-                    'slug' => 'sample-post-' . $newWeb->id,
-                    'content' => '<p>Ini halaman contoh</p>',
-                    'excerpt' => '<p>Ini halaman contoh</p>',
-                    'type' => 'post',
-                    'status' => 'draft'
-                ]);
-                // Mengaitkan post dengan category default
-                $newPost->categories()->attach([$newCategory1->id, $newCategory2->id]);
-
-                // Menambahkan page tambahan
-                Post::create([
-                    'web_id' => $newWeb->id,
-                    'author' => $newUser->id,
-                    'title' => 'Profil',
-                    'slug' => 'profil',
-                    'content' => '<p>Ini halaman contoh</p>',
-                    'excerpt' => '<p>Ini halaman contoh</p>',
-                    'type' => 'page',
-                    'status' => 'publish'
-                ]);
-            });
+            Web::createNewWeb($request);
         } catch (\Exception $e) {
             return redirect()->route('admin.web')->with('showAlert', ['type' => 'danger', 'msg' => $e->getMessage()]);
         }
