@@ -187,6 +187,93 @@
         </div>
     </div>
 </section>
+
+{{-- Ucapan Section --}}
+<section class="section">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Ucapan Kepala Prodi</h5>
+                    </div>
+                    <div class="w-100 mb-3" id="kaprodi_photo_upload_progress_wrapper" style="display: none">
+                        <h6>Upload Progress</h6>
+                        <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height: 10px">
+                            <div class="progress-bar" style="width: 25%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card h-100 m-0">
+                        <div class="card-body h-100">
+                            <h6>Foto Kepala Prodi</h6>
+                            <div class="border border-dashed mb-3 position-relative" id="kaprodi_photo_preview" style="min-height: 200px">
+                                @if ($kaprodi['kaprodi_photo'])
+                                    <img src="{{ $web->site_url }}/{{ $kaprodi['kaprodi_photo'] }}" alt="" class="img-fluid" >
+                                @else
+                                    <small class="position-absolute top-50 w-100 text-center">Tidak ada photo</small>
+                                @endif
+                            </div>
+                            <input type="file" id="kaprodi_photo_upload_input" style="display: none">
+                            <div class="d-flex flex-column" id="kaprodi_photo_buttons">
+                                @if ($kaprodi['kaprodi_photo'])
+                                <button class="btn btn-danger btn-sm mb-1" id="kaprodi_photo_remove_btn"><i class="bi bi-trash"></i> Hapus Foto</button>
+                                @endif
+                                <div class="dropdown w-100">
+                                    <button class="btn btn-primary dropdown-toggle btn-sm w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-pencil"></i> Ubah Foto
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><button class="dropdown-item" id="kaprodi_photo_upload_btn"><i class="bi bi-upload"></i> Upload (Max: 5Mb)</button></li>
+                                        <li><button class="dropdown-item" id="kaprodi_photo_media_btn"><i class="bi bi-images"></i> Buka Media Browser</button></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="card m-0">
+                        <div class="card-body">
+                            <form method="POST" action="{{ route('admin.theme.store_kaprodi_name_speech') }}">
+                                @csrf
+                                <div class="mb-3">
+                                    <div class="form-group">
+                                        <label for="kaprodiNameInput">Nama Kepala Prodi</label>
+                                        <input type="text" id="kaprodiNameInput" class="form-control @error('kaprodi_name') is-invalid @enderror" name="kaprodi_name" placeholder="Masukkan nama kepala prodi" value="{{ $kaprodi['kaprodi_name'] }}">
+                                        @error('kaprodi_name')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-group">
+                                        <label for="kaprodiSpeechInput" class="form-label">Ucapan Selamat Datang</label>
+                                        <textarea placeholder="Masukkan ucapan" class="form-control @error('kaprodi_speech') is-invalid @enderror" id="kaprodiSpeechInput" name="kaprodi_speech" rows="3">{{ $kaprodi['kaprodi_speech'] }}</textarea>
+                                        @error('kaprodi_speech')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="mb-1">
+                                    <button class="btn btn-primary" type="submit"><i class="bi bi-floppy-fill"></i> Simpan</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 {{-- Agenda Section --}}
 <section class="section">
     <div class="card">

@@ -19,6 +19,8 @@ document.querySelector('#btnMediaPilih').addEventListener('click', function(){
         insertGallerySlideFromMediaBrowser(selected_media)
     } else if (target == 'partnership-slide') {
         insertPartnershipSlideFromMediaBrowser(selected_media)
+    } else if (target == 'kaprodi-photo') {
+        insertKaprodiPhotoFromMediaBrowser(selected_media)
     }
 
     target = null
@@ -43,6 +45,29 @@ main_slide_upload_input.addEventListener('change', function(){
 document.querySelectorAll('.main-slide .btn-hapus').forEach(el => {
     el.addEventListener('click', function(){deleteSlide(el.getAttribute('data-id'))})
 })
+
+// Kaprodi Upload Button 
+const kaprodi_media_btn = document.querySelector('#kaprodi_photo_media_btn')
+const kaprodi_upload_input = document.querySelector('#kaprodi_photo_upload_input')
+const kaprodi_upload_btn = document.querySelector('#kaprodi_photo_upload_btn')
+const kaprodi_remove_photo_btn = document.querySelector('#kaprodi_photo_remove_btn')
+
+kaprodi_media_btn.addEventListener('click', function(){
+    target = 'kaprodi-photo'
+    openMediaBrowser('kaprodi-photo')
+})
+kaprodi_upload_btn.addEventListener('click', function(){
+    kaprodi_upload_input.click();
+})
+kaprodi_upload_input.addEventListener('input', function(){
+    uploadImage('kaprodi-photo', kaprodi_upload_input.files[0])
+})
+document.querySelectorAll('.kaprodi .btn-hapus').forEach(el => {
+    el.addEventListener('click', function(){deleteSlide(el.getAttribute('data-id'))})
+})
+if (kaprodi_remove_photo_btn != null) {
+    kaprodi_remove_photo_btn.addEventListener('click', function(){deleteKaprodiPhoto()})
+}
 
 // Agenda Upload Button 
 const agenda_slide_media_btn = document.querySelector('#agenda_media_btn')
@@ -102,7 +127,7 @@ document.querySelectorAll('.partnership-slide .btn-hapus').forEach(el => {
 })
 
 // FUNCTION
-function openMediaBrowser(section) {
+function openMediaBrowser() {
   fetch(`${site_url}/cms-admin/media/all`,{
       method: 'GET',
       headers: {
@@ -131,7 +156,7 @@ function openMediaBrowser(section) {
           media_item_element.classList.add('media-item');
           media_item_element.setAttribute('data-id', item.id)
           media_item_element.innerHTML = `
-              <div class="thumbnail">
+              <div class="thumbnail overflow-hidden">
                   <img src="${site_url}/${item.media_meta.filepath.thumbnail}" alt="" class="img-fluid">
               </div>
           `
@@ -197,6 +222,43 @@ function insertMainSlideFromMediaBrowser(mediaId) {
         let alert = `
             <div class="alert alert-success alert-dismissible show fade">
                 Slider berhasil ditambahkan!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+        `
+        $('.main-content').prepend(alert)
+    })
+    .catch(err => {
+        let alert = `
+            <div class="alert alert-danger alert-dismissible show fade">
+                ${err}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+        `
+        $('.main-content').prepend(alert)
+    })
+}
+
+function insertKaprodiPhotoFromMediaBrowser(mediaId) {
+    fetch(`${site_url}/cms-admin/theme/kaprodi-photo/${mediaId}`,{
+        method: 'POST',
+        headers: {
+            'Accept':'application/json',
+            "Content-type": "application/json",
+            "X-CSRF-TOKEN" : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        credentials: 'same-origin',
+    })
+    .then(res => res.json())
+    .then(data => {
+        setKaprodiPhoto(data.img_path)
+        
+        let alert = `
+            <div class="alert alert-success alert-dismissible show fade">
+                Foto Kaprodi berhasil ditambahkan!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -379,16 +441,20 @@ function uploadImage(section, file) {
         const data = JSON.parse(xhr.response)
 
         if (xhr.status == 200) {
-            let element = `
-                <li class="slide-item ${section}" data-id="${data.slide_id}">
-                    <button class="btn btn-hapus" data-id="${data.slide_id}" data-section="${section}"><i class="bi bi-trash-fill"></i></button>
-                    <img class="img-fluid rounded-2" src="${site_url}/${data.img_path}">
-                </li>
-            `
-            document.querySelector(`.slide-preview-wrapper#${section}`).insertAdjacentHTML('beforeend', element)
-            document.querySelectorAll(`.${section} .btn-hapus`).forEach(el => {
-                el.addEventListener('click', function(){deleteSlide(el.getAttribute('data-id'))})
-            })
+            if (section == 'kaprodi-photo') {
+                setKaprodiPhoto(data.img_path)
+            } else {
+                let element = `
+                    <li class="slide-item ${section}" data-id="${data.slide_id}">
+                        <button class="btn btn-hapus" data-id="${data.slide_id}" data-section="${section}"><i class="bi bi-trash-fill"></i></button>
+                        <img class="img-fluid rounded-2" src="${site_url}/${data.img_path}">
+                    </li>
+                `
+                document.querySelector(`.slide-preview-wrapper#${section}`).insertAdjacentHTML('beforeend', element)
+                document.querySelectorAll(`.${section} .btn-hapus`).forEach(el => {
+                    el.addEventListener('click', function(){deleteSlide(el.getAttribute('data-id'))})
+                })
+            }
         } else {
             let alert = `
             <div class="alert alert-danger alert-dismissible show fade">
@@ -423,11 +489,31 @@ function deleteSlide(id) {
     modal_hapus.show()
 }
 
+function deleteKaprodiPhoto(){
+    document.querySelector('#formHapus').setAttribute('action', `${site_url}/cms-admin/theme/kaprodi-photo-delete`);
+    modal_hapus.show()
+}
+
+function setKaprodiPhoto(img_path) {
+    const element = `<img src="${site_url}/${img_path}" alt="" class="img-fluid">`
+    document.querySelector('#kaprodi_photo_preview').innerHTML = element
+    
+    if (document.querySelector('#kaprodi_photo_remove_btn') == null) {
+        let btnHapus = `<button class="btn btn-danger btn-sm mb-1" id="kaprodi_photo_remove_btn"><i class="bi bi-trash"></i> Hapus Foto</button>`
+        document.querySelector('#kaprodi_photo_buttons').insertAdjacentHTML('afterbegin', btnHapus)
+        document.querySelector('#kaprodi_photo_remove_btn').addEventListener('click', ()=>{deleteKaprodiPhoto()})
+    }
+}
+
 function getClassNameBySection(section) {
     let className = ""
     switch (section) {
         case 'main-slide':
             className = 'main_slide'
+            break;
+
+        case 'kaprodi-photo':
+            className = 'kaprodi_photo'
             break;
             
         case 'agenda-slide':
