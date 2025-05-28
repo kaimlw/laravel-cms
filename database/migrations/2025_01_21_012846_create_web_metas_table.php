@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('web_id')->constrained('webs');
             $table->string('meta_key');
-            $table->string('meta_value');
+            $table->longText('meta_value');
             $table->timestamps();
         });
     }
