@@ -785,6 +785,6 @@
 <script>
   const agenda_count = {{ count($agenda_slide) }}
 </script>
-<script src="{{ asset('assets/main/theme-1/js/homepage.js') }}?timestamp={{ now() }}"></script>
+<script src="{{ asset('assets/main/theme-1/js/homepage.js') }}"></script>
 @endsection
 

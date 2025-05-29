@@ -212,6 +212,11 @@
   flex-direction: column;
   max-height: 500px;
   overflow: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+#info .info-category-list::-webkit-scrollbar {
+  display: none;
 }
 #info .info-category-list-item {
   padding: 16px;
@@ -325,6 +330,11 @@
   }
   #info .info-category-wrapper {
     overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  #info .info-category-wrapper::-webkit-scrollbar {
+    display: none;
   }
   #info .fade-bottom {
     display: none;
