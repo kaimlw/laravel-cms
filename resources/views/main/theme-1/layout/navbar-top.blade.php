@@ -15,7 +15,6 @@
     </div>
     <div class="col-6">
       <ul class="d-flex align-items-center m-0 list-unstyled gap-3 justify-content-end">
-        <li><a href=""><span class="fi fi-id me-1"></span>Bahasa Indonesia</a></li>
         {!! $top_menu_html !!}
       </ul>
     </div>
