@@ -6,7 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Media;
 use App\Models\Category;
-
+use DOMDocument;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use function Laravel\Prompts\error;
@@ -305,6 +305,24 @@ class CustomHelpers
     $embed_code = $exploded_string[count($exploded_string)-1];
     $embed_link .= $embed_code;
     return $embed_link;
+  }
+
+  /**
+   * Post Controller: Excerpt
+   * Generate excerpt dari post content
+   */
+  public static function generate_excerpt($post_content) : string {
+    $dom = new DOMDocument();
+    libxml_use_internal_errors(true);
+    $dom->loadHTML($post_content);
+    libxml_clear_errors();
+
+    $paragraphs = [];
+    foreach ($dom->getElementsByTagName('p') as $p) {
+      $paragraphs[] = $p->textContent;
+    }
+
+    return Str::limit(implode(' ', $paragraphs), 100);
   }
 }
 ?>

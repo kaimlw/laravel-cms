@@ -147,9 +147,7 @@ class PostController extends Controller
                     'slug' => Str::slug($title),
                     'content' => $request->content,
                     'author' => $request->author,
-                    'excerpt' => Str::excerpt($request->content,'',[
-                        'radius'=> 100
-                    ])
+                    'excerpt' => CustomHelpers::generate_excerpt($request->content)
                 ];
                 
                 // Jika tipe post
