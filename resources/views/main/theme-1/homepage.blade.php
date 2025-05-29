@@ -3,7 +3,7 @@
 @section('title', 'Home')
 
 @section('css-addon')
-<link rel="stylesheet" href="{{ asset('assets/main/theme-1/css/homepage.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/main/theme-1/css/homepage.css') }}?timestamp={{ now() }}">
 @endsection
 
 @section('content')
@@ -105,38 +105,28 @@
   <div class="container">
     <div class="row">
       <div class="col-12">
-        <h1 class="text-center">Welcome to Faculty of Teacher Training and Education Lambung Mangkurat University</h1>
+        <h1 class="text-center">
+          Welcome to {{ $web->name }}
+        </h1>
         <p class="text-center text-secondary">We are committed to building an Integrity Zone towards a Corruption-Free Area and a Clean and Serving Bureaucratic Area.</p>
-        <div class="welcome-dean-container flex-column flex-lg-row mt-5">
-          <div class="welcome-dean-container-item">
-            <div class="welcome-dean-container-item-img mb-3">
-              <img src="{{ asset('assets/main/theme-1/img/dean.png') }}" class="img-fluid" alt="">
-            </div>
-            <h5 class=" fw-bold text-center">Prof. Dr. Sunarno Basuki, Drs.,M.Kes., AIFO</h5>
-            <p class="text-secondary text-center">DEAN</p>
-          </div>
-          <div class="welcome-dean-container-item">
-            <div class="welcome-dean-container-item-img mb-3">
-              <img src="{{ asset('assets/main/theme-1/img/vice-dean1.png') }}" class="img-fluid" alt="" style="transform: scale(1.15) translateY(30px);">
-            </div>
-            <h5 class=" fw-bold text-center">Prof. Dr. Deasy Arisanty, S.Si.,M.Sc.</h5>
-            <p class="text-secondary text-center">VICE DEAN FOR ACADEMIC AFFAIRS</p>
-          </div>
-          <div class="welcome-dean-container-item">
-            <div class="welcome-dean-container-item-img mb-3">
-              <img src="{{ asset('assets/main/theme-1/img/vice-dean2.png') }}" class="img-fluid" alt="">
-            </div>
-            <h5 class=" fw-bold text-center">Dr. Dharmono, M.Si.</h5>
-            <p class="text-secondary text-center">VICE DEAN FOR GENERAL, FINANCE, AND PERSONNEL AFFAIRS</p>
-          </div>
-          <div class="welcome-dean-container-item">
-            <div class="welcome-dean-container-item-img mb-3">
-              <img src="{{ asset('assets/main/theme-1/img/vice-dean3.png') }}" class="img-fluid" alt="">
-            </div>
-            <h5 class=" fw-bold text-center">Dr. Ali Rachman S.Pd., M.Pd.</h5>
-            <p class="text-secondary text-center">VICE DEAN FOR STUDENT AFFAIRS</p>
-          </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="kaprodi-photo-wrapper mb-2">
+          <img src="{{ asset($kaprodi['kaprodi_photo']) }}" alt="" class="img-fluid">
         </div>
+        <h5 class="fw-bold text-center m-0">{{ $kaprodi['kaprodi_name'] }}</h5>
+        <p class="text-secondary text-center">
+          Coordinator of <br>
+          {{ $web->name }}
+        </p>
+      </div>
+      <div class="col-md-8 pt-md-3">
+        <h3 class="align-middle">Welcome Speech</h3>
+        <p class="text-secondary align-middle">
+          {{ $kaprodi['kaprodi_speech'] }}
+        </p>
       </div>
     </div>
   </div>
@@ -145,8 +135,8 @@
   <div class="container">
     <div class="row mb-4">
       <div class="col-12">
-        <h5 class="display-6 fw-semibold">10 Reasons to Choose FKIP ULM?</h5>
-        <p class="text-secondary">Here are 10 reasons why you choose to study at FKIP ULM</p>
+        <h5 class="display-6 fw-semibold">9 Reasons to Choose {{ $web->name }}?</h5>
+        <p class="text-secondary">Here are 9 reasons why you choose to study at FKIP ULM</p>
       </div>
     </div>
     <div class="row row-gap-3 justify-content-center">
@@ -165,7 +155,7 @@
         <div class="card shadow border-0">
           <div class="card-body px-3">
             <span class="fw-bold reasons-card-number">02</span>
-            <h5 class="reasons-card-title">Academic Reputation</h5>
+            <h5 class="reasons-card-title">Excellent Facilities</h5>
             <p class="reasons-card-content">
               FKIP ULM provides comprehensive and modern facilities to support the learning process, such as a rich library with learning resources, laboratories equipped with advanced equipment, and comfortable classrooms.
             </p>
@@ -176,7 +166,7 @@
         <div class="card shadow border-0">
           <div class="card-body px-3">
             <span class="fw-bold reasons-card-number">03</span>
-            <h5 class="reasons-card-title">Quality Lecturer</h5>
+            <h5 class="reasons-card-title">Top Quality Lecturer</h5>
             <p class="reasons-card-content">
               FKIP ULM has qualified and experienced lecturers in their fields, ready to guide and inspire students in achieving their maximum potential.
             </p>
@@ -187,18 +177,7 @@
         <div class="card shadow border-0">
           <div class="card-body px-3">
             <span class="fw-bold reasons-card-number">04</span>
-            <h5 class="reasons-card-title">Various Study Programs</h5>
-            <p class="reasons-card-content">
-              FKIP ULM offers various study programs that suit students' interests and talents, ranging from teacher education, language education, to sports education.
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3">
-        <div class="card shadow border-0">
-          <div class="card-body px-3">
-            <span class="fw-bold reasons-card-number">05</span>
-            <h5 class="reasons-card-title">Cooperation with Schools</h5>
+            <h5 class="reasons-card-title">Partnerships with Schools</h5>
             <p class="reasons-card-content">
               FKIP ULM has close partnerships with various schools in the area, both elementary and secondary levels. Through this collaboration, students have the opportunity to engage in community service activities, teaching internships, and other collaborative projects that enrich their educational experience and provide positive contributions to the local community.
             </p>
@@ -208,7 +187,7 @@
       <div class="col-lg-3">
         <div class="card shadow border-0">
           <div class="card-body px-3">
-            <span class="fw-bold reasons-card-number">06</span>
+            <span class="fw-bold reasons-card-number">05</span>
             <h5 class="reasons-card-title">Career Development</h5>
             <p class="reasons-card-content">
               FKIP ULM pays serious attention to student career development, by organizing various career development activities, seminars, and workshops that can improve skills and prepare students to enter the world of work.
@@ -219,7 +198,7 @@
       <div class="col-lg-3">
         <div class="card shadow border-0">
           <div class="card-body px-3">
-            <span class="fw-bold reasons-card-number">07</span>
+            <span class="fw-bold reasons-card-number">06</span>
             <h5 class="reasons-card-title">Supportive Campus Environment</h5>
             <p class="reasons-card-content">
               The Lambung Mangkurat University campus is located in a comfortable and safe environment, with supporting facilities such as dormitories, student activity centers, and sports facilities.
@@ -230,7 +209,7 @@
       <div class="col-lg-3">
         <div class="card shadow border-0">
           <div class="card-body px-3">
-            <span class="fw-bold reasons-card-number">08</span>
+            <span class="fw-bold reasons-card-number">07</span>
             <h5 class="reasons-card-title">Research and Publication Possibilities</h5>
             <p class="reasons-card-content">
               For those interested in research, FKIP provides opportunities to engage in diverse research projects, with support from lecturers who are experts in their fields. This also opens up opportunities to publish scientific publications.
@@ -241,7 +220,7 @@
       <div class="col-lg-3">
         <div class="card shadow border-0">
           <div class="card-body px-3">
-            <span class="fw-bold reasons-card-number">09</span>
+            <span class="fw-bold reasons-card-number">08</span>
             <h5 class="reasons-card-title">Extensive Alumni Network</h5>
             <p class="reasons-card-content">
               FKIP Universitas Lambung Mangkurat alumni are spread across various fields and industries, providing opportunities for new students to build extensive networks and gain inspiration and mentorship from successful alumni.
@@ -252,7 +231,7 @@
       <div class="col-lg-3">
         <div class="card shadow border-0">
           <div class="card-body px-3">
-            <span class="fw-bold reasons-card-number">10</span>
+            <span class="fw-bold reasons-card-number">09</span>
             <h5 class="reasons-card-title">Commitment to Educational Innovation</h5>
             <p class="reasons-card-content">
               FKIP Universitas Lambung Mangkurat continues to be committed to developing innovative learning methods that are in accordance with current developments, so that students can gain valuable learning experiences that are relevant to the demands of the ever-changing job market.
@@ -267,8 +246,9 @@
   <div class="container">
     <div class="row">
       <div class="col-12">
-        <div class="video-wrapper" data-url="https://www.youtube.com/embed/ifoXe1zGk64" data-img="assets/main/theme-1/img/profil-overlay.png" data-icon="bi bi-play-circle-fill">
+        <div class="video-wrapper">
           <div class="video-player">
+            <iframe style="width: 100%" height="480" src="{{ $video_profil_embed }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
           </div>
         </div>
       </div>
@@ -769,6 +749,6 @@
 <script>
   const agenda_count = {{ count($agenda_slide) }}
 </script>
-<script src="{{ asset('assets/main/theme-1/js/homepage.js') }}"></script>
+<script src="{{ asset('assets/main/theme-1/js/homepage.js') }}?timestamp={{ now() }}"></script>
 @endsection
 

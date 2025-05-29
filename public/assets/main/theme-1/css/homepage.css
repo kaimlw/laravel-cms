@@ -94,30 +94,12 @@
 #welcome h1 {
   font-weight: 600;
 }
-#welcome .welcome-dean-container {
-  display: flex;
-  gap: 1rem;
+#welcome .kaprodi-photo-wrapper {
+  text-align: center;
 }
-#welcome .welcome-dean-container-item {
-  width: 25%;
-  transition: width 800ms;
-}
-#welcome .welcome-dean-container-item.active {
-  width: 28%;
-}
-#welcome .welcome-dean-container-item-img {
-  background-color: #E0E0E0;
+#welcome .kaprodi-photo-wrapper img {
+  max-height: 300px;
   border-radius: 20px;
-  position: relative;
-  overflow: hidden;
-  transition: padding 800ms;
-}
-#welcome .welcome-dean-container-item-img:hover {
-  background-color: #4A1B9D;
-  padding-top: 2em;
-}
-#welcome .welcome-dean-container-item-img img {
-  transform: translateY(50px) scale(1.25);
 }
 
 #reasons .card {

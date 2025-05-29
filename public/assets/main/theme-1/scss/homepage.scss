@@ -122,32 +122,12 @@ $smal14-text: 14px;
     font-weight: 600;
   }
 
-  .welcome-dean-container{
-    display: flex;
-    gap: 1rem;
+  .kaprodi-photo-wrapper{
+    text-align: center;
 
-    &-item{
-      width: 25%;
-      transition: width 800ms;
-    }
-    &-item.active{
-      width: 28%;
-    }
-
-    &-item-img{
-      background-color: #E0E0E0;
+    img{
+      max-height: 300px;
       border-radius: 20px;
-      position: relative;
-      overflow: hidden;
-      transition: padding 800ms;
-
-      &:hover{
-        background-color: $primary-color;
-        padding-top: 2em;
-      }
-      img{
-        transform: translateY(50px) scale(1.25);
-      }
     }
   }
 }

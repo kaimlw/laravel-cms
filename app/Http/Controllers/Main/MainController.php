@@ -38,6 +38,7 @@ class MainController extends Controller
     function index() : View|RedirectResponse {
         $data['web'] = Web::findOrFail($this->web_id);
 
+        // --- Menu Main
         $main_menu = Menu::with('children')
                 ->where('web_id', $this->web_id)
                 ->where('menu_placement', 'main')
@@ -46,6 +47,7 @@ class MainController extends Controller
                 ->get();
         $data['main_menu_html'] = CustomHelpers::build_menu_main($main_menu);
 
+        // --- Menu Top
         $top_menu = Menu::with('children')
                 ->where('web_id', $this->web_id)
                 ->where('menu_placement', 'top')
@@ -53,29 +55,55 @@ class MainController extends Controller
                 ->orderBy('menu_order')
                 ->get();
         $data['top_menu_html'] = CustomHelpers::build_menu_main($top_menu);
-        
+
+        // --- Main Slide
         $data['main_slide'] = WebMeta::where('web_id', $this->web_id)
                             ->where('meta_key', 'main_slide')
                             ->get();
 
+        // --- Kaprodi
+        $kaprodi = WebMeta::where('web_id', $this->web_id)
+                            ->whereIn('meta_key', ['kaprodi_name', 'kaprodi_speech', 'kaprodi_photo'])
+                            ->orderBy('meta_key', 'asc')
+                            ->get();
+        $data['kaprodi'] = [
+            'kaprodi_name' => '',
+            'kaprodi_speech' => '',
+            'kaprodi_photo' => '',
+        ];
+        foreach ($kaprodi as $item) {
+            $data['kaprodi'][$item->meta_key] = $item->meta_value;
+        }
+
+        // --- Video Profil
+        $videoProfilMeta = WebMeta::where('web_id', Auth::user()->web_id)
+                            ->where('meta_key', 'video_profil_link')
+                            ->first();
+        $data['video_profil_embed'] = "";
+        if ($videoProfilMeta) {
+            $data['video_profil_embed'] = CustomHelpers::generate_link_embed($videoProfilMeta->meta_value);
+        }
+
+        // --- Agenda Slide
         $data['agenda_slide'] = WebMeta::where('web_id', $this->web_id)
                             ->where('meta_key', 'agenda_slide')
                             ->get();
 
+        // --- Gallery Slide
         $data['gallery_slide'] = WebMeta::where('web_id', $this->web_id)
                             ->where('meta_key', 'gallery_slide')
                             ->get();
-
+        // --- Partnership Slide
         $data['partnership_slide'] = WebMeta::where('web_id', $this->web_id)
                             ->where('meta_key', 'partnership_slide')
                             ->get();
-                            
+        // --- Categories
         $data['categories'] = Category::with('post')
                         ->where('web_id', $this->web_id)
                         ->where('slug', '!=', 'latest-news')
                         ->orderBy('name')
                         ->get();
-        
+        // --- Latest News
         $data['latest_news'] = Category::with('post')
                             ->where('web_id', $this->web_id)
                             ->where('slug', 'latest-news') 

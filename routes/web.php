@@ -175,6 +175,8 @@ Route::middleware('auth')->group(function(){
             Route::post('/cms-admin/theme/kaprodi-photo', 'upload_kaprodi_photo')->name('admin.theme.upload_kaprodi_photo');
             Route::delete('/cms-admin/theme/kaprodi-photo-delete', 'delete_kaprodi_photo')->name('admin.theme.delete_kaprodi_photo');
             
+            Route::post('/cms-admin/theme/video-profil', 'store_video_profil_link')->name('admin.theme.store_video_profil_link');
+            
             Route::post('/cms-admin/theme/agenda-slide/{media_id}', 'store_agenda_slide')->name('admin.theme.store_agenda_slide');
             Route::post('/cms-admin/theme/agenda-slide', 'upload_agenda_slide')->name('admin.theme.upload_agenda_slide');
             

@@ -38,35 +38,6 @@ document.addEventListener('DOMContentLoaded', function(){
     main_splide.mount()
     partner_splide.mount()
     agenda_splide.mount()
-    
-    // TOGGLE CLASS ACTIVE KE IMG WELCOME
-  document.querySelectorAll(".welcome-dean-container-item-img").forEach(e => {
-    e.addEventListener('mouseover', ()=>{
-      e.parentElement.classList.add('active')
-    })
-    e.addEventListener('mouseout', ()=>{
-      e.parentElement.classList.remove('active')
-    })
-  })
-
-  // MENAMPILKAN VIDEO YOUTUBE SETELAH OVERLAY DI CLICK
-  document.querySelectorAll('.video-fkip .video-wrapper').forEach(element =>{
-    let video_player = element.children[0]
-    let url = element.getAttribute('data-url')
-    let img = element.getAttribute('data-img')
-
-    video_player.innerHTML += `
-      <i class="display-3 bi bi-play-circle-fill text-primary video-player-icon"></i>
-      <img src="${img}" class="img-fluid">
-    `
-
-    video_player.addEventListener('click', function(){
-      video_player.innerHTML = `
-        <iframe width="853" height="480" src="${url}?autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      `
-      video_player.removeEventListener('click')
-    })
-  })
 
   // SHOW/HIDE SOME SERVICES
   let btn_service_cols = document.querySelectorAll(".service-col")
