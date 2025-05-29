@@ -210,11 +210,13 @@
                     <div class="card h-100 m-0">
                         <div class="card-body h-100">
                             <h6>Foto Kepala Prodi</h6>
-                            <div class="border border-dashed mb-3 position-relative" id="kaprodi_photo_preview" style="min-height: 200px">
+                            <div class="border border-dashed mb-3 overflow-hidden text-center" id="kaprodi_photo_preview" style="min-height: 200px">
                                 @if ($kaprodi['kaprodi_photo'])
-                                    <img src="{{ $web->site_url }}/{{ $kaprodi['kaprodi_photo'] }}" alt="" class="img-fluid" >
+                                    <img src="{{ $web->site_url }}/{{ $kaprodi['kaprodi_photo'] }}" alt="" style="max-height: 300px" class="img-fluid" >
                                 @else
-                                    <small class="position-absolute top-50 w-100 text-center">Tidak ada photo</small>
+                                <div class="d-flex align-items-center">
+                                    <small class="w-100 text-center">Tidak ada photo</small>
+                                </div>
                                 @endif
                             </div>
                             <input type="file" id="kaprodi_photo_upload_input" style="display: none">
@@ -281,6 +283,60 @@
             <div class="row">
                 <div class="col-12">
                     <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Video Profil Prodi</h5>
+                    </div>
+                    <div class="w-100 mb-3" id="agenda_upload_progress_wrapper" style="display: none">
+                        <h6>Upload Progress</h6>
+                        <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height: 10px">
+                            <div class="progress-bar" style="width: 25%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5>Preview Video</h5>
+                            <iframe src="{{ $video_profil['video_profil_embed'] }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="width: 100%; height:250px"></iframe>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <form action="{{ route('admin.theme.store_video_profil_link') }}" method="POST">
+                                @csrf
+                                <div class="mb-3">
+                                    <div class="form-group">
+                                        <label for="videoProfilLinkInput">Link Video</label>
+                                        <input type="text" id="videoProfilLinkInput" class="form-control @error('video_profil_link') is-invalid @enderror" name="video_profil_link" placeholder="Masukkan link video profil" value="{{ $video_profil['video_profil_link'] }}">
+                                        @error('video_profil_link')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <button class="btn btn-primary"><i class="bi bi-floppy-fill"></i> Simpan</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- Agenda Section --}}
+<section class="section">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5>Agenda</h5>
                         <input type="file" id="agenda_upload_input" style="display: none">
                         <div class="dropdown">
@@ -318,6 +374,7 @@
         </div>
     </div>
 </section>
+
 {{-- Gallery Section --}}
 <section class="section">
     <div class="card">

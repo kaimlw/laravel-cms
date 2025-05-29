@@ -280,5 +280,31 @@ class CustomHelpers
 
     return 1;
   }
+
+  /**
+   * Theme Controller: Video Profil
+   * Generate link embed youtube video dari input user
+   * 
+   * https://www.youtube.com/embed/ifoXe1zGk64
+   * https://youtu.be/zhSSaobCq70
+   * https://www.youtube.com/watch?v=zhSSaobCq70
+   */
+  public static function generate_link_embed(string $link) : string {
+    $embed_link = "https://www.youtube.com/embed/";
+
+    if (str_contains($link, "youtu.be")) {
+      $exploded_string = explode("/", $link);
+    } else if (str_contains($link, "www.youtube.com/watch")) {
+      $exploded_string = explode("=", $link);
+    } else if (str_contains($link, "www.youtube.com/embed")) {
+      return $link;
+    } else {
+      return "";
+    }
+
+    $embed_code = $exploded_string[count($exploded_string)-1];
+    $embed_link .= $embed_code;
+    return $embed_link;
+  }
 }
 ?>

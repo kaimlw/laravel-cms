@@ -23,15 +23,16 @@ class ThemeController extends Controller
      */
     function index() : View {
         $data['web'] = Web::findOrFail(Auth::user()->web_id)->select('site_url')->first();
+        // --- Main Slide
         $data['main_slide'] = WebMeta::where('web_id', Auth::user()->web_id)
                             ->where('meta_key', 'main_slide')
                             ->get();
-
+        
+        // --- Kaprodi
         $kaprodi = WebMeta::where('web_id', Auth::user()->web_id)
                             ->whereIn('meta_key', ['kaprodi_name', 'kaprodi_speech', 'kaprodi_photo'])
                             ->orderBy('meta_key', 'asc')
                             ->get();
-
         $data['kaprodi'] = [
             'kaprodi_name' => '',
             'kaprodi_speech' => '',
@@ -41,14 +42,30 @@ class ThemeController extends Controller
             $data['kaprodi'][$item->meta_key] = $item->meta_value;
         }
 
+        // --- Video Profil
+        $videoProfilLink = WebMeta::where('web_id', Auth::user()->web_id)
+                            ->where('meta_key', 'video_profil_link')
+                            ->first();
+        $data['video_profil'] = [
+            'video_profil_link' => '', 
+            'video_profil_embed' => '',
+        ];
+        if ($videoProfilLink) {
+            $data['video_profil']['video_profil_link'] = $videoProfilLink->meta_value;
+            $data['video_profil']['video_profil_embed'] = CustomHelpers::generate_link_embed($data['video_profil']['video_profil_link']);
+        }
+
+        // --- Agenda Slide
         $data['agenda_slide'] = WebMeta::where('web_id', Auth::user()->web_id)
                             ->where('meta_key', 'agenda_slide')
                             ->get();
 
+        // --- Gallery Slide
         $data['gallery_slide'] = WebMeta::where('web_id', Auth::user()->web_id)
                             ->where('meta_key', 'gallery_slide')
                             ->get();
 
+        // --- Partnership Slide
         $data['partnership_slide'] = WebMeta::where('web_id', Auth::user()->web_id)
                             ->where('meta_key', 'partnership_slide')
                             ->get();
@@ -222,6 +239,23 @@ class ThemeController extends Controller
         }
 
         return redirect()->route('admin.theme')->with('showAlert', ['type' => 'success', 'msg' => 'Foto Kaprodi berhasil dihapus!']);
+    }
+
+    /**
+     * (POST)
+     * Menyimpan nama kepala prodi dan ucapan selamat datang
+     */
+    function store_video_profil_link(Request $request) : RedirectResponse {
+        $request->validate([
+            'video_profil_link' => 'required',
+        ]);
+
+        $newMeta = WebMeta::updateMeta('video_profil_link', $request->video_profil_link);
+        if (!$newMeta) {
+            return redirect()->route('admin.theme')->with('showAlert', ['type' => 'danger', 'msg' => "Gagal menyimpan perubahan!"]);
+        }
+        
+        return redirect()->route('admin.theme')->with('showAlert', ['type' => 'success', 'msg' => 'Berhasil menyimpan perubahan!']);
     }
 
     /**
