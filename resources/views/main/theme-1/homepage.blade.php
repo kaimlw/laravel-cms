@@ -2,6 +2,18 @@
 
 @section('title', 'Home')
 
+@section('meta-add')
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Home | {{ $web->name }}">
+  <meta property="og:description" name="og:description" content="Welcome to {{ $web->name }} We are committed to building an Integrity Zone towards a Corruption-Free Area and a Clean and Serving Bureaucratic Area.">
+  <meta property="og:image" name="og:image" content="{{ asset('assets/img/ULM.png') }}">
+  <meta property="twitter:card" name="twitter:card" content="summary_large_image">
+  <meta property="og:site_name" name="og:site_name" content="{{ $web->id }}">
+  <meta property="article:modified_time" content="{{ date('Y-m-d', strtotime($web->updated_at)) }}T{{ date('h:m:s', strtotime($web->updated_at)) }}">
+@endsection
+
 @section('css-addon')
 <link rel="stylesheet" href="{{ asset('assets/main/theme-1/css/homepage.css') }}?timestamp={{ now() }}">
 @endsection

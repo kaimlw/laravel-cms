@@ -76,7 +76,7 @@ class MainController extends Controller
         }
 
         // --- Video Profil
-        $videoProfilMeta = WebMeta::where('web_id', Auth::user()->web_id)
+        $videoProfilMeta = WebMeta::where('web_id', $this->web_id)
                             ->where('meta_key', 'video_profil_link')
                             ->first();
         $data['video_profil_embed'] = "";
