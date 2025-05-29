@@ -10,7 +10,7 @@
   <meta property="og:description" name="og:description" content="Welcome to {{ $web->name }} We are committed to building an Integrity Zone towards a Corruption-Free Area and a Clean and Serving Bureaucratic Area.">
   <meta property="og:image" name="og:image" content="{{ asset('assets/img/ULM.png') }}">
   <meta property="twitter:card" name="twitter:card" content="summary_large_image">
-  <meta property="og:site_name" name="og:site_name" content="{{ $web->id }}">
+  <meta property="og:site_name" name="og:site_name" content="{{ $web->name }}">
   <meta property="article:modified_time" content="{{ date('Y-m-d', strtotime($web->updated_at)) }}T{{ date('h:m:s', strtotime($web->updated_at)) }}">
 @endsection
 
@@ -124,6 +124,7 @@
       </div>
     </div>
     <div class="row">
+      @if($kaprodi['kaprodi_name'] != '' && $kaprodi['kaprodi_photo'] != '')
       <div class="col-md-4">
         <div class="kaprodi-photo-wrapper mb-2">
           <img src="{{ asset($kaprodi['kaprodi_photo']) }}" alt="" class="img-fluid">
@@ -134,12 +135,15 @@
           {{ $web->name }}
         </p>
       </div>
+      @endif
+      @if($kaprodi['kaprodi_speech'] != '')
       <div class="col-md-8 pt-md-3">
-        <h3 class="align-middle">Welcome Speech</h3>
-        <p class="text-secondary align-middle">
+        <h3>Welcome Speech</h3>
+        <p class="text-secondary">
           {{ $kaprodi['kaprodi_speech'] }}
         </p>
       </div>
+      @endif
     </div>
   </div>
 </section>
@@ -254,6 +258,7 @@
     </div>
   </div>
 </section>
+@if($video_profil_embed != '')
 <section id="video-profile" class="video-fkip">
   <div class="container">
     <div class="row">
@@ -267,6 +272,7 @@
     </div>
   </div>
 </section>
+@endif
 <section id="services">
   <div class="container">
     <div class="row">
@@ -495,18 +501,6 @@
     </div>
   </div>
 </section>
-<section id="video-facilities" class="video-fkip">
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <div class="video-wrapper" data-url="https://www.youtube.com/embed/As9yJdRPkfE" data-img="assets/main/theme-1/img/fasilitas-overlay.png" data-icon="bi bi-play-circle-fill">
-          <div class="video-player">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 <section id="agenda">
   <div class="container">
     <div class="row mb-3">
@@ -530,13 +524,19 @@
           <div class="splide" id="agenda_slide" role="group" aria-label="FKIP agenda slide">
             <div class="splide__track">
               <ul class="splide__list">
-                @foreach ($agenda_slide as $slide)
-                <li class="splide__slide">
-                  <div class="splide__slide__container">
-                    <img src="{{ asset($slide->meta_value) }}" alt="">
-                  </div>
-                </li>
-                @endforeach
+                @if (count($agenda_slide) == 0)
+                  <li class="splide__slide p-3 text-secondary">
+                    Tidak ada agenda.
+                  </li>
+                @else
+                  @foreach ($agenda_slide as $slide)
+                  <li class="splide__slide">
+                    <div class="splide__slide__container">
+                      <img src="{{ asset($slide->meta_value) }}" alt="">
+                    </div>
+                  </li>
+                  @endforeach
+                @endif
               </ul>
             </div>
           </div>
@@ -555,27 +555,34 @@
       </div>
     </div>
     <div class="row row-gap-3">
-      @if(isset($latest_news->post))
+      @if(isset($latest_news->post) && count($latest_news->post)>0 )
         @foreach ($latest_news->post as $post)
           @if($post->status == "draft")
             @continue
           @endif
           <div class="col-lg-4">
             <div class="card border-0 h-100">
-              <a href="{{ route('main.post', ['slug' => $post->slug]) }}">
-                <img src="{{ $post->banner_post_path ? asset($post->banner_post_path) : ($web->default_post_banner_path ? asset($web->default_post_banner_path) : "") }}" class="card-img-top rounded-2" height="230">
-              </a>
+              @if ($post->banner_post_path != '' || $web->default_post_banner_path != '')
+                <a href="{{ route('main.post', ['slug' => $post->slug]) }}">
+                  <img src="{{ $post->banner_post_path ? asset($post->banner_post_path) : ($web->default_post_banner_path ? asset($web->default_post_banner_path) : "") }}" class="card-img-top rounded-2" height="230">
+                </a>
+              @endif
               <div class="card-body p-0 mt-3">
                 <div class="text-secondary mb-2" style="font-size: 14px;"><i class="bi bi-calendar me-2"></i> {{ date("d-m-Y", strtotime($post->updated_at)) }}</div>
                 <a class="h5 text-decoration-none fw-semibold" href="{{ route('main.post', ['slug' => $post->slug]) }}">{{ $post->title }}</a>
                 <div class="text-secondary mt-2">
                   {!! $post->excerpt !!}
                 </div>
-                
               </div>
             </div>
           </div>
         @endforeach
+      @else
+        <div class="card">
+          <div class="card-body">
+            <p class="m-0 text-secondary">Tidak ada berita terbaru.</p>
+          </div>
+        </div>
       @endif
     </div>
     @if(isset($latest_news->post))
@@ -629,6 +636,11 @@
               </div>
             </div>
           @endfor
+          @if(count($category->post) == 0)
+            <div class="col-12">
+              <p class="m-0 text-white text-center">Tidak ada postingan.</p>
+            </div>
+          @endif
           </div>
 
           @if(count($category->post) > 6)
@@ -652,6 +664,18 @@
         <h5 class="display-6 fw-semibold">Gallery</h5>
       </div>
     </div>
+    @if(count($gallery_slide) == 0)
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <p class="m-0 text-secondary">Belum ada foto untuk ditampilkan.</p>
+          </div>
+        </div>
+      </div>
+    </div>  
+    @endif
+
     @php
       $gallery_idx = 0;
       $gallery_row = ceil(count($gallery_slide)/6);
